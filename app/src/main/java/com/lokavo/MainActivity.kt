@@ -1,4 +1,4 @@
-package com.capstonebangkit.lokavo
+package com.lokavo
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

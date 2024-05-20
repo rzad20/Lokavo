@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.capstonebangkit.lokavo"
+    namespace = "com.lokavo"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.capstonebangkit.lokavo"
+        applicationId = "com.lokavo"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

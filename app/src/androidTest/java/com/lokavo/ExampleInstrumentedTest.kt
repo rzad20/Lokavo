@@ -1,4 +1,4 @@
-package com.capstonebangkit.lokavo
+package com.lokavo
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

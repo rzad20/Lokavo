@@ -8,5 +8,9 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="sudah_punya_akun">Sudah punya akun?</string>
-    <string name="masuk">Masuk</string>"
+    <string name="masuk">Masuk</string>
+    <string name="welcome_title">Selamat Datang di Lokavo</string>
+    <string name="welcome_subtitle">Mulai Bisnismu Sekarang</string>
+    <string name="Register">Daftar</string>
+    <string name="login">Login</string>"
 </resources>

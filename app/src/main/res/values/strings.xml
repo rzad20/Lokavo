@@ -8,5 +8,8 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="sudah_punya_akun">Sudah punya akun?</string>
-    <string name="masuk">Masuk</string>"
+    <string name="masuk">Masuk</string>
+    <string name="login_desc">Kamu selangkah lebih dekat untuk memulai bisnis bersama kami</string>
+    <string name="belum_punya_akun">Belum Punya Akun?</string>
+    <string name="lupa_password">Lupa Password?</string>"
 </resources>

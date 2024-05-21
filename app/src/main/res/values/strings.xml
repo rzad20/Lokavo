@@ -9,14 +9,11 @@
     <string name="password">Password</string>
     <string name="sudah_punya_akun">Sudah punya akun?</string>
     <string name="masuk">Masuk</string>
-<<<<<<< HEAD
     <string name="login_desc">Kamu selangkah lebih dekat untuk memulai bisnis bersama kami</string>
     <string name="belum_punya_akun">Belum Punya Akun?</string>
     <string name="lupa_password">Lupa Password?</string>"
-=======
     <string name="welcome_title">Selamat Datang di Lokavo</string>
     <string name="welcome_subtitle">Mulai Bisnismu Sekarang</string>
     <string name="Register">Daftar</string>
     <string name="login">Login</string>"
->>>>>>> 322829f3cb6ffe81e6799cea6d95ee2070a1fe93
 </resources>

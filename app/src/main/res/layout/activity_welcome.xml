@@ -7,17 +7,15 @@
     android:layout_height="match_parent"
     tools:context="WelcomeActivity">
 
-    <!-- Image Overlay -->
-
     <ImageView
         android:id="@+id/vector_image"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
         android:layout_marginTop="50dp"
-        android:src="@drawable/welcome"
+        android:layout_marginEnd="50dp"
         android:adjustViewBounds="true"
+        android:src="@drawable/welcome"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -30,56 +28,59 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:gravity="center"
         android:padding="10dp"
         android:text="@string/welcome_title"
         android:textColor="@color/black"
-        android:gravity="center"
-        android:textStyle="bold"
         android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vector_image"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/vector_image" />
 
     <TextView
         android:id="@+id/sub_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:gravity="center"
         android:text="@string/welcome_subtitle"
         android:textColor="@color/black"
-        android:gravity="center"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <Button
-        android:id="@+id/btnDaftar"
+        android:id="@+id/btnRegister"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:padding="12dp"
-        android:backgroundTint="#1E90FF"
-        android:text="@string/Register"
-        android:textSize="18sp"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
+        android:padding="12dp"
+        android:text="@string/daftar"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sub_title"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.RoundedCorners"
+        app:strokeColor="?attr/colorPrimary" />
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="12dp"
-        android:backgroundTint="#1E90FF"
-        android:text="@string/login"
-        android:textSize="18sp"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp"
+        android:padding="12dp"
+        android:text="@string/masuk"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnDaftar"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/btnRegister"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.RoundedCorners" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

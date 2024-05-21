@@ -7,6 +7,10 @@ android {
     namespace = "com.lokavo"
     compileSdk = 34
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.lokavo"
         minSdk = 24
@@ -45,4 +49,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Splash Screen
+    implementation(libs.core.splashscreen)
 }

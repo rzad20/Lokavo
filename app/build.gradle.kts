@@ -10,6 +10,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     defaultConfig {
@@ -20,6 +21,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_KEY", "\"${findProperty("API_KEY")}\"")
     }
 
     buildTypes {
@@ -58,4 +60,6 @@ dependencies {
 
     // Splash Screen
     implementation(libs.core.splashscreen)
+    // Google Places
+    implementation(libs.google.places)
 }

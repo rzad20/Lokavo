@@ -1,7 +1,6 @@
-package com.lokavo
+package com.lokavo.ui
 
 import android.os.Build
-import android.os.Build.VERSION
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +11,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.lokavo.R
 import com.lokavo.databinding.ActivityResultBinding
 
 class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -33,7 +33,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
             title = getString(R.string.result)
         }
 
-        latLng = (if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        latLng = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(LOCATION, LatLng::class.java)
         } else {
             intent.getParcelableExtra(LOCATION)

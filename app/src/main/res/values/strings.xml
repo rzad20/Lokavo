@@ -21,4 +21,11 @@
     <string name="pilih_lokasi">Pilih Lokasi</string>
     <string name="cari_lokasi">Cari Lokasi</string>
     <string name="result">Hasil</string>
+    <string name="detailName">Nama User</string>
+    <string name="userEmail">Email User</string>
+    <string name="detail_profil">Detail Profil</string>
+    <string name="profile_logo">Profile Logo</string>
+    <string name="logout">Keluar</string>
+    <string name="dark_mode">Mode Gelap</string>
+    <string name="dark_mode_description">Dark Mode Icon</string>
 </resources>

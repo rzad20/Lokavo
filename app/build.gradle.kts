@@ -63,4 +63,10 @@ dependencies {
     implementation(libs.core.splashscreen)
     // Google Places
     implementation(libs.google.places)
+    // Dependency Injection
+    implementation(libs.koin.android)
+    // Networking
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 }

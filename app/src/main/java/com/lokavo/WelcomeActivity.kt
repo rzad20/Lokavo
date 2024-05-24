@@ -22,6 +22,7 @@ class WelcomeActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener{
             startActivity(Intent(this,LoginActivity::class.java))
         }
+        supportActionBar?.hide()
         enableEdgeToEdge()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

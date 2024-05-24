@@ -18,6 +18,9 @@
     <string name="title_maps">Peta</string>
     <string name="title_history">Riwayat</string>
     <string name="title_profile">Profil</string>
+    <string name="pilih_lokasi">Pilih Lokasi</string>
+    <string name="cari_lokasi">Cari Lokasi</string>
+    <string name="result">Hasil</string>
     <string name="detailName">Nama User</string>
     <string name="userEmail">Email User</string>
     <string name="detail_profil">Detail Profil</string>

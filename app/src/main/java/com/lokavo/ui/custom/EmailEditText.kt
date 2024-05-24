@@ -1,4 +1,4 @@
-package com.lokavo.ui
+package com.lokavo.ui.custom
 
 import android.content.Context
 import android.util.AttributeSet

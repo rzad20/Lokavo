@@ -46,7 +46,7 @@
         app:startIconDrawable="@drawable/ic_email"
         app:startIconTint="?android:attr/colorPrimary">
 
-        <com.lokavo.ui.EmailEditText
+        <com.lokavo.ui.custom.EmailEditText
             android:id="@+id/ed_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
         app:startIconDrawable="@drawable/ic_lock"
         app:startIconTint="?android:attr/colorPrimary">
 
-        <com.lokavo.ui.PasswordEditText
+        <com.lokavo.ui.custom.PasswordEditText
             android:id="@+id/ed_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

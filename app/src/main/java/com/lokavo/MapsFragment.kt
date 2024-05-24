@@ -1,19 +1,25 @@
 package com.lokavo
 
+import android.content.Intent
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PointOfInterest
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
@@ -31,7 +37,6 @@ class MapsFragment : Fragment() {
     private lateinit var autocompleteSupportFragment: AutocompleteSupportFragment
     private lateinit var geocoder: Geocoder
     private lateinit var mapFragment: SupportMapFragment
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,19 +49,29 @@ class MapsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initializePlaces()
+        setupAutocompleteSupportFragment()
+        setupMapFragment()
+        setupAutocompleteEditText()
+
+        binding.btnChoose.setOnClickListener {
+            val intent = Intent(context, ResultActivity::class.java)
+            intent.putExtra(ResultActivity.LOCATION, currentMarker?.position)
+            startActivity(intent)
+        }
+    }
+
+    private fun initializePlaces() {
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), BuildConfig.API_KEY)
         }
+    }
 
+    private fun setupAutocompleteSupportFragment() {
         autocompleteSupportFragment =
             (childFragmentManager.findFragmentById(R.id.fragment) as AutocompleteSupportFragment).apply {
                 setPlaceFields(listOf(Place.Field.LAT_LNG, Place.Field.NAME))
             }
-
-        geocoder = Geocoder(requireContext(), Locale.getDefault())
-
-        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(callback)
 
         autocompleteSupportFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
@@ -71,6 +86,7 @@ class MapsFragment : Fragment() {
                             1000,
                             null
                         )
+                        binding.btnChoose.visibility = View.VISIBLE
                     }
                 }
             }
@@ -79,10 +95,35 @@ class MapsFragment : Fragment() {
         })
     }
 
+    private fun setupMapFragment() {
+        geocoder = Geocoder(requireContext(), Locale.getDefault())
+        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(callback)
+    }
+
+    private fun setupAutocompleteEditText() {
+        val autoCompleteEditText = autocompleteSupportFragment
+            .view?.findViewById<EditText>(com.google.android.libraries.places.R.id.places_autocomplete_search_input)
+        autoCompleteEditText?.hint = getString(R.string.cari_lokasi)
+
+        autoCompleteEditText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable) {
+                if (s.isEmpty()) {
+                    currentMarker?.remove()
+                    binding.btnChoose.visibility = View.GONE
+                }
+            }
+        })
+    }
+
     private val callback = OnMapReadyCallback { map ->
         googleMap = map.apply {
             uiSettings.apply {
-                isZoomControlsEnabled = true
+                isZoomControlsEnabled = false
                 isIndoorLevelPickerEnabled = false
                 isCompassEnabled = false
                 isMapToolbarEnabled = false
@@ -90,41 +131,51 @@ class MapsFragment : Fragment() {
         }
 
         googleMap?.setOnMapLongClickListener { latLng ->
-            currentMarker?.remove()
-            currentMarker = googleMap?.addMarker(MarkerOptions().position(latLng))
-            googleMap?.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    latLng, googleMap?.cameraPosition?.zoom ?: 13f
-                ),
-                1000,
-                null
-            )
-
-            lifecycleScope.launch {
-                val address = geocoder.getAddress(latLng.latitude, latLng.longitude)
-                val addressName =
-                    address?.getAddressLine(0) ?: "${latLng.latitude},${latLng.longitude}"
-                autocompleteSupportFragment.setText(addressName)
-            }
+            handleMapLongClick(latLng)
         }
 
         googleMap?.setOnPoiClickListener { poi ->
-            currentMarker?.remove()
-            currentMarker = googleMap?.addMarker(MarkerOptions().position(poi.latLng))
-            googleMap?.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    poi.latLng, googleMap?.cameraPosition?.zoom ?: 13f
-                ),
-                1000,
-                null
-            )
+            handlePoiClick(poi)
+        }
+    }
 
-            lifecycleScope.launch {
-                val address = geocoder.getAddress(poi.latLng.latitude, poi.latLng.longitude)
-                val addressName =
-                    address?.getAddressLine(0) ?: "${poi.latLng.latitude},${poi.latLng.longitude}"
-                autocompleteSupportFragment.setText(addressName)
-            }
+    private fun handleMapLongClick(latLng: LatLng) {
+        currentMarker?.remove()
+        currentMarker = googleMap?.addMarker(MarkerOptions().position(latLng))
+        googleMap?.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                latLng, googleMap?.cameraPosition?.zoom ?: 13f
+            ),
+            1000,
+            null
+        )
+
+        lifecycleScope.launch {
+            val address = geocoder.getAddress(latLng.latitude, latLng.longitude)
+            val addressName =
+                address?.getAddressLine(0) ?: "${latLng.latitude},${latLng.longitude}"
+            autocompleteSupportFragment.setText(addressName)
+            binding.btnChoose.visibility = View.VISIBLE
+        }
+    }
+
+    private fun handlePoiClick(poi: PointOfInterest) {
+        currentMarker?.remove()
+        currentMarker = googleMap?.addMarker(MarkerOptions().position(poi.latLng))
+        googleMap?.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                poi.latLng, googleMap?.cameraPosition?.zoom ?: 13f
+            ),
+            1000,
+            null
+        )
+
+        lifecycleScope.launch {
+            val address = geocoder.getAddress(poi.latLng.latitude, poi.latLng.longitude)
+            val addressName =
+                address?.getAddressLine(0) ?: "${poi.latLng.latitude},${poi.latLng.longitude}"
+            autocompleteSupportFragment.setText(addressName)
+            binding.btnChoose.visibility = View.VISIBLE
         }
     }
 

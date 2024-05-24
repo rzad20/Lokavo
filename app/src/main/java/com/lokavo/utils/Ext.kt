@@ -1,4 +1,4 @@
-package com.lokavo
+package com.lokavo.utils
 
 import android.location.Address
 import android.location.Geocoder

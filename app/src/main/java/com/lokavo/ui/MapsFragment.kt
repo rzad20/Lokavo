@@ -1,8 +1,7 @@
-package com.lokavo
+package com.lokavo.ui
 
 import android.content.Intent
 import android.location.Geocoder
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -24,7 +24,10 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.lokavo.BuildConfig
+import com.lokavo.R
 import com.lokavo.databinding.FragmentMapsBinding
+import com.lokavo.utils.getAddress
 import kotlinx.coroutines.launch
 import java.util.Locale
 

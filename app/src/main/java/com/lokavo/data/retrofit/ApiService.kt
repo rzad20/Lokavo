@@ -6,14 +6,14 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
-data class NearbyPlaceRequest(
+data class ArgLatLong(
     val arglatitude: Double,
     val arglongitude: Double
 )
 
 interface ApiService {
-    @POST("/second_try")
+    @POST("/v1")
     suspend fun getNearbyPlace(
-        @Body request: NearbyPlaceRequest
+        @Body request: ArgLatLong
     ): MapsResponse
 }

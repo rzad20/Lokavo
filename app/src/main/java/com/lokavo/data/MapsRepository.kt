@@ -6,13 +6,13 @@ import com.lokavo.data.retrofit.ApiService
 import retrofit2.HttpException
 import com.lokavo.data.response.MapsResponse
 import com.lokavo.data.response.PlacesItem
-import com.lokavo.data.retrofit.NearbyPlaceRequest
+import com.lokavo.data.retrofit.ArgLatLong
 
 class MapsRepository private constructor(private var apiService: ApiService) {
     fun getNearbyPlace(latitude: Double, longitude: Double) = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.getNearbyPlace(NearbyPlaceRequest(latitude, longitude))
+            val response = apiService.getNearbyPlace(ArgLatLong(latitude, longitude))
             val places = response.places
             if (places != null) {
                 if (places.isEmpty()) {
@@ -20,24 +20,8 @@ class MapsRepository private constructor(private var apiService: ApiService) {
                 } else {
                     val storyList = places.map { place ->
                         PlacesItem(
-                            null,
-                            null,
-                            null,
-                            null,
                             place?.coordinates,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            place?.name,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
+                            place?.placeId,
                         )
                     }
                     emit(Result.Success(storyList))

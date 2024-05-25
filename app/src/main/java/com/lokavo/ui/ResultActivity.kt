@@ -87,16 +87,19 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                     place.coordinates?.longitude ?: 0.0
                                 )
                                 withContext(Dispatchers.Main) {
-                                    googleMap.addMarker(
+                                    val marker = googleMap.addMarker(
                                         MarkerOptions()
                                             .position(placeLatLng)
-                                            .title(place.name)
+                                            .title(place.placeId)
                                             .icon(
                                                 BitmapDescriptorFactory.defaultMarker(
                                                     BitmapDescriptorFactory.HUE_GREEN
                                                 )
                                             )
                                     )
+                                    if (marker != null) {
+                                        marker.tag = place.placeId
+                                    }
                                 }
                                 builder.include(placeLatLng)
                             }
@@ -112,7 +115,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                 googleMap.setOnMarkerClickListener { marker ->
                                     if (marker == currentMarker) {
                                         binding.cvResult.visibility = View.VISIBLE
-                                    } else{
+                                    } else {
                                         marker.showInfoWindow()
                                     }
                                     true
@@ -125,31 +128,32 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
-        override fun onMapReady(map: GoogleMap) {
-            googleMap = map.apply {
-                uiSettings.apply {
-                    isZoomControlsEnabled = false
-                    isIndoorLevelPickerEnabled = false
-                    isCompassEnabled = false
-                    isMapToolbarEnabled = false
-                }
-                currentMarker = addMarker(MarkerOptions().position(latLng))
-                moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
+
+    override fun onMapReady(map: GoogleMap) {
+        googleMap = map.apply {
+            uiSettings.apply {
+                isZoomControlsEnabled = false
+                isIndoorLevelPickerEnabled = false
+                isCompassEnabled = false
+                isMapToolbarEnabled = false
             }
-        }
-
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
-            return when (item.itemId) {
-                android.R.id.home -> {
-                    finish()
-                    true
-                }
-
-                else -> false
-            }
-        }
-
-        companion object {
-            const val LOCATION = "location"
+            currentMarker = addMarker(MarkerOptions().position(latLng))
+            moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
         }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+
+            else -> false
+        }
+    }
+
+    companion object {
+        const val LOCATION = "location"
+    }
+}

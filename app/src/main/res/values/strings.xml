@@ -30,4 +30,6 @@
     <string name="dark_mode_description">Dark Mode Icon</string>
     <string name="analyze">Analisa</string>
     <string name="hasil_analisa">Hasil Analisa</string>
+    <string name="detail_tempat">Detail Tempat</string>
+    <string name="ulasan">(%d ulasan)</string>
 </resources>

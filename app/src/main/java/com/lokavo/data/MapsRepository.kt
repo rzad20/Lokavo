@@ -7,6 +7,7 @@ import retrofit2.HttpException
 import com.lokavo.data.response.MapsResponse
 import com.lokavo.data.response.PlacesItem
 import com.lokavo.data.retrofit.ArgLatLong
+import com.lokavo.data.retrofit.PlaceId
 
 class MapsRepository private constructor(private var apiService: ApiService) {
     fun getNearbyPlace(latitude: Double, longitude: Double) = liveData {
@@ -18,13 +19,31 @@ class MapsRepository private constructor(private var apiService: ApiService) {
                 if (places.isEmpty()) {
                     emit(Result.Empty)
                 } else {
-                    val storyList = places.map { place ->
+                    val placeList = places.map { place ->
                         PlacesItem(
+                            null,
+                            null,
+                            null,
+                            null,
                             place?.coordinates,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
                             place?.placeId,
+                            null,
+                            null,
                         )
                     }
-                    emit(Result.Success(storyList))
+                    emit(Result.Success(placeList))
                 }
             }
         } catch (e: HttpException) {
@@ -34,6 +53,45 @@ class MapsRepository private constructor(private var apiService: ApiService) {
         }
     }
 
+    fun getPlaceDetail(placeId: String) = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.getPlaceDetail(PlaceId(placeId))
+            val places = response.places
+            if (!places.isNullOrEmpty()) {
+                val place = places[0]
+                val placeItem = PlacesItem(
+                    place?.averageHour,
+                    place?.mostPopularTimes,
+                    place?.address,
+                    place?.rating,
+                    place?.coordinates,
+                    place?.stdHour,
+                    place?.avgPopularity,
+                    place?.featuredImage,
+                    place?.nearestCompetitorTopHourPopularity,
+                    place?.reviews,
+                    place?.reviewsPerRating,
+                    place?.topHourPopularity,
+                    place?.name,
+                    place?.mainCategory,
+                    place?.nearestCompetitorDistance,
+                    place?.nearestCompetitorTopAveragePopularity,
+                    place?.categories,
+                    place?.placeId,
+                    place?.topAveragePopularity,
+                    place?.nearestCompetitorPlaceId
+                )
+                emit(Result.Success(placeItem))
+            } else {
+                emit(Result.Empty)
+            }
+        } catch (e: HttpException) {
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, MapsResponse::class.java)
+            emit(errorResponse.message?.let { Result.Error(it) })
+        }
+    }
 
     companion object {
         @Volatile

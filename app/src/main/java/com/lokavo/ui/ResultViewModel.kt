@@ -10,4 +10,8 @@ class ResultViewModel(private val repository: MapsRepository) : ViewModel() {
     fun getPlaces(latitude: Double, longitude: Double): LiveData<Result<List<PlacesItem>>?> {
         return repository.getNearbyPlace(latitude, longitude)
     }
+    fun getPlaceDetail(placeId: String): LiveData<Result<PlacesItem>?> {
+        return repository.getPlaceDetail(placeId)
+    }
+
 }

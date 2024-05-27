@@ -11,9 +11,18 @@ data class ArgLatLong(
     val arglongitude: Double
 )
 
+data class PlaceId(
+    val argplace_id: String
+)
+
 interface ApiService {
     @POST("/v1")
     suspend fun getNearbyPlace(
         @Body request: ArgLatLong
+    ): MapsResponse
+
+    @POST("v2")
+    suspend fun getPlaceDetail(
+        @Body request: PlaceId
     ): MapsResponse
 }

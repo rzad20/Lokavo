@@ -5,4 +5,7 @@
     <color name="lightgray">#757575</color>
     <color name="colorPrimary">#1E90FF</color>
     <color name="lightBlue">#EBF5FF</color>
+    <color name="darkBlue">#0066CC</color>
+    <color name="darkGrey">#999999</color>
+    <color name="lightGrey">#CCCCCC</color>
 </resources>

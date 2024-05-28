@@ -51,7 +51,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@+id/guideline"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf=""
         app:layout_constraintTop_toBottomOf="@+id/bubble_left">
 
         <ImageView

@@ -32,4 +32,13 @@
     <string name="hasil_analisa">Hasil Analisa</string>
     <string name="detail_tempat">Detail Tempat</string>
     <string name="ulasan">(%d ulasan)</string>
+    <string name="pie_chart">Pie Chart</string>
+    <string name="competitor_category">Kategori Kompetitor</string>
+    <string name="short_analysis">Analisa Singkat</string>
+    <string name="Analysis_Result">Hasil Analisa\n</string>
+    <string name="detail_analisa">Detail Analisa</string>
+    <string name="place_name">Nama Tempat</string>
+    <string name="rating_placeholder">4.5</string>
+    <string name="chatbot_message">Chatbot Message</string>
+    <string name="user_message">User Message</string>
 </resources>

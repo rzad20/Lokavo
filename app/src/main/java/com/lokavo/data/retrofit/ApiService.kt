@@ -16,12 +16,12 @@ data class PlaceId(
 )
 
 interface ApiService {
-    @POST("/v1")
+    @POST("/competitors_nearby")
     suspend fun getNearbyPlace(
         @Body request: ArgLatLong
     ): MapsResponse
 
-    @POST("v2")
+    @POST("/competitor_details")
     suspend fun getPlaceDetail(
         @Body request: PlaceId
     ): MapsResponse

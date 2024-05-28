@@ -28,6 +28,8 @@ import com.lokavo.BuildConfig
 import com.lokavo.R
 import com.lokavo.databinding.FragmentMapsBinding
 import com.lokavo.utils.getAddress
+import com.lokavo.utils.isOnline
+import com.lokavo.utils.showSnackbarOnNoConnection
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -58,9 +60,13 @@ class MapsFragment : Fragment() {
         setupAutocompleteEditText()
 
         binding.btnChoose.setOnClickListener {
-            val intent = Intent(context, ResultActivity::class.java)
-            intent.putExtra(ResultActivity.LOCATION, currentMarker?.position)
-            startActivity(intent)
+            if (!requireContext().isOnline()) {
+                binding.root.showSnackbarOnNoConnection(requireContext())
+            } else {
+                val intent = Intent(context, ResultActivity::class.java)
+                intent.putExtra(ResultActivity.LOCATION, currentMarker?.position)
+                startActivity(intent)
+            }
         }
     }
 
@@ -144,6 +150,13 @@ class MapsFragment : Fragment() {
 
     private fun handleMapLongClick(latLng: LatLng) {
         currentMarker?.remove()
+        if (!requireContext().isOnline()) {
+            binding.root.showSnackbarOnNoConnection(requireContext())
+            binding.btnChoose.visibility = View.GONE
+            currentMarker = googleMap?.addMarker(MarkerOptions().position(latLng))
+            autocompleteSupportFragment.setText("${latLng.latitude},${latLng.longitude}")
+            return
+        }
         currentMarker = googleMap?.addMarker(MarkerOptions().position(latLng))
         googleMap?.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
@@ -152,18 +165,23 @@ class MapsFragment : Fragment() {
             1000,
             null
         )
-
+        binding.btnChoose.visibility = View.VISIBLE
         lifecycleScope.launch {
             val address = geocoder.getAddress(latLng.latitude, latLng.longitude)
-            val addressName =
-                address?.getAddressLine(0) ?: "${latLng.latitude},${latLng.longitude}"
+            val addressName = address?.getAddressLine(0) ?: "${latLng.latitude},${latLng.longitude}"
             autocompleteSupportFragment.setText(addressName)
-            binding.btnChoose.visibility = View.VISIBLE
         }
     }
 
     private fun handlePoiClick(poi: PointOfInterest) {
         currentMarker?.remove()
+        if (!requireContext().isOnline()) {
+            binding.root.showSnackbarOnNoConnection(requireContext())
+            binding.btnChoose.visibility = View.GONE
+            currentMarker = googleMap?.addMarker(MarkerOptions().position(poi.latLng))
+            autocompleteSupportFragment.setText("${poi.latLng.latitude},${poi.latLng.longitude}")
+            return
+        }
         currentMarker = googleMap?.addMarker(MarkerOptions().position(poi.latLng))
         googleMap?.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
@@ -172,13 +190,12 @@ class MapsFragment : Fragment() {
             1000,
             null
         )
-
+        binding.btnChoose.visibility = View.VISIBLE
         lifecycleScope.launch {
             val address = geocoder.getAddress(poi.latLng.latitude, poi.latLng.longitude)
             val addressName =
                 address?.getAddressLine(0) ?: "${poi.latLng.latitude},${poi.latLng.longitude}"
             autocompleteSupportFragment.setText(addressName)
-            binding.btnChoose.visibility = View.VISIBLE
         }
     }
 

@@ -32,4 +32,7 @@
     <string name="hasil_analisa">Hasil Analisa</string>
     <string name="detail_tempat">Detail Tempat</string>
     <string name="ulasan">(%d ulasan)</string>
+    <string name="no_internet_connection">Tidak ada koneksi internet</string>
+    <string name="empty_details">Detail tempat tidak ditemukan</string>
+    <string name="empty_nearby">Lokasi sekitar tidak ditemukan</string>
 </resources>

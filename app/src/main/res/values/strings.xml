@@ -32,7 +32,7 @@
     <string name="hasil_analisa">Hasil Analisa</string>
     <string name="detail_tempat">Detail Tempat</string>
     <string name="ulasan">(%d ulasan)</string>
-    <string name="pie_chart">Pie Chart</string>
+    <string name="empty_nearby">Lokasi sekitar tidak ditemukan</string>
     <string name="competitor_category">Kategori Kompetitor</string>
     <string name="short_analysis">Analisa Singkat</string>
     <string name="Analysis_Result">Hasil Analisa\n</string>

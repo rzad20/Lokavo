@@ -7,6 +7,9 @@ data class MapsResponse(
     @field:SerializedName("places")
     val places: List<PlacesItem?>? = null,
 
+    @field:SerializedName("details")
+    val details: List<PlacesItem?>? = null,
+
     @field:SerializedName("status")
     val status: Int? = null,
 
@@ -100,8 +103,8 @@ data class PlacesItem(
     @field:SerializedName("place_id")
     val placeId: String? = null,
 
-    @field:SerializedName("top_average_popularity") //?
-    val topAveragePopularity: Any? = null,
+    @field:SerializedName("top_average_popularity")
+    val topAveragePopularity: Double? = null,
 
     @field:SerializedName("nearest_competitor_place_id")
     val nearestCompetitorPlaceId: String? = null

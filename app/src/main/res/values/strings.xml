@@ -32,7 +32,6 @@
     <string name="hasil_analisa">Hasil Analisa</string>
     <string name="detail_tempat">Detail Tempat</string>
     <string name="ulasan">(%d ulasan)</string>
-    <string name="empty_nearby">Lokasi sekitar tidak ditemukan</string>
     <string name="competitor_category">Kategori Kompetitor</string>
     <string name="short_analysis">Analisa Singkat</string>
     <string name="Analysis_Result">Hasil Analisa\n</string>
@@ -41,4 +40,7 @@
     <string name="rating_placeholder">4.5</string>
     <string name="chatbot_message">Chatbot Message</string>
     <string name="user_message">User Message</string>
+    <string name="no_internet_connection">Tidak ada koneksi internet</string>
+    <string name="empty_details">Detail tempat tidak ditemukan</string>
+    <string name="empty_nearby">Lokasi sekitar tidak ditemukan</string>
 </resources>

@@ -13,7 +13,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
@@ -22,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.lokavo.R
 import com.lokavo.data.Result
 import com.lokavo.databinding.ActivityResultBinding
+import com.lokavo.utils.bitmapFromVector
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
 import kotlinx.coroutines.CoroutineScope
@@ -94,7 +94,8 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
 
                     is Result.Empty -> {
-                        Snackbar.make(binding.root, R.string.empty_nearby, Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(binding.root, R.string.not_found, Snackbar.LENGTH_LONG)
+                            .show()
                         binding.progress.visibility = View.GONE
                     }
 
@@ -110,12 +111,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                     val marker = googleMap.addMarker(
                                         MarkerOptions()
                                             .position(placeLatLng)
-                                            .title(place.placeId)
-                                            .icon(
-                                                BitmapDescriptorFactory.defaultMarker(
-                                                    BitmapDescriptorFactory.HUE_GREEN
-                                                )
-                                            )
+                                            .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_blue))
                                     )
                                     if (marker != null) {
                                         marker.tag = place.placeId
@@ -131,7 +127,10 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                             withContext(Dispatchers.Main) {
                                 googleMap.animateCamera(cu)
                                 currentMarker?.remove()
-                                currentMarker = googleMap.addMarker(MarkerOptions().position(latLng))
+                                currentMarker = googleMap.addMarker(
+                                    MarkerOptions().position(latLng)
+                                        .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_red))
+                                )
                                 googleMap.setOnMarkerClickListener { marker ->
                                     if (marker == currentMarker) {
                                         binding.clDetail.visibility = View.GONE
@@ -167,6 +166,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
+
     private fun getDetail(placeId: String) {
         viewModel.getPlaceDetail(placeId).observe(this@ResultActivity) { result ->
             binding.cvDetail.visibility = View.VISIBLE
@@ -186,7 +186,8 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                         if (binding.cvResult.visibility == View.GONE) {
                             binding.progressDetail.visibility = View.GONE
                             binding.clDetail.visibility = View.VISIBLE
-                            Glide.with(this@ResultActivity).load(it.featuredImage).into(binding.ivDetail)
+                            Glide.with(this@ResultActivity).load(it.featuredImage)
+                                .into(binding.ivDetail)
                         } else {
                             binding.progressDetail.visibility = View.GONE
                             binding.clDetail.visibility = View.GONE
@@ -206,7 +207,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                     binding.progressDetail.visibility = View.GONE
                     binding.clDetail.visibility = View.GONE
                     binding.cvDetail.visibility = View.GONE
-                    Snackbar.make(binding.root, R.string.empty_details, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(binding.root, R.string.not_found, Snackbar.LENGTH_LONG).show()
                 }
 
                 null -> TODO()
@@ -222,7 +223,10 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                 isCompassEnabled = false
                 isMapToolbarEnabled = false
             }
-            currentMarker = addMarker(MarkerOptions().position(latLng))
+            currentMarker = addMarker(
+                MarkerOptions().position(latLng)
+                    .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_red))
+            )
             moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
         }
 

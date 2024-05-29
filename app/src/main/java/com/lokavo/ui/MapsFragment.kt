@@ -27,6 +27,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.lokavo.BuildConfig
 import com.lokavo.R
 import com.lokavo.databinding.FragmentMapsBinding
+import com.lokavo.utils.bitmapFromVector
 import com.lokavo.utils.getAddress
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
@@ -87,7 +88,10 @@ class MapsFragment : Fragment() {
                 place.latLng?.let { latLng ->
                     mapFragment.getMapAsync { googleMap ->
                         currentMarker?.remove()
-                        currentMarker = googleMap.addMarker(MarkerOptions().position(latLng))
+                        currentMarker = googleMap.addMarker(
+                            MarkerOptions().position(latLng)
+                                .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+                        )
                         googleMap.animateCamera(
                             CameraUpdateFactory.newLatLngZoom(
                                 latLng, 13f
@@ -153,11 +157,17 @@ class MapsFragment : Fragment() {
         if (!requireContext().isOnline()) {
             binding.root.showSnackbarOnNoConnection(requireContext())
             binding.btnChoose.visibility = View.GONE
-            currentMarker = googleMap?.addMarker(MarkerOptions().position(latLng))
+            currentMarker = googleMap?.addMarker(
+                MarkerOptions().position(latLng)
+                    .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+            )
             autocompleteSupportFragment.setText("${latLng.latitude},${latLng.longitude}")
             return
         }
-        currentMarker = googleMap?.addMarker(MarkerOptions().position(latLng))
+        currentMarker = googleMap?.addMarker(
+            MarkerOptions().position(latLng)
+                .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+        )
         googleMap?.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
                 latLng, googleMap?.cameraPosition?.zoom ?: 13f
@@ -178,11 +188,17 @@ class MapsFragment : Fragment() {
         if (!requireContext().isOnline()) {
             binding.root.showSnackbarOnNoConnection(requireContext())
             binding.btnChoose.visibility = View.GONE
-            currentMarker = googleMap?.addMarker(MarkerOptions().position(poi.latLng))
+            currentMarker = googleMap?.addMarker(
+                MarkerOptions().position(poi.latLng)
+                    .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+            )
             autocompleteSupportFragment.setText("${poi.latLng.latitude},${poi.latLng.longitude}")
             return
         }
-        currentMarker = googleMap?.addMarker(MarkerOptions().position(poi.latLng))
+        currentMarker = googleMap?.addMarker(
+            MarkerOptions().position(poi.latLng)
+                .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+        )
         googleMap?.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
                 poi.latLng, googleMap?.cameraPosition?.zoom ?: 13f

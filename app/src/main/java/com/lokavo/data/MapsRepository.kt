@@ -3,12 +3,12 @@ package com.lokavo.data
 import androidx.lifecycle.liveData
 import com.google.gson.Gson
 import com.lokavo.R
-import com.lokavo.data.retrofit.ApiService
+import com.lokavo.data.remote.retrofit.ApiService
 import retrofit2.HttpException
-import com.lokavo.data.response.MapsResponse
-import com.lokavo.data.response.PlacesItem
-import com.lokavo.data.retrofit.ArgLatLong
-import com.lokavo.data.retrofit.PlaceId
+import com.lokavo.data.remote.response.MapsResponse
+import com.lokavo.data.remote.response.PlacesItem
+import com.lokavo.data.remote.retrofit.ArgLatLong
+import com.lokavo.data.remote.retrofit.PlaceId
 
 class MapsRepository private constructor(private var apiService: ApiService) {
     fun getNearbyPlace(latitude: Double, longitude: Double) = liveData {

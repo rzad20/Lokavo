@@ -1,4 +1,4 @@
-package com.lokavo.data.response
+package com.lokavo.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 

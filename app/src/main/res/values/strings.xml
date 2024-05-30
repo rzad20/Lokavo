@@ -44,4 +44,6 @@
     <string name="not_found">Not found</string>
     <string name="star_icon"> </string>
     <string name="place_image"> </string>
+    <string name="clear_all">Hapus Semua</string>
+    <string name="belum_ada_lokasi_yang_dianalisa">Belum ada lokasi yang dianalisa.</string>
 </resources>

@@ -4,8 +4,8 @@
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:fontFamily">@font/poppins_regular</item>
-<!--        <item name="android:statusBarColor">@color/white</item>-->
-<!--        <item name="android:windowLightStatusBar">true</item> &lt;!&ndash; Menambahkan ini &ndash;&gt;-->
+        <!--        <item name="android:statusBarColor">@color/white</item>-->
+        <!--        <item name="android:windowLightStatusBar">true</item> &lt;!&ndash; Menambahkan ini &ndash;&gt;-->
     </style>
 
     <style name="Theme.Lokavo" parent="Base.Theme.Lokavo" />

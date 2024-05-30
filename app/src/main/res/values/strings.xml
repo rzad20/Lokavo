@@ -40,10 +40,11 @@
     <string name="rating_placeholder">4.5</string>
     <string name="chatbot_message">Chatbot Message</string>
     <string name="user_message">User Message</string>
-    <string name="no_internet_connection">Tidak ada koneksi internet</string>
-    <string name="empty_details">Detail tempat tidak ditemukan</string>
-    <string name="empty_nearby">Lokasi sekitar tidak ditemukan</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="not_found">Not found</string>
     <string name="star_icon"> </string>
     <string name="place_image"> </string>
     <string name="place_image_description">The Picture of the place</string>
+    <string name="clear_all">Hapus Semua</string>
+    <string name="belum_ada_lokasi_yang_dianalisa">Belum ada lokasi yang dianalisa.</string>
 </resources>

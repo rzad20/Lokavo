@@ -1,6 +1,6 @@
-package com.lokavo.data.retrofit
+package com.lokavo.data.remote.retrofit
 
-import com.lokavo.data.response.MapsResponse
+import com.lokavo.data.remote.response.MapsResponse
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

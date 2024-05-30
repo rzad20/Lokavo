@@ -26,11 +26,16 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.lokavo.BuildConfig
 import com.lokavo.R
+import com.lokavo.data.local.entity.History
 import com.lokavo.databinding.FragmentMapsBinding
+import com.lokavo.utils.DateFormatter
+import com.lokavo.utils.bitmapFromVector
 import com.lokavo.utils.getAddress
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.NumberFormat
 import java.util.Locale
 
 class MapsFragment : Fragment() {
@@ -42,6 +47,8 @@ class MapsFragment : Fragment() {
     private lateinit var autocompleteSupportFragment: AutocompleteSupportFragment
     private lateinit var geocoder: Geocoder
     private lateinit var mapFragment: SupportMapFragment
+    private val historyViewModel: HistoryViewModel by viewModel()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,6 +70,21 @@ class MapsFragment : Fragment() {
             if (!requireContext().isOnline()) {
                 binding.root.showSnackbarOnNoConnection(requireContext())
             } else {
+                lifecycleScope.launch {
+                    val lat = currentMarker?.position?.latitude ?: 0.0
+                    val long = currentMarker?.position?.longitude ?: 0.0
+                    val address = geocoder.getAddress(lat, long)
+                    val addressName = address?.getAddressLine(0) ?: "${lat},${long}"
+                    historyViewModel.insertOrUpdate(
+                        History(
+                            latitude = lat,
+                            longitude = long,
+                            address = addressName,
+                            date = DateFormatter.getCurrentDate()
+                        )
+                    )
+                }
+
                 val intent = Intent(context, ResultActivity::class.java)
                 intent.putExtra(ResultActivity.LOCATION, currentMarker?.position)
                 startActivity(intent)
@@ -87,7 +109,10 @@ class MapsFragment : Fragment() {
                 place.latLng?.let { latLng ->
                     mapFragment.getMapAsync { googleMap ->
                         currentMarker?.remove()
-                        currentMarker = googleMap.addMarker(MarkerOptions().position(latLng))
+                        currentMarker = googleMap.addMarker(
+                            MarkerOptions().position(latLng)
+                                .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+                        )
                         googleMap.animateCamera(
                             CameraUpdateFactory.newLatLngZoom(
                                 latLng, 13f
@@ -153,11 +178,17 @@ class MapsFragment : Fragment() {
         if (!requireContext().isOnline()) {
             binding.root.showSnackbarOnNoConnection(requireContext())
             binding.btnChoose.visibility = View.GONE
-            currentMarker = googleMap?.addMarker(MarkerOptions().position(latLng))
+            currentMarker = googleMap?.addMarker(
+                MarkerOptions().position(latLng)
+                    .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+            )
             autocompleteSupportFragment.setText("${latLng.latitude},${latLng.longitude}")
             return
         }
-        currentMarker = googleMap?.addMarker(MarkerOptions().position(latLng))
+        currentMarker = googleMap?.addMarker(
+            MarkerOptions().position(latLng)
+                .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+        )
         googleMap?.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
                 latLng, googleMap?.cameraPosition?.zoom ?: 13f
@@ -178,11 +209,17 @@ class MapsFragment : Fragment() {
         if (!requireContext().isOnline()) {
             binding.root.showSnackbarOnNoConnection(requireContext())
             binding.btnChoose.visibility = View.GONE
-            currentMarker = googleMap?.addMarker(MarkerOptions().position(poi.latLng))
+            currentMarker = googleMap?.addMarker(
+                MarkerOptions().position(poi.latLng)
+                    .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+            )
             autocompleteSupportFragment.setText("${poi.latLng.latitude},${poi.latLng.longitude}")
             return
         }
-        currentMarker = googleMap?.addMarker(MarkerOptions().position(poi.latLng))
+        currentMarker = googleMap?.addMarker(
+            MarkerOptions().position(poi.latLng)
+                .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+        )
         googleMap?.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
                 poi.latLng, googleMap?.cameraPosition?.zoom ?: 13f

@@ -7,4 +7,75 @@
     android:layout_height="match_parent"
     tools:context=".ui.PlaceDetailActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+    <ImageView
+        android:id="@+id/placeImage"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:contentDescription="@string/place_image_description"
+        android:src="@drawable/ic_chatbot"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textPlaceName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nama Lokasi"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintTop_toBottomOf="@id/placeImage"
+        android:paddingTop="4dp" />
+
+    <ImageView
+        android:id="@+id/starIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/star_icon"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/textPlaceName"
+        app:srcCompat="@drawable/ic_star" />
+
+    <TextView
+        android:id="@+id/placeRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rating_placeholder"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/starIcon"
+        app:layout_constraintTop_toTopOf="@id/starIcon"
+        android:paddingStart="4dp" />
+
+    <TextView
+        android:id="@+id/textPlaceLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Medan, Sumatera Utara"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintTop_toBottomOf="@id/starIcon"
+        android:paddingTop="4dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

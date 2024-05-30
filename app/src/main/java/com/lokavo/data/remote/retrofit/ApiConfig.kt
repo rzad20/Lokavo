@@ -1,4 +1,4 @@
-package com.lokavo.data.retrofit
+package com.lokavo.data.remote.retrofit
 
 import com.lokavo.BuildConfig
 import okhttp3.OkHttpClient

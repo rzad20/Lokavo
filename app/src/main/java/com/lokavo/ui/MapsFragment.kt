@@ -26,12 +26,16 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.lokavo.BuildConfig
 import com.lokavo.R
+import com.lokavo.data.local.entity.History
 import com.lokavo.databinding.FragmentMapsBinding
+import com.lokavo.utils.DateFormatter
 import com.lokavo.utils.bitmapFromVector
 import com.lokavo.utils.getAddress
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.NumberFormat
 import java.util.Locale
 
 class MapsFragment : Fragment() {
@@ -43,6 +47,8 @@ class MapsFragment : Fragment() {
     private lateinit var autocompleteSupportFragment: AutocompleteSupportFragment
     private lateinit var geocoder: Geocoder
     private lateinit var mapFragment: SupportMapFragment
+    private val historyViewModel: HistoryViewModel by viewModel()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,6 +70,21 @@ class MapsFragment : Fragment() {
             if (!requireContext().isOnline()) {
                 binding.root.showSnackbarOnNoConnection(requireContext())
             } else {
+                lifecycleScope.launch {
+                    val lat = currentMarker?.position?.latitude ?: 0.0
+                    val long = currentMarker?.position?.longitude ?: 0.0
+                    val address = geocoder.getAddress(lat, long)
+                    val addressName = address?.getAddressLine(0) ?: "${lat},${long}"
+                    historyViewModel.insertOrUpdate(
+                        History(
+                            latitude = lat,
+                            longitude = long,
+                            address = addressName,
+                            date = DateFormatter.getCurrentDate()
+                        )
+                    )
+                }
+
                 val intent = Intent(context, ResultActivity::class.java)
                 intent.putExtra(ResultActivity.LOCATION, currentMarker?.position)
                 startActivity(intent)

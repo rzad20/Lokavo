@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/competitor_category"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:background="@drawable/label_background"
@@ -40,58 +40,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Kategori Lokasi -->
-            <TextView
-                android:id="@+id/kategori_lokasi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginStart="16dp"
-                android:text="Kategori Lokasi Bisnis"
-                android:textSize="14sp"
-                app:layout_constraintStart_toEndOf="@id/kategori_kompetitor"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- Analisa Singkat -->
-            <TextView
-                android:id="@+id/moderate_text"
-                android:layout_width="190dp"
-                android:layout_height="38dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/Analysis_Result"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/kategori_kompetitor"
-                app:layout_constraintTop_toBottomOf="@id/kategori_lokasi" />
-
-            <!-- Hasil Analisa -->
-            <TextView
-                android:id="@+id/analysisResult"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/label_background"
-                android:padding="10dp"
-                android:textColor="@color/white"
-                android:text="@string/short_analysis"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/pie_chart"
-                app:layout_constraintTop_toBottomOf="@id/moderate_text" />
-
             <!-- Pie Chart -->
-            <ImageView
-                android:id="@+id/pie_chart"
-                android:layout_width="140dp"
-                android:layout_height="101dp"
-                android:contentDescription="Pie Chart"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+            <com.anychart.AnyChartView
+                android:id="@+id/any_chart_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@id/kategori_kompetitor"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -103,7 +63,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="20dp"
-        android:paddingHorizontal="20dp"
         android:paddingVertical="8dp"
         android:text="@string/detail_analisa"
         android:textColor="@color/colorPrimary"
@@ -120,7 +79,7 @@
         android:layout_marginVertical="5dp"
         android:background="@color/colorPrimary"
         android:paddingHorizontal="20dp"
-        android:paddingVertical="10dp"
+        android:paddingVertical="5dp"
         android:text="Top 3 Competitor"
         android:textColor="@color/white"
         android:textSize="16sp"

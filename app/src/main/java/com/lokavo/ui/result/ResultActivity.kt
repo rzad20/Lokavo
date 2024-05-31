@@ -1,5 +1,6 @@
 package com.lokavo.ui.result
 
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.lokavo.R
 import com.lokavo.data.Result
 import com.lokavo.databinding.ActivityResultBinding
+import com.lokavo.ui.detailAnalysis.DetailAnalysisActivity
 import com.lokavo.utils.bitmapFromVector
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
@@ -72,7 +74,9 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         getNearbyPlaces(latLng)
-
+        binding.btnNavToResult.setOnClickListener {
+            startActivity(Intent(this,DetailAnalysisActivity::class.java))
+        }
     }
 
     private fun getNearbyPlaces(latLng: LatLng) {
@@ -159,6 +163,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                 }
                                 binding.progress.visibility = View.GONE
                                 binding.cvResult.visibility = View.VISIBLE
+
                             }
                         }
                     }

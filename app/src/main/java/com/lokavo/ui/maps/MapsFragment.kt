@@ -1,6 +1,7 @@
 package com.lokavo.ui.maps
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
 import android.text.Editable
@@ -9,9 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.common.api.Status
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -44,11 +49,13 @@ class MapsFragment : Fragment() {
     private var _binding: FragmentMapsBinding? = null
     private val binding get() = _binding!!
     private var currentMarker: Marker? = null
-    private var googleMap: GoogleMap? = null
+    private lateinit var googleMap: GoogleMap
     private lateinit var autocompleteSupportFragment: AutocompleteSupportFragment
     private lateinit var geocoder: Geocoder
     private lateinit var mapFragment: SupportMapFragment
     private val historyViewModel: HistoryViewModel by viewModel()
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,11 +69,21 @@ class MapsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initializePlaces()
+        if (!Places.isInitialized()) {
+            Places.initialize(requireContext(), BuildConfig.API_KEY)
+        }
+
         setupAutocompleteSupportFragment()
         setupMapFragment()
         setupAutocompleteEditText()
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        handleMyLocationButtonClick()
+        handleChooseButtonClick()
+    }
+
+    private fun handleChooseButtonClick() {
         binding.btnChoose.setOnClickListener {
             if (!requireContext().isOnline()) {
                 binding.root.showSnackbarOnNoConnection(requireContext())
@@ -90,12 +107,6 @@ class MapsFragment : Fragment() {
                 intent.putExtra(ResultActivity.LOCATION, currentMarker?.position)
                 startActivity(intent)
             }
-        }
-    }
-
-    private fun initializePlaces() {
-        if (!Places.isInitialized()) {
-            Places.initialize(requireContext(), BuildConfig.API_KEY)
         }
     }
 
@@ -165,12 +176,61 @@ class MapsFragment : Fragment() {
             }
         }
 
-        googleMap?.setOnMapLongClickListener { latLng ->
+        getMyLocation()
+
+        googleMap.setOnMapLongClickListener { latLng ->
             handleMapLongClick(latLng)
         }
 
-        googleMap?.setOnPoiClickListener { poi ->
+        googleMap.setOnPoiClickListener { poi ->
             handlePoiClick(poi)
+        }
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                getMyLocation()
+            }
+        }
+
+    private fun getMyLocation() {
+        if (ContextCompat.checkSelfPermission(
+                this.requireContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            googleMap.isMyLocationEnabled = true
+            binding.btnMyLocation.visibility = View.VISIBLE
+        } else {
+            requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun handleMyLocationButtonClick() {
+        binding.btnMyLocation.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    this.requireContext(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                    location?.let {
+                        val currentLatLng = LatLng(it.latitude, it.longitude)
+                        googleMap.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                currentLatLng, 13f
+                            ),
+                            1000,
+                            null
+                        )
+                    }
+                }
+            } else {
+                requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            }
         }
     }
 
@@ -179,20 +239,20 @@ class MapsFragment : Fragment() {
         if (!requireContext().isOnline()) {
             binding.root.showSnackbarOnNoConnection(requireContext())
             binding.btnChoose.visibility = View.GONE
-            currentMarker = googleMap?.addMarker(
+            currentMarker = googleMap.addMarker(
                 MarkerOptions().position(latLng)
                     .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
             )
             autocompleteSupportFragment.setText("${latLng.latitude},${latLng.longitude}")
             return
         }
-        currentMarker = googleMap?.addMarker(
+        currentMarker = googleMap.addMarker(
             MarkerOptions().position(latLng)
                 .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
         )
-        googleMap?.animateCamera(
+        googleMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
-                latLng, googleMap?.cameraPosition?.zoom ?: 13f
+                latLng, googleMap.cameraPosition?.zoom ?: 13f
             ),
             1000,
             null
@@ -200,7 +260,8 @@ class MapsFragment : Fragment() {
         binding.btnChoose.visibility = View.VISIBLE
         lifecycleScope.launch {
             val address = geocoder.getAddress(latLng.latitude, latLng.longitude)
-            val addressName = address?.getAddressLine(0) ?: "${latLng.latitude},${latLng.longitude}"
+            val addressName =
+                address?.getAddressLine(0) ?: "${latLng.latitude},${latLng.longitude}"
             autocompleteSupportFragment.setText(addressName)
         }
     }
@@ -210,20 +271,20 @@ class MapsFragment : Fragment() {
         if (!requireContext().isOnline()) {
             binding.root.showSnackbarOnNoConnection(requireContext())
             binding.btnChoose.visibility = View.GONE
-            currentMarker = googleMap?.addMarker(
+            currentMarker = googleMap.addMarker(
                 MarkerOptions().position(poi.latLng)
                     .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
             )
             autocompleteSupportFragment.setText("${poi.latLng.latitude},${poi.latLng.longitude}")
             return
         }
-        currentMarker = googleMap?.addMarker(
+        currentMarker = googleMap.addMarker(
             MarkerOptions().position(poi.latLng)
                 .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
         )
-        googleMap?.animateCamera(
+        googleMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
-                poi.latLng, googleMap?.cameraPosition?.zoom ?: 13f
+                poi.latLng, googleMap.cameraPosition?.zoom ?: 13f
             ),
             1000,
             null

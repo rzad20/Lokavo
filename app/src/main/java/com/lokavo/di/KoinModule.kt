@@ -5,6 +5,7 @@ import com.lokavo.data.repository.MapsRepository
 import com.lokavo.data.local.room.LokavoDatabase
 import com.lokavo.data.remote.retrofit.ApiConfig
 import com.lokavo.ui.history.HistoryViewModel
+import com.lokavo.ui.maps.MapsViewModel
 import com.lokavo.ui.result.ResultViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -20,4 +21,5 @@ val appModule = module {
     single { HistoryRepository.getInstance(get(), get()) }
     viewModel { ResultViewModel(get()) }
     viewModel { HistoryViewModel(get()) }
+    viewModel { MapsViewModel() }
 }

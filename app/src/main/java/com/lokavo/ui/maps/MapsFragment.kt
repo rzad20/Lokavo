@@ -54,6 +54,7 @@ class MapsFragment : Fragment() {
     private lateinit var geocoder: Geocoder
     private lateinit var mapFragment: SupportMapFragment
     private val historyViewModel: HistoryViewModel by viewModel()
+    private val mapsViewModel: MapsViewModel by viewModel()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
@@ -71,6 +72,14 @@ class MapsFragment : Fragment() {
 
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), BuildConfig.API_KEY)
+        }
+
+        mapsViewModel.isShow.observe(viewLifecycleOwner) { isShow ->
+            if (isShow) {
+                binding.btnChoose.visibility = View.VISIBLE
+            } else {
+                binding.btnChoose.visibility = View.GONE
+            }
         }
 
         setupAutocompleteSupportFragment()
@@ -252,7 +261,7 @@ class MapsFragment : Fragment() {
         )
         googleMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
-                latLng, googleMap.cameraPosition?.zoom ?: 13f
+                latLng, googleMap.cameraPosition.zoom
             ),
             1000,
             null
@@ -284,7 +293,7 @@ class MapsFragment : Fragment() {
         )
         googleMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
-                poi.latLng, googleMap.cameraPosition?.zoom ?: 13f
+                poi.latLng, googleMap.cameraPosition.zoom
             ),
             1000,
             null
@@ -299,6 +308,7 @@ class MapsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        mapsViewModel.setIsShow(binding.btnChoose.visibility == View.VISIBLE)
         super.onDestroyView()
         _binding = null
     }

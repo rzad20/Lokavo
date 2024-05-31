@@ -1,16 +1,14 @@
-package com.lokavo.ui
+package com.lokavo.ui.login
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.lokavo.R
 import com.lokavo.databinding.ActivityLoginBinding
+import com.lokavo.ui.MainActivity
+import com.lokavo.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding

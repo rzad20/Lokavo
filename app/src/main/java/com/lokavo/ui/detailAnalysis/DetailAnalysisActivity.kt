@@ -1,4 +1,4 @@
-package com.lokavo.ui
+package com.lokavo.ui.detailAnalysis
 
 import android.os.Bundle
 import android.widget.Toast

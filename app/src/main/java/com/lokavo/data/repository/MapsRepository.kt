@@ -1,14 +1,15 @@
-package com.lokavo.data
+package com.lokavo.data.repository
 
 import androidx.lifecycle.liveData
 import com.google.gson.Gson
 import com.lokavo.R
+import com.lokavo.data.Result
+import com.lokavo.data.remote.request.ArgLatLong
+import com.lokavo.data.remote.request.PlaceId
 import com.lokavo.data.remote.retrofit.ApiService
 import retrofit2.HttpException
 import com.lokavo.data.remote.response.MapsResponse
 import com.lokavo.data.remote.response.PlacesItem
-import com.lokavo.data.remote.retrofit.ArgLatLong
-import com.lokavo.data.remote.retrofit.PlaceId
 
 class MapsRepository private constructor(private var apiService: ApiService) {
     fun getNearbyPlace(latitude: Double, longitude: Double) = liveData {
@@ -100,7 +101,7 @@ class MapsRepository private constructor(private var apiService: ApiService) {
             val errorResponse = Gson().fromJson(errorBody, MapsResponse::class.java)
             emit(errorResponse.message?.let { Result.Error(it) })
         } catch (e: Exception) {
-            emit(e.message?.let { Result.Error(it) })
+            emit(Result.Error("Terjadi Kesalahan, Silahkan Coba Lagi"))
         }
     }
 

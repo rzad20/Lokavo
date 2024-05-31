@@ -1,4 +1,4 @@
-package com.lokavo.ui
+package com.lokavo.ui.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.model.LatLng
 import com.lokavo.data.local.entity.History
 import com.lokavo.databinding.ItemHistoryBinding
+import com.lokavo.ui.history.HistoryViewModel
+import com.lokavo.ui.result.ResultActivity
 import com.lokavo.utils.DateFormatter
 
 class HistoryAdapter(private val historyViewModel: HistoryViewModel) :
@@ -50,7 +52,8 @@ class HistoryAdapter(private val historyViewModel: HistoryViewModel) :
                     context,
                     ResultActivity::class.java
                 ) // Ganti DestinationActivity dengan activity tujuan Anda
-                intent.putExtra(ResultActivity.LOCATION,
+                intent.putExtra(
+                    ResultActivity.LOCATION,
                     history.latitude?.let { it1 ->
                         history.longitude?.let { it2 ->
                             LatLng(

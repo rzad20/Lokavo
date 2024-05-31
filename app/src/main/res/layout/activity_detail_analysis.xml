@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="20dp"
     android:paddingVertical="30dp"
-    tools:context=".ui.DetailAnalysisActivity">
+    tools:context=".ui.detailAnalysis.DetailAnalysisActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardResult"

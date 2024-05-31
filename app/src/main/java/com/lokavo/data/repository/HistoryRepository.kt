@@ -1,4 +1,4 @@
-package com.lokavo.data
+package com.lokavo.data.repository
 
 import androidx.lifecycle.LiveData
 import com.lokavo.data.local.entity.History

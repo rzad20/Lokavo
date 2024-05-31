@@ -1,8 +1,8 @@
-package com.lokavo.ui
+package com.lokavo.ui.result
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.lokavo.data.MapsRepository
+import com.lokavo.data.repository.MapsRepository
 import com.lokavo.data.Result
 import com.lokavo.data.remote.response.PlacesItem
 

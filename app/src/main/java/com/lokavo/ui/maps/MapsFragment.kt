@@ -1,4 +1,4 @@
-package com.lokavo.ui
+package com.lokavo.ui.maps
 
 import android.content.Intent
 import android.location.Geocoder
@@ -28,6 +28,8 @@ import com.lokavo.BuildConfig
 import com.lokavo.R
 import com.lokavo.data.local.entity.History
 import com.lokavo.databinding.FragmentMapsBinding
+import com.lokavo.ui.result.ResultActivity
+import com.lokavo.ui.history.HistoryViewModel
 import com.lokavo.utils.DateFormatter
 import com.lokavo.utils.bitmapFromVector
 import com.lokavo.utils.getAddress
@@ -35,7 +37,6 @@ import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.NumberFormat
 import java.util.Locale
 
 class MapsFragment : Fragment() {

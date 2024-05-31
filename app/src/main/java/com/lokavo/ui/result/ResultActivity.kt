@@ -1,4 +1,4 @@
-package com.lokavo.ui
+package com.lokavo.ui.result
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Build

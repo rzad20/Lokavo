@@ -1,4 +1,4 @@
-package com.lokavo.ui
+package com.lokavo.ui.register
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.lokavo.R
 import com.lokavo.databinding.ActivityRegisterBinding
+import com.lokavo.ui.login.LoginActivity
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding

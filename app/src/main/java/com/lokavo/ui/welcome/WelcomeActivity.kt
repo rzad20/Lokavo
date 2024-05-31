@@ -1,14 +1,12 @@
-package com.lokavo.ui
+package com.lokavo.ui.welcome
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.lokavo.R
 import com.lokavo.databinding.ActivityWelcomeBinding
+import com.lokavo.ui.login.LoginActivity
+import com.lokavo.ui.register.RegisterActivity
 
 class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding

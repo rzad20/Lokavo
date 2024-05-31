@@ -17,19 +17,19 @@
         tools:ignore="DiscouragedApi"
         tools:targetApi="31">
         <activity
-            android:name=".ui.PlaceDetailActivity"
+            android:name=".ui.placeDetail.PlaceDetailActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.ChatbotActivity"
+            android:name=".ui.chatbot.ChatbotActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.DetailAnalysisActivity"
+            android:name=".ui.detailAnalysis.DetailAnalysisActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.ResultActivity"
+            android:name=".ui.result.ResultActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
@@ -41,15 +41,15 @@
             android:name=".ui.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.RegisterActivity"
+            android:name=".ui.register.RegisterActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.WelcomeActivity"
+            android:name=".ui.welcome.WelcomeActivity"
             android:exported="true"
             android:theme="@style/Theme.App.Starting"
             android:screenOrientation="portrait">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,95 +9,183 @@
     android:paddingVertical="30dp"
     tools:context=".ui.detailAnalysis.DetailAnalysisActivity">
 
-    <!-- CardView for Kategori Kompetitor -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/kategori_kompetitor_card"
+    <!-- Main content layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <!-- CardView for Kategori Kompetitor -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/kategori_kompetitor_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:backgroundTint="@color/lightBlue"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/detailProfile"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
 
-            <!-- Kategori Kompetitor Label -->
-            <TextView
-                android:id="@+id/kategori_kompetitor"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:text="@string/competitor_category"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:background="@drawable/label_background"
-                android:padding="8dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Kategori Kompetitor Label -->
+                <TextView
+                    android:id="@+id/kategori_kompetitor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/competitor_category"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0"/>
                 <!-- AnyChartView -->
                 <com.anychart.AnyChartView
                     android:id="@+id/any_chart_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                    android:layout_height="200dp"
+                    app:layout_constraintTop_toTopOf="@+id/kategori_kompetitor"
+                    tools:layout_editor_absoluteX="0dp" />
 
-    <!-- Detail Analisa -->
-    <TextView
-        android:id="@+id/detailProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
-        android:paddingVertical="8dp"
-        android:text="@string/detail_analisa"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/kategori_kompetitor_card" />
+                <TextView
+                    android:id="@+id/kategoriResultTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+                    android:text="@string/category_result_title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/any_chart_view" />
+                <TextView
+                    android:id="@+id/kategoriResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:padding="8dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="Moderate"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/kategoriResultTitle" />
 
-    <!-- Top 3 Competitor -->
-    <TextView
-        android:id="@+id/competitorTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp"
-        android:background="@color/colorPrimary"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="5dp"
-        android:text="Top 3 Competitor"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailProfile" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
-    <!-- RecyclerView for stories -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvStories"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:overScrollMode="never"
-        android:scrollbarSize="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/competitorTitle"
-        app:layout_constraintBottom_toTopOf="@id/fab"
-        tools:itemCount="3" />
+        <!-- Detail Analisa -->
+        <TextView
+            android:id="@+id/detailProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:paddingVertical="8dp"
+            android:text="@string/detail_analisa"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/kategori_kompetitor_card" />
 
-    <!-- ImageView as Floating Action Button -->
-    <ImageView
+        <!-- Top 3 Competitor -->
+        <TextView
+            android:id="@+id/competitorTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:background="@color/colorPrimary"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="5dp"
+            android:text="Top 3 Competitor"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detailProfile" />
+
+        <!-- RecyclerView for stories -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCompetitor"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            android:scrollbarSize="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/competitorTitle"
+            tools:itemCount="3" />
+        <TextView
+            android:id="@+id/analyzeResultTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:background="@color/colorPrimary"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="5dp"
+            android:text="Hasil Analisa"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rvCompetitor" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/analyzeResultCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/lightBlue"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/analyzeResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="Hasil Analisa"/>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_chatbot"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="chatbot_button"
+        app:srcCompat="@drawable/ic_chatbot"
+        app:layout_anchor="@id/analyzeResultCard"
+        app:backgroundTint="@color/colorPrimary"
+        app:tint="@color/white"
+        app:fabSize="mini"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         tools:ignore="VectorDrawableCompat" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

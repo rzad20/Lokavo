@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.util.TypedValue
 import android.view.MenuItem
@@ -39,6 +40,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
     private var currentMarker: Marker? = null
     private lateinit var mapFragment: SupportMapFragment
     private val viewModel: ResultViewModel by viewModel()
+    private val markers = mutableListOf<Marker>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,9 +75,14 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.cvDetail.visibility = View.GONE
         }
 
-        getNearbyPlaces(latLng)
+        viewModel.latLng.observe(this) {
+            if (it == null) {
+                getNearbyPlaces(latLng)
+            }
+        }
+
         binding.btnNavToResult.setOnClickListener {
-            startActivity(Intent(this,DetailAnalysisActivity::class.java))
+            startActivity(Intent(this, DetailAnalysisActivity::class.java))
         }
     }
 
@@ -119,6 +126,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                     )
                                     if (marker != null) {
                                         marker.tag = place.placeId
+                                        markers.add(marker)
                                     }
                                 }
                                 builder.include(placeLatLng)
@@ -135,35 +143,9 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                     MarkerOptions().position(latLng)
                                         .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_red))
                                 )
-                                googleMap.setOnMarkerClickListener { marker ->
-                                    if (marker == currentMarker) {
-                                        binding.clDetail.visibility = View.GONE
-                                        binding.cvDetail.visibility = View.GONE
-                                        binding.cvResult.visibility = View.VISIBLE
-                                    } else {
-                                        googleMap.animateCamera(
-                                            CameraUpdateFactory.newLatLngZoom(
-                                                marker.position,
-                                                14.0f
-                                            )
-                                        )
-                                        binding.clDetail.visibility = View.GONE
-                                        binding.cvDetail.visibility = View.GONE
-                                        binding.cvResult.visibility = View.GONE
-                                        val placeId = marker.tag as? String
-                                        if (placeId != null) {
-                                            if (!this@ResultActivity.isOnline()) {
-                                                binding.root.showSnackbarOnNoConnection(this@ResultActivity)
-                                            } else {
-                                                getDetail(placeId)
-                                            }
-                                        }
-                                    }
-                                    true
-                                }
                                 binding.progress.visibility = View.GONE
+                                binding.cvDetail.visibility = View.GONE
                                 binding.cvResult.visibility = View.VISIBLE
-
                             }
                         }
                     }
@@ -235,7 +217,56 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
             moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
         }
 
-
+        viewModel.markers.observe(this) { markers ->
+            if (markers != null) {
+                markers.forEach { marker ->
+                    marker.position.let { position ->
+                        val icon = this.bitmapFromVector(R.drawable.ic_pin_point_blue)
+                        val newMarker = googleMap.addMarker(
+                            MarkerOptions().position(position)
+                                .icon(icon)
+                        )
+                        if (newMarker != null) {
+                            newMarker.tag = marker.tag
+                            this.markers.add(newMarker)
+                        }
+                    }
+                }
+                currentMarker?.remove()
+                currentMarker = googleMap.addMarker(
+                    MarkerOptions().position(latLng)
+                        .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_red))
+                )
+            }
+        }
+        googleMap.setOnMarkerClickListener { marker ->
+            if (this.markers.isNotEmpty()) {
+                if (marker == currentMarker) {
+                    binding.clDetail.visibility = View.GONE
+                    binding.cvDetail.visibility = View.GONE
+                    binding.cvResult.visibility = View.VISIBLE
+                } else {
+                    googleMap.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            marker.position,
+                            14.0f
+                        )
+                    )
+                    binding.clDetail.visibility = View.GONE
+                    binding.cvDetail.visibility = View.GONE
+                    binding.cvResult.visibility = View.GONE
+                    val placeId = marker.tag as? String
+                    if (placeId != null) {
+                        if (!this@ResultActivity.isOnline()) {
+                            binding.root.showSnackbarOnNoConnection(this@ResultActivity)
+                        } else {
+                            getDetail(placeId)
+                        }
+                    }
+                }
+            }
+            true
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -247,6 +278,12 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
 
             else -> false
         }
+    }
+
+    override fun onDestroy() {
+        viewModel.setLatLng(latLng)
+        viewModel.setMarkers(markers)
+        super.onDestroy()
     }
 
     companion object {

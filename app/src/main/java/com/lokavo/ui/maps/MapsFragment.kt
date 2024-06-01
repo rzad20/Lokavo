@@ -49,14 +49,20 @@ class MapsFragment : Fragment() {
     private var _binding: FragmentMapsBinding? = null
     private val binding get() = _binding!!
     private var currentMarker: Marker? = null
-    private lateinit var googleMap: GoogleMap
-    private lateinit var autocompleteSupportFragment: AutocompleteSupportFragment
-    private lateinit var geocoder: Geocoder
-    private lateinit var mapFragment: SupportMapFragment
     private val historyViewModel: HistoryViewModel by viewModel()
     private val mapsViewModel: MapsViewModel by viewModel()
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
+    private val fusedLocationClient by lazy {
+        LocationServices.getFusedLocationProviderClient(
+            requireActivity()
+        )
+    }
+    private val geocoder by lazy { Geocoder(requireContext(), Locale.getDefault()) }
+    private val autocompleteSupportFragment by lazy {
+        (childFragmentManager.findFragmentById(R.id.fragment) as AutocompleteSupportFragment).apply {
+            setPlaceFields(listOf(Place.Field.LAT_LNG, Place.Field.NAME))
+        }
+    }
+    private lateinit var googleMap: GoogleMap
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,108 +80,16 @@ class MapsFragment : Fragment() {
             Places.initialize(requireContext(), BuildConfig.API_KEY)
         }
 
-        mapsViewModel.isShow.observe(viewLifecycleOwner) { isShow ->
-            if (isShow) {
-                binding.btnChoose.visibility = View.VISIBLE
-            } else {
-                binding.btnChoose.visibility = View.GONE
-            }
-        }
-
-        setupAutocompleteSupportFragment()
         setupMapFragment()
-        setupAutocompleteEditText()
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        setupAutocompleteSupportFragment()
+        setupAutocompleteEditText(getString(R.string.cari_lokasi))
 
         handleMyLocationButtonClick()
         handleChooseButtonClick()
     }
 
-    private fun handleChooseButtonClick() {
-        binding.btnChoose.setOnClickListener {
-            if (!requireContext().isOnline()) {
-                binding.root.showSnackbarOnNoConnection(requireContext())
-            } else {
-                lifecycleScope.launch {
-                    val lat = currentMarker?.position?.latitude ?: 0.0
-                    val long = currentMarker?.position?.longitude ?: 0.0
-                    val address = geocoder.getAddress(lat, long)
-                    val addressName = address?.getAddressLine(0) ?: "${lat},${long}"
-                    historyViewModel.insertOrUpdate(
-                        History(
-                            latitude = lat,
-                            longitude = long,
-                            address = addressName,
-                            date = DateFormatter.getCurrentDate()
-                        )
-                    )
-                }
-
-                val intent = Intent(context, ResultActivity::class.java)
-                intent.putExtra(ResultActivity.LOCATION, currentMarker?.position)
-                startActivity(intent)
-            }
-        }
-    }
-
-    private fun setupAutocompleteSupportFragment() {
-        autocompleteSupportFragment =
-            (childFragmentManager.findFragmentById(R.id.fragment) as AutocompleteSupportFragment).apply {
-                setPlaceFields(listOf(Place.Field.LAT_LNG, Place.Field.NAME))
-            }
-
-        autocompleteSupportFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                place.latLng?.let { latLng ->
-                    mapFragment.getMapAsync { googleMap ->
-                        currentMarker?.remove()
-                        currentMarker = googleMap.addMarker(
-                            MarkerOptions().position(latLng)
-                                .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
-                        )
-                        googleMap.animateCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                latLng, 13f
-                            ),
-                            1000,
-                            null
-                        )
-                        binding.btnChoose.visibility = View.VISIBLE
-                    }
-                }
-            }
-
-            override fun onError(status: Status) {}
-        })
-    }
-
-    private fun setupMapFragment() {
-        geocoder = Geocoder(requireContext(), Locale.getDefault())
-        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(callback)
-    }
-
-    private fun setupAutocompleteEditText() {
-        val autoCompleteEditText = autocompleteSupportFragment
-            .view?.findViewById<EditText>(com.google.android.libraries.places.R.id.places_autocomplete_search_input)
-        autoCompleteEditText?.hint = getString(R.string.cari_lokasi)
-
-        autoCompleteEditText?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable) {
-                if (s.isEmpty()) {
-                    currentMarker?.remove()
-                    binding.btnChoose.visibility = View.GONE
-                }
-            }
-        })
-    }
-
     private val callback = OnMapReadyCallback { map ->
+
         googleMap = map.apply {
             uiSettings.apply {
                 isZoomControlsEnabled = false
@@ -183,17 +97,76 @@ class MapsFragment : Fragment() {
                 isCompassEnabled = false
                 isMapToolbarEnabled = false
             }
+
+            setOnMapLongClickListener { handleMapLongClick(it) }
+            setOnPoiClickListener { handlePoiClick(it) }
+        }
+
+        mapsViewModel.isShow.observe(viewLifecycleOwner) { isShow ->
+            binding.btnChoose.visibility = if (isShow) View.VISIBLE else View.GONE
+        }
+
+        mapsViewModel.currentMarker.observe(viewLifecycleOwner) { marker ->
+            currentMarker?.remove()
+            marker?.let {
+                currentMarker = googleMap.addMarker(
+                    MarkerOptions().position(it.position)
+                        .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+                )
+            }
         }
 
         getMyLocation()
+    }
 
-        googleMap.setOnMapLongClickListener { latLng ->
-            handleMapLongClick(latLng)
-        }
+    private fun setupMapFragment() {
+        (childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync(callback)
+    }
 
-        googleMap.setOnPoiClickListener { poi ->
-            handlePoiClick(poi)
-        }
+    private fun setupAutocompleteSupportFragment() {
+        autocompleteSupportFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                place.latLng?.let { latLng ->
+                    currentMarker?.remove()
+                    currentMarker = googleMap.addMarker(
+                        MarkerOptions().position(latLng)
+                            .icon(requireContext().bitmapFromVector(R.drawable.ic_pin_point_red))
+                    )
+                    googleMap.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            latLng, 13f
+                        ),
+                        1000,
+                        null
+                    )
+                    binding.btnChoose.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onError(status: Status) {}
+        })
+    }
+
+    private fun setupAutocompleteEditText(hintt: String) {
+        autocompleteSupportFragment
+            .view?.findViewById<EditText>(com.google.android.libraries.places.R.id.places_autocomplete_search_input)
+            ?.apply {
+                hint = hintt
+                addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+
+                    override fun afterTextChanged(s: Editable) {
+                        if (s.isEmpty()) {
+                            currentMarker?.remove()
+                            mapsViewModel.setCurrentMarker(null)
+                            binding.btnChoose.visibility = View.GONE
+                            hint = getString(R.string.cari_lokasi)
+                        }
+                    }
+                })
+            }
     }
 
     private val requestPermissionLauncher =
@@ -239,6 +212,33 @@ class MapsFragment : Fragment() {
                 }
             } else {
                 requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+        }
+    }
+
+    private fun handleChooseButtonClick() {
+        binding.btnChoose.setOnClickListener {
+            if (!requireContext().isOnline()) {
+                binding.root.showSnackbarOnNoConnection(requireContext())
+            } else {
+                lifecycleScope.launch {
+                    val lat = currentMarker?.position?.latitude ?: 0.0
+                    val long = currentMarker?.position?.longitude ?: 0.0
+                    val address = geocoder.getAddress(lat, long)
+                    val addressName = address?.getAddressLine(0) ?: "${lat},${long}"
+                    historyViewModel.insertOrUpdate(
+                        History(
+                            latitude = lat,
+                            longitude = long,
+                            address = addressName,
+                            date = DateFormatter.getCurrentDate()
+                        )
+                    )
+                }
+
+                val intent = Intent(context, ResultActivity::class.java)
+                intent.putExtra(ResultActivity.LOCATION, currentMarker?.position)
+                startActivity(intent)
             }
         }
     }
@@ -309,6 +309,7 @@ class MapsFragment : Fragment() {
 
     override fun onDestroyView() {
         mapsViewModel.setIsShow(binding.btnChoose.visibility == View.VISIBLE)
+        mapsViewModel.setCurrentMarker(currentMarker)
         super.onDestroyView()
         _binding = null
     }

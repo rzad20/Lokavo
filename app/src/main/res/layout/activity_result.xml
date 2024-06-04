@@ -27,6 +27,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_analyze_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="224dp"
+        android:backgroundTint="@color/white"
+        android:visibility="gone"
+        android:src="@drawable/ic_pin_point"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shapeAppearanceOverlay="@style/Shape.FAB"
+        app:tint="@color/black" />
 
     <!--  Analisa  -->
     <androidx.cardview.widget.CardView
@@ -35,8 +48,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
-        android:visibility="gone"
         app:cardCornerRadius="5dp"
+        android:visibility="gone"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -51,13 +65,13 @@
                 android:id="@+id/analyzeResultTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
                 android:gravity="center"
+                android:paddingVertical="6dp"
                 android:text="@string/hasil_analisa"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_marginVertical="4dp"
-                android:paddingVertical="6dp"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,19 +90,20 @@
                 android:src="@drawable/ic_close"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/kategoriResultTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:padding="5dp"
+                android:text="@string/category_result_title"
                 android:textColor="@color/black"
                 android:textSize="15sp"
-                android:text="@string/category_result_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/kategoriResult"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle"
                 app:layout_constraintVertical_bias="0" />
 
             <TextView
@@ -96,43 +111,44 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:gravity="end"
                 android:padding="5dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="15sp"
-                android:gravity="end"
                 android:textStyle="bold"
-                app:layout_constraintVertical_bias="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/kategoriResultTitle"
                 app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintVertical_bias="0" />
+
             <TextView
                 android:id="@+id/shortAnalysis"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/label_background"
+                android:gravity="center"
                 android:padding="10dp"
+                android:text="Analisa Singkat"
                 android:textColor="@color/colorPrimary"
                 android:textSize="15sp"
-                android:gravity="center"
-                android:text="Analisa Singkat"
-                app:layout_constraintVertical_bias="0"
+                app:layout_constraintBottom_toTopOf="@id/btn_navToResult"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/kategoriResult"
-                app:layout_constraintBottom_toTopOf="@id/btn_navToResult"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintVertical_bias="0" />
+
             <Button
                 android:id="@+id/btn_navToResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Lihat Hasil"
                 android:backgroundTint="@color/colorPrimary"
+                android:text="Lihat Hasil"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/shortAnalysis"/>
+                app:layout_constraintTop_toBottomOf="@+id/shortAnalysis" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
 
     <!--Detail-->
     <androidx.cardview.widget.CardView
@@ -195,19 +211,19 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:textSize="15sp"
                 android:textColor="@color/colorPrimary"
-                tools:text="Nama Tempat"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toStartOf="@+id/btn_close_detail"
                 app:layout_constraintStart_toEndOf="@+id/iv_detail"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Nama Tempat" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_detail"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name">
@@ -221,7 +237,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/tv_rating"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_rating"
-                    app:layout_constraintVertical_bias="0"/>
+                    app:layout_constraintVertical_bias="0" />
 
                 <TextView
                     android:id="@+id/tv_rating"
@@ -230,11 +246,11 @@
                     android:layout_marginEnd="3dp"
                     android:gravity="center"
                     android:textSize="11sp"
-                    tools:text="4.5"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/image_star"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    tools:text="4.5" />
 
                 <TextView
                     android:id="@+id/tv_review"
@@ -250,9 +266,9 @@
                 android:layout_marginStart="10dp"
                 android:textSize="11sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintVertical_bias="0"
                 app:layout_constraintStart_toEndOf="@+id/iv_detail"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                app:layout_constraintVertical_bias="0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

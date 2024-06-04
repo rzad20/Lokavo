@@ -75,6 +75,17 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.cvDetail.visibility = View.GONE
         }
 
+        binding.btnAnalyzeResult.setOnClickListener {
+            binding.clDetail.visibility = View.GONE
+            binding.cvDetail.visibility = View.GONE
+            binding.cvResult.visibility = View.VISIBLE
+
+            currentMarker?.let { marker ->
+                val cameraUpdate = CameraUpdateFactory.newLatLngZoom(marker.position, 14f)
+                googleMap.animateCamera(cameraUpdate)
+            }
+        }
+
         viewModel.latLng.observe(this) {
             if (it == null) {
                 getNearbyPlaces(latLng)
@@ -146,6 +157,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                 binding.progress.visibility = View.GONE
                                 binding.cvDetail.visibility = View.GONE
                                 binding.cvResult.visibility = View.VISIBLE
+                                binding.btnAnalyzeResult.visibility = View.VISIBLE
                             }
                         }
                     }
@@ -237,6 +249,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                     MarkerOptions().position(latLng)
                         .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_red))
                 )
+                binding.btnAnalyzeResult.visibility = View.VISIBLE
             }
         }
         googleMap.setOnMarkerClickListener { marker ->
@@ -245,6 +258,9 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                     binding.clDetail.visibility = View.GONE
                     binding.cvDetail.visibility = View.GONE
                     binding.cvResult.visibility = View.VISIBLE
+
+                    val cameraUpdate = CameraUpdateFactory.newLatLngZoom(marker.position, 14f)
+                    googleMap.animateCamera(cameraUpdate)
                 } else {
                     googleMap.animateCamera(
                         CameraUpdateFactory.newLatLngZoom(

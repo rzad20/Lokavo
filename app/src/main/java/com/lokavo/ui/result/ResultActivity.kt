@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.util.TypedValue
 import android.view.MenuItem
@@ -73,6 +72,16 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding.btnCloseDetail.setOnClickListener {
             binding.cvDetail.visibility = View.GONE
+        }
+
+        binding.btnAnalyzeResult.setOnClickListener {
+            currentMarker?.let { marker ->
+                val cameraUpdate = CameraUpdateFactory.newLatLngZoom(marker.position, 14f)
+                googleMap.animateCamera(cameraUpdate)
+                binding.clDetail.visibility = View.GONE
+                binding.cvDetail.visibility = View.GONE
+                binding.cvResult.visibility = View.VISIBLE
+            }
         }
 
         viewModel.latLng.observe(this) {
@@ -146,6 +155,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                 binding.progress.visibility = View.GONE
                                 binding.cvDetail.visibility = View.GONE
                                 binding.cvResult.visibility = View.VISIBLE
+                                binding.btnAnalyzeResult.visibility = View.VISIBLE
                             }
                         }
                     }
@@ -197,7 +207,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                     Snackbar.make(binding.root, R.string.not_found, Snackbar.LENGTH_LONG).show()
                 }
 
-                null -> TODO()
+                null -> {}
             }
         }
     }
@@ -237,11 +247,14 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                     MarkerOptions().position(latLng)
                         .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_red))
                 )
+                binding.btnAnalyzeResult.visibility = View.VISIBLE
             }
         }
         googleMap.setOnMarkerClickListener { marker ->
             if (this.markers.isNotEmpty()) {
                 if (marker == currentMarker) {
+                    val cameraUpdate = CameraUpdateFactory.newLatLngZoom(marker.position, 14f)
+                    googleMap.animateCamera(cameraUpdate)
                     binding.clDetail.visibility = View.GONE
                     binding.cvDetail.visibility = View.GONE
                     binding.cvResult.visibility = View.VISIBLE

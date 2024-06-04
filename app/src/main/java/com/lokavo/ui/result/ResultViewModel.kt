@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.lokavo.data.repository.MapsRepository
 import com.lokavo.data.Result
+import com.lokavo.data.remote.response.NearbyPlaces
 import com.lokavo.data.remote.response.PlacesItem
 
 class ResultViewModel(private val repository: MapsRepository) : ViewModel() {
@@ -14,7 +15,7 @@ class ResultViewModel(private val repository: MapsRepository) : ViewModel() {
     val latLng: LiveData<LatLng> get() = _latLng
     private val _markers = MutableLiveData<MutableList<Marker>>(null)
     val markers: LiveData<MutableList<Marker>> get() = _markers
-    fun getPlaces(latitude: Double, longitude: Double): LiveData<Result<List<PlacesItem>>?> {
+    fun getPlaces(latitude: Double, longitude: Double): LiveData<Result<List<NearbyPlaces>>?> {
         return repository.getNearbyPlace(latitude, longitude)
     }
 

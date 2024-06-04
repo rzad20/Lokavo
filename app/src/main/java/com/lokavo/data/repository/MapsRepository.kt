@@ -9,6 +9,7 @@ import com.lokavo.data.remote.request.PlaceId
 import com.lokavo.data.remote.retrofit.ApiService
 import retrofit2.HttpException
 import com.lokavo.data.remote.response.MapsResponse
+import com.lokavo.data.remote.response.NearbyPlaces
 import com.lokavo.data.remote.response.PlacesItem
 
 class MapsRepository private constructor(private var apiService: ApiService) {
@@ -22,27 +23,9 @@ class MapsRepository private constructor(private var apiService: ApiService) {
                     emit(Result.Empty)
                 } else {
                     val placeList = places.map { place ->
-                        PlacesItem(
-                            null,
-                            null,
-                            null,
-                            null,
+                        NearbyPlaces(
                             place?.coordinates,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
                             place?.placeId,
-                            null,
-                            null,
                         )
                     }
                     emit(Result.Success(placeList))

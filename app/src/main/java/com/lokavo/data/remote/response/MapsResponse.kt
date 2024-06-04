@@ -47,6 +47,15 @@ data class Coordinates(
     val longitude: Double? = null
 )
 
+data class NearbyPlaces(
+
+    @field:SerializedName("coordinates")
+    val coordinates: Coordinates? = null,
+
+    @field:SerializedName("place_id")
+    val placeId: String? = null
+)
+
 data class PlacesItem(
 
     @field:SerializedName("average_hour")

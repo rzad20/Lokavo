@@ -9,7 +9,7 @@ import com.lokavo.R
 import com.lokavo.databinding.ActivityChatbotBinding
 
 class ChatbotActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityChatbotBinding
+    private lateinit var binding: ActivityChatbotBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityChatbotBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)

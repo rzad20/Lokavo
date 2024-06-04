@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.common.api.Status
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -153,9 +152,21 @@ class MapsFragment : Fragment() {
             ?.apply {
                 hint = hintt
                 addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                    override fun beforeTextChanged(
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                    }
 
-                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+                    override fun onTextChanged(
+                        s: CharSequence,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                    }
 
                     override fun afterTextChanged(s: Editable) {
                         if (s.isEmpty()) {

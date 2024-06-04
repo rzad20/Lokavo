@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lightgray">#757575</color>
     <color name="colorPrimary">#1E90FF</color>
+    <color name="colorPrimaryNight">#414756</color>
     <color name="lightBlue">#EBF5FF</color>
     <color name="darkBlue">#0066CC</color>
     <color name="darkGrey">#999999</color>

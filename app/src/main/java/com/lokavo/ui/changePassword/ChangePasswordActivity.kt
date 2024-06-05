@@ -1,5 +1,6 @@
 package com.lokavo.ui.changePassword
 
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
@@ -11,16 +12,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.lokavo.R
 import com.lokavo.databinding.ActivityChangePasswordBinding
+import com.lokavo.ui.welcome.WelcomeActivity
 
 class ChangePasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChangePasswordBinding
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChangePasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        firebaseAuth = FirebaseAuth.getInstance()
 
         supportActionBar?.apply {
             val typedValue = TypedValue()
@@ -54,6 +61,7 @@ class ChangePasswordActivity : AppCompatActivity() {
         binding.edOldPassword.addTextChangedListener(textWatcher)
         binding.edNewPassword.addTextChangedListener(textWatcher)
         binding.edConfirmNewPassword.addTextChangedListener(textWatcher)
+        binding.btnChangePassword.isEnabled = false
 
         binding.btnChangePassword.setOnClickListener {
             changePassword()
@@ -61,12 +69,56 @@ class ChangePasswordActivity : AppCompatActivity() {
     }
 
     private fun changePassword() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.progressBar.postDelayed({
-            binding.progressBar.visibility = View.GONE
-            Toast.makeText(this, "Password berhasil diubah", Toast.LENGTH_SHORT).show()
-        }, 2000)
+        val newPassword = binding.edNewPassword.text.toString()
+        val confirmPassword = binding.edConfirmNewPassword.text.toString()
+        val currentPassword = binding.edOldPassword.text.toString()
+
+        if (newPassword.isNotEmpty() && confirmPassword.isNotEmpty() && currentPassword.isNotEmpty()) {
+
+            if (newPassword == confirmPassword) {
+
+                val user = firebaseAuth.currentUser
+                if (user !== null) {
+                    val credential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
+
+                    user.reauthenticate(credential)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                Toast.makeText(this, "Re-Authentication success.", Toast.LENGTH_SHORT).show()
+
+                                user.updatePassword(newPassword)
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            Toast.makeText(this, "Password changed successfully.", Toast.LENGTH_SHORT).show()
+                                            finish()
+                                        }
+                                    }
+
+                            } else {
+                                Toast.makeText(this, "Re-Authentication failed.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                } else {
+                    startActivity(Intent(this, WelcomeActivity::class.java))
+                    finish()
+                }
+
+            } else {
+                Toast.makeText(this, "Password is not matching", Toast.LENGTH_SHORT).show()
+            }
+
+        } else {
+            Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT).show()
+        }
     }
+
+//    private fun changePassword() {
+//        binding.progressBar.visibility = View.VISIBLE
+//        binding.progressBar.postDelayed({
+//            binding.progressBar.visibility = View.GONE
+//            Toast.makeText(this, "Password berhasil diubah", Toast.LENGTH_SHORT).show()
+//        }, 2000)
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

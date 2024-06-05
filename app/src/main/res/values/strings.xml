@@ -48,4 +48,13 @@
     <string name="clear_all">Hapus Semua</string>
     <string name="belum_ada_lokasi_yang_dianalisa">Belum ada lokasi yang dianalisa.</string>
     <string name="category_result_title">Kategori Lokasi Bisnis Anda</string>
+    <string name="verify_email">Konfirmasi Alamat Email Anda</string>
+    <string name="verify_email_message">Untuk mengubah password, masukkan alamat email akun anda</string>
+    <string name="proses">Proses</string>
+    <string name="ubah_password">Ubah Password</string>
+    <string name="change_password_description">icon ubah password\n</string>
+    <string name="change_password_desc">Silahkan isi data dibawah ini</string>
+    <string name="old_password">Masukkan Password Lama</string>
+    <string name="new_password">Masukkan Password Baru</string>
+    <string name="confirm_new_password">Konfirmasi Password Baru</string>
 </resources>

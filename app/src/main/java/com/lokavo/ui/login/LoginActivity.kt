@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.lokavo.databinding.ActivityLoginBinding
 import com.lokavo.ui.MainActivity
+import com.lokavo.ui.confirmEmail.ConfirmEmailActivity
 import com.lokavo.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -35,6 +36,13 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
+        }
+
+        binding.btnForgot.setOnClickListener {
+            val intent = Intent(this, ConfirmEmailActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             finish()

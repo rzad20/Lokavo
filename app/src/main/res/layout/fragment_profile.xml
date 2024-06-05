@@ -4,19 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingVertical="30dp"
+    android:paddingVertical="16dp"
     tools:context=".ui.profile.ProfileFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userImage"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_person"
         app:civ_border_color="@color/colorPrimary"
-        app:civ_border_width="3dp"
+        app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,11 +24,11 @@
         android:id="@+id/profileName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/detailName"
         android:textColor="@color/colorPrimary"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +40,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/userEmail"
-        android:textSize="15sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profileName" />
@@ -50,20 +49,20 @@
         android:id="@+id/detailProfile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="25dp"
+        android:layout_marginVertical="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingVertical="16dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="23dp"
+        android:paddingVertical="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/userEmail">
 
         <ImageView
             android:id="@+id/detailProfileIcon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:contentDescription="@string/profile_logo"
             android:src="@drawable/ic_person"
             app:tint="@color/colorPrimary" />
@@ -72,28 +71,60 @@
             android:id="@+id/detailProfileText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="50dp"
+            android:paddingHorizontal="32dp"
             android:text="@string/detail_profil"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/changePassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detailProfile">
+
+        <ImageView
+            android:id="@+id/changePasswordIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/change_password_description"
+            android:src="@drawable/ic_change_password"
+            app:tint="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/changePasswordText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="32dp"
+            android:text="@string/ubah_password"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/darkModeToggle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingVertical="16dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="23dp"
+        android:paddingVertical="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailProfile">
+        app:layout_constraintTop_toBottomOf="@id/changePassword">
 
         <ImageView
             android:id="@+id/darkModeIcon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:contentDescription="@string/dark_mode_description"
             android:src="@drawable/dark_mode"
             app:tint="@color/colorPrimary" />
@@ -102,13 +133,13 @@
             android:id="@+id/darkModeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="50dp"
+            android:paddingHorizontal="32dp"
             android:text="@string/dark_mode"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/darkModeSwitch"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
@@ -117,11 +148,11 @@
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginTop="20dp"
-        android:padding="12dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
         android:text="@string/logout"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/darkModeToggle"

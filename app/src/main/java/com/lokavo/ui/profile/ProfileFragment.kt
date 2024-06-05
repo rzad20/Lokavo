@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.lokavo.databinding.FragmentProfileBinding
+import com.lokavo.ui.changePassword.ChangePasswordActivity
 import com.lokavo.ui.welcome.WelcomeActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,11 +42,33 @@ class ProfileFragment : Fragment() {
             profileViewModel.saveThemeSetting(isChecked)
         }
         binding.logoutButton.setOnClickListener {
-            val intent = Intent(requireContext(), WelcomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            requireActivity().finish()
+            showLogoutConfirmationDialog()
         }
+        binding.changePassword.setOnClickListener {
+            val intent = Intent(requireContext(), ChangePasswordActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun showLogoutConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Konfirmasi Logout")
+            .setMessage("Apakah Anda yakin untuk keluar?")
+            .setPositiveButton("Ya") { dialog, _ ->
+                dialog.dismiss()
+                proceedToLogout()
+            }
+            .setNegativeButton("Tidak") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun proceedToLogout() {
+        val intent = Intent(requireContext(), WelcomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     override fun onDestroyView() {

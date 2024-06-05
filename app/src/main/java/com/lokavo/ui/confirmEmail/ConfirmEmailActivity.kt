@@ -7,22 +7,28 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.auth.FirebaseAuth
 import com.lokavo.R
 import com.lokavo.databinding.ActivityConfirmEmailBinding
 import com.lokavo.ui.login.LoginActivity
 
 class ConfirmEmailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityConfirmEmailBinding
+    private lateinit var firebaseAuth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityConfirmEmailBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        firebaseAuth = FirebaseAuth.getInstance()
 
         supportActionBar?.apply {
             val typedValue = TypedValue()
@@ -53,7 +59,13 @@ class ConfirmEmailActivity : AppCompatActivity() {
         binding.btnProcess.setBackgroundColor(ContextCompat.getColor(this, R.color.lightBlue))
 
         binding.btnProcess.setOnClickListener {
-            showConfirmationDialog()
+            firebaseAuth.sendPasswordResetEmail(binding.edEmail.text.toString())
+                .addOnSuccessListener {
+                    showConfirmationDialog()
+                }
+                .addOnFailureListener{
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                }
         }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

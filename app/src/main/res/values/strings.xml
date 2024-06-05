@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Lokavo</string>
     <string name="email_error">Format Email Salah</string>
-    <string name="password_error">Password Minimal 8 Karakter</string>
+    <string name="password_error">Password Minimal 6 Karakter</string>
     <string name="daftar">Daftar</string>
     <string name="register_desc">Buat akunmu untuk dapat bergabung dengan kami</string>
     <string name="nama">Nama</string>
@@ -57,4 +57,5 @@
     <string name="old_password">Masukkan Password Lama</string>
     <string name="new_password">Masukkan Password Baru</string>
     <string name="confirm_new_password">Konfirmasi Password Baru</string>
+    <string name="konfirmasi_password">Konfirmasi Password</string>
 </resources>

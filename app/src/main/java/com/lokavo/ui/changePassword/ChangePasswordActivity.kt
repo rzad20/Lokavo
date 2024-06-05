@@ -54,7 +54,7 @@ class ChangePasswordActivity : AppCompatActivity() {
         binding.edOldPassword.addTextChangedListener(textWatcher)
         binding.edNewPassword.addTextChangedListener(textWatcher)
         binding.edConfirmNewPassword.addTextChangedListener(textWatcher)
-        binding.btnChangePassword.isEnabled = false
+
         binding.btnChangePassword.setOnClickListener {
             changePassword()
         }

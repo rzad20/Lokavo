@@ -9,4 +9,6 @@
     <color name="darkBlue">#0066CC</color>
     <color name="darkGrey">#999999</color>
     <color name="lightGrey">#CCCCCC</color>
+    <color name="colorError">#B68805</color>
+    <color name="colorErrorDark">#E6F4F1</color>
 </resources>

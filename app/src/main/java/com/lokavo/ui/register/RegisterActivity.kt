@@ -6,13 +6,14 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.lokavo.R
 import com.lokavo.databinding.ActivityRegisterBinding
 import com.lokavo.ui.login.LoginActivity
+import com.lokavo.utils.showSnackbar
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -52,25 +53,28 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupRegisterButton() {
-        binding.btnRegister.setOnClickListener {
-            val email = binding.edEmail.text.toString()
-            val pass = binding.edPassword.text.toString()
-            val confirmPass = binding.edConfirmPassword.text.toString()
-            val name = binding.edName.text.toString()
+private fun setupRegisterButton() {
+    binding.btnRegister.setOnClickListener {
+        val email = binding.edEmail.text.toString()
+        val pass = binding.edPassword.text.toString()
+        val confirmPass = binding.edConfirmPassword.text.toString()
+        val name = binding.edName.text.toString()
 
-            if (email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty() && name.isNotEmpty()) {
-                if (pass == confirmPass) {
-                    registerUser(email, pass, name)
-                } else {
-                    showSnackbar("Password tidak sama")
-                }
+        if (email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty() && name.isNotEmpty()) {
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                binding.root.showSnackbar("Format email tidak valid")
+            } else if (pass.length < 6) {
+                binding.root.showSnackbar("Password harus memiliki minimal 6 karakter")
+            } else if (pass == confirmPass) {
+                registerUser(email, pass, name)
             } else {
-                showSnackbar("Tidak boleh ada bagian yang kosong")
+                binding.root.showSnackbar("Password tidak sama")
             }
+        } else {
+            binding.root.showSnackbar("Tidak boleh ada bagian yang kosong")
         }
     }
-
+}
     private fun registerUser(email: String, pass: String, name: String) {
         binding.progress.visibility = View.VISIBLE
         firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
@@ -80,39 +84,28 @@ class RegisterActivity : AppCompatActivity() {
                     val profileUpdates = UserProfileChangeRequest.Builder()
                         .setDisplayName(name)
                         .build()
-
                     usr.updateProfile(profileUpdates)
                         .addOnCompleteListener { profileTask ->
                             if (profileTask.isSuccessful) {
                                 binding.progress.visibility = View.GONE
-                                showSnackbar("Register Berhasil")
+                                Toast.makeText(this, "Pendaftaran berhasil", Toast.LENGTH_SHORT).show()
                                 firebaseAuth.signOut()
                                 val intent = Intent(this, LoginActivity::class.java)
                                 startActivity(intent)
                                 finish()
                             } else {
-                                showSnackbar(it.exception.toString())
+                                binding.root.showSnackbar(it.exception.toString())
                             }
                         }
                 }
+            } else if (it.exception is FirebaseAuthUserCollisionException) {
+                binding.progress.visibility = View.GONE
+                binding.root.showSnackbar("Email sudah terdaftar")
             } else {
-                showSnackbar("Terjadi Kesalahan")
+                binding.progress.visibility = View.GONE
+                binding.root.showSnackbar("Terjadi Kesalahan")
             }
         }
-    }
-
-    private fun showSnackbar(message: String) {
-        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-        val snackbarView = snackbar.view
-        val context = snackbarView.context
-        val typedValue = TypedValue()
-        context.theme.resolveAttribute(com.google.android.material.R.attr.snackbarStyle, typedValue, true)
-        val backgroundColor = typedValue.data
-
-        snackbarView.setBackgroundColor(backgroundColor)
-        snackbar.setTextColor(context.getColor(R.color.white))
-
-        snackbar.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

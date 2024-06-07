@@ -55,15 +55,26 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btn_process"
+        android:id="@+id/btn_proccess"
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_marginTop="50dp"
         android:text="@string/proses"
         android:textSize="20sp"
-        style="@style/Shape.Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_email"/>
+        app:layout_constraintTop_toBottomOf="@+id/til_email"
+        app:shapeAppearanceOverlay="@style/Shape.Button" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/btn_proccess"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNotify" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

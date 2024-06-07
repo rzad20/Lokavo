@@ -5,9 +5,10 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.lokavo.R
 import com.lokavo.databinding.ActivityLoginBinding
 import com.lokavo.ui.MainActivity
 import com.lokavo.ui.confirmEmail.ConfirmEmailActivity
@@ -53,12 +54,12 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                        showErrorSnackbar("Kesalahan terjadi atau tidak ada koneksi internet")
                     }
                 }
 
             } else {
-                Toast.makeText(this, "Empty Fields Are not Allowed !!", Toast.LENGTH_SHORT).show()
+                showErrorSnackbar("Tidak boleh ada fields yang kosong")
             }
         }
 
@@ -68,6 +69,20 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun showErrorSnackbar(message: String) {
+        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+        val snackbarView = snackbar.view
+        val context = snackbarView.context
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(com.google.android.material.R.attr.snackbarStyle, typedValue, true)
+        val backgroundColor = typedValue.data
+
+        snackbarView.setBackgroundColor(backgroundColor)
+        snackbar.setTextColor(context.getColor(R.color.white))
+
+        snackbar.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

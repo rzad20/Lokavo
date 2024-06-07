@@ -5,12 +5,31 @@
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
+        <item name="snackbarButtonStyle">@style/Widget.App.SnackbarButton</item>
     </style>
 
     <style name="Theme.Lokavo" parent="Base.Theme.Lokavo" />
 
+    <style name="Widget.MaterialComponents.Snackbar.LokavoError" parent="Widget.MaterialComponents.Snackbar">
+        <item name="backgroundTint">@color/colorErrorDark</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/lokavo_logo</item>
+        <item name="windowSplashScreenAnimationDuration">3000</item>
         <item name="postSplashScreenTheme">@style/Theme.Lokavo</item>
+    </style>
+
+    <style name="Widget.App.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Snackbar</item>
+    </style>
+
+    <style name="Widget.App.SnackbarButton" parent="Widget.Material3.Button.TextButton.Snackbar">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="ThemeOverlay.App.Snackbar" parent="">
+        <item name="colorPrimaryInverse">@color/colorErrorDark</item>
+        <item name="colorOnSurfaceInverse">@color/black</item>
     </style>
 </resources>

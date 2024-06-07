@@ -4,14 +4,28 @@
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
+        <item name="snackbarButtonStyle">@style/Widget.App.SnackbarButton</item>
         <!--        <item name="android:statusBarColor">@color/white</item>-->
         <!--        <item name="android:windowLightStatusBar">true</item> &lt;!&ndash; Menambahkan ini &ndash;&gt;-->
     </style>
 
     <style name="Theme.Lokavo" parent="Base.Theme.Lokavo" />
-
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/lokavo_logo</item>
+        <item name="windowSplashScreenAnimationDuration">3000</item>
         <item name="postSplashScreenTheme">@style/Theme.Lokavo</item>
+    </style>
+
+    <style name="Widget.App.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Snackbar</item>
+    </style>
+
+    <style name="Widget.App.SnackbarButton" parent="Widget.Material3.Button.TextButton.Snackbar">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="ThemeOverlay.App.Snackbar" parent="">
+        <item name="colorPrimaryInverse">@color/colorError</item>
+        <item name="colorOnSurfaceInverse">@color/white</item>
     </style>
 </resources>

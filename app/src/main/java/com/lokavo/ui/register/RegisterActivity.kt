@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.lokavo.R
 import com.lokavo.databinding.ActivityRegisterBinding
 import com.lokavo.ui.login.LoginActivity
 
@@ -62,10 +63,10 @@ class RegisterActivity : AppCompatActivity() {
                 if (pass == confirmPass) {
                     registerUser(email, pass, name)
                 } else {
-                    Toast.makeText(this, "Password does not match", Toast.LENGTH_SHORT).show()
+                    showSnackbar("Password tidak sama")
                 }
             } else {
-                Toast.makeText(this, "Empty Fields Are not Allowed !!", Toast.LENGTH_SHORT).show()
+                showSnackbar("Tidak boleh ada bagian yang kosong")
             }
         }
     }
@@ -84,29 +85,34 @@ class RegisterActivity : AppCompatActivity() {
                         .addOnCompleteListener { profileTask ->
                             if (profileTask.isSuccessful) {
                                 binding.progress.visibility = View.GONE
-                                Toast.makeText(
-                                    this,
-                                    "Register Berhasil",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                showSnackbar("Register Berhasil")
                                 firebaseAuth.signOut()
                                 val intent = Intent(this, LoginActivity::class.java)
                                 startActivity(intent)
                                 finish()
                             } else {
-                                binding.progress.visibility = View.GONE
-                                Toast.makeText(
-                                    this,
-                                    it.exception.toString(),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                showSnackbar(it.exception.toString())
                             }
                         }
                 }
             } else {
-                Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                showSnackbar("Terjadi Kesalahan")
             }
         }
+    }
+
+    private fun showSnackbar(message: String) {
+        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+        val snackbarView = snackbar.view
+        val context = snackbarView.context
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(com.google.android.material.R.attr.snackbarStyle, typedValue, true)
+        val backgroundColor = typedValue.data
+
+        snackbarView.setBackgroundColor(backgroundColor)
+        snackbar.setTextColor(context.getColor(R.color.white))
+
+        snackbar.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

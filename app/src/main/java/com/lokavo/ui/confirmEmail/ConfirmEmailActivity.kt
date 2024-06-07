@@ -7,13 +7,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.lokavo.R
 import com.lokavo.databinding.ActivityConfirmEmailBinding
@@ -64,7 +63,7 @@ class ConfirmEmailActivity : AppCompatActivity() {
                     showConfirmationDialog()
                 }
                 .addOnFailureListener{
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                    showSnackbar(it.message.toString())
                 }
         }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -83,6 +82,20 @@ class ConfirmEmailActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
         builder.create().show()
+    }
+
+    private fun showSnackbar(message: String) {
+        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+        val snackbarView = snackbar.view
+        val context = snackbarView.context
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(com.google.android.material.R.attr.snackbarStyle, typedValue, true)
+        val backgroundColor = typedValue.data
+
+        snackbarView.setBackgroundColor(backgroundColor)
+        snackbar.setTextColor(context.getColor(R.color.white))
+
+        snackbar.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

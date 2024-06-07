@@ -19,11 +19,17 @@
         tools:ignore="DiscouragedApi"
         tools:targetApi="31">
         <activity
+            android:name=".ui.profileEdit.ProfileEditActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.changePassword.ChangePasswordActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.confirmEmail.ConfirmEmailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.placeDetail.PlaceDetailActivity"
             android:exported="false"

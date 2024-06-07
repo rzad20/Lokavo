@@ -1,6 +1,7 @@
 package com.lokavo.ui.profile
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,12 @@ import android.widget.CompoundButton
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.lokavo.databinding.FragmentProfileBinding
 import com.lokavo.ui.changePassword.ChangePasswordActivity
+import com.lokavo.ui.profileEdit.ProfileEditActivity
 import com.lokavo.ui.welcome.WelcomeActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -20,6 +24,8 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
     private val profileViewModel: ProfileViewModel by viewModel()
     private lateinit var firebaseAuth: FirebaseAuth
+    private var uri: Uri? = null
+    private var user: FirebaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +39,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
+        user = firebaseAuth.currentUser
 
         profileViewModel.getThemeSetting().observe(viewLifecycleOwner) { isDarkModeActive ->
             binding.darkModeSwitch.isChecked = isDarkModeActive
@@ -54,10 +61,30 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
 
-        val user = firebaseAuth.currentUser
-        if (user != null){
-            binding.profileName.text = user.displayName
-            binding.userEmail.text = user.email
+        binding.detailProfile.setOnClickListener {
+            val intent = Intent(requireContext(), ProfileEditActivity::class.java)
+            startActivity(intent)
+        }
+
+        if (user != null) {
+            binding.profileName.text = user?.displayName
+            binding.userEmail.text = user?.email
+            if (user?.photoUrl != null) {
+                uri = user?.photoUrl
+                Glide.with(this)
+                    .load(uri)
+                    .into(binding.userImage)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (uri != user?.photoUrl) {
+            uri = user?.photoUrl
+            Glide.with(this)
+                .load(uri)
+                .into(binding.userImage)
         }
     }
 

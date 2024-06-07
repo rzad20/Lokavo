@@ -94,6 +94,7 @@ class RegisterActivity : AppCompatActivity() {
                                 startActivity(intent)
                                 finish()
                             } else {
+                                binding.progress.visibility = View.GONE
                                 Toast.makeText(
                                     this,
                                     it.exception.toString(),

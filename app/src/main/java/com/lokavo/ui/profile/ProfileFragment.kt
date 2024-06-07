@@ -17,6 +17,8 @@ import com.lokavo.databinding.FragmentProfileBinding
 import com.lokavo.ui.changePassword.ChangePasswordActivity
 import com.lokavo.ui.profileEdit.ProfileEditActivity
 import com.lokavo.ui.welcome.WelcomeActivity
+import com.lokavo.utils.isOnline
+import com.lokavo.utils.showSnackbarOnNoConnection
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
@@ -54,7 +56,11 @@ class ProfileFragment : Fragment() {
             profileViewModel.saveThemeSetting(isChecked)
         }
         binding.logoutButton.setOnClickListener {
-            showLogoutConfirmationDialog()
+            if (!requireContext().isOnline()) {
+                binding.root.showSnackbarOnNoConnection(requireContext())
+            } else {
+                showLogoutConfirmationDialog()
+            }
         }
         binding.changePassword.setOnClickListener {
             val intent = Intent(requireContext(), ChangePasswordActivity::class.java)

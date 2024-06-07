@@ -16,6 +16,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.TypedValue
 import com.google.android.material.snackbar.Snackbar
 import android.view.View
 import com.lokavo.R
@@ -34,7 +35,7 @@ fun Context.isOnline(): Boolean {
 
 fun View.showSnackbarOnNoConnection(context: Context) {
     if (!context.isOnline()) {
-        Snackbar.make(this, R.string.no_internet_connection, Snackbar.LENGTH_LONG).show()
+        showSnackbar(context.getString(R.string.no_internet_connection))
     }
 }
 
@@ -73,5 +74,19 @@ fun Context.bitmapFromVector(vectorResId: Int): BitmapDescriptor {
     val canvas = Canvas(bitmap)
     vectorDrawable?.draw(canvas)
     return BitmapDescriptorFactory.fromBitmap(bitmap)
+}
+
+fun View.showSnackbar(message: String) {
+    val snackbar = Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
+    val snackbarView = snackbar.view
+    val context = snackbarView.context
+    val typedValue = TypedValue()
+    context.theme.resolveAttribute(com.google.android.material.R.attr.snackbarStyle, typedValue, true)
+    val backgroundColor = typedValue.data
+
+    snackbarView.setBackgroundColor(backgroundColor)
+    snackbar.setTextColor(context.getColor(R.color.white))
+
+    snackbar.show()
 }
 

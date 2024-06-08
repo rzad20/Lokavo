@@ -9,16 +9,19 @@
         android:id="@+id/nav_view"
         android:layout_width="0dp"
         app:itemActiveIndicatorStyle="@android:color/transparent"
-        android:layout_height="75dp"
+        android:layout_height="70dp"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/navbarBackground"
+        app:itemRippleColor = "@color/lightBlue"
+        app:itemIconSize="23dp"
         app:itemIconTint="@color/nav_item_color"
         app:itemTextColor="@color/nav_item_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" >
+
+        app:menu="@menu/bottom_nav_menu">
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <fragment

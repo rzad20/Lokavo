@@ -8,13 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.lokavo.R
 import com.lokavo.databinding.FragmentProfileBinding
-import com.lokavo.ui.changePassword.ChangePasswordActivity
 import com.lokavo.ui.profileEdit.ProfileEditActivity
 import com.lokavo.ui.welcome.WelcomeActivity
 import com.lokavo.utils.isOnline
@@ -41,7 +43,6 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         firebaseAuth = FirebaseAuth.getInstance()
         user = firebaseAuth.currentUser
 
@@ -65,8 +66,7 @@ class ProfileFragment : Fragment() {
             }
         }
         binding.changePassword.setOnClickListener {
-            val intent = Intent(requireContext(), ChangePasswordActivity::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.action_navigation_profile_to_changePasswordFragment)
         }
 
         binding.detailProfile.setOnClickListener {

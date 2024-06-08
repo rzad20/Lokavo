@@ -11,4 +11,6 @@
     <color name="lightGrey">#CCCCCC</color>
     <color name="colorError">#B68805</color>
     <color name="colorErrorDark">#E6F4F1</color>
+    <color name="navbarActiveColor">#C4A775</color>
+    <color name="navbarBackground">#E3F0FF</color>
 </resources>

@@ -27,6 +27,8 @@ class ProfileFragment : Fragment() {
     private val profileViewModel: ProfileViewModel by viewModel()
     private lateinit var firebaseAuth: FirebaseAuth
     private var uri: Uri? = null
+    private var name: String? = null
+    private var email: String? = null
     private var user: FirebaseUser? = null
 
     override fun onCreateView(
@@ -73,6 +75,8 @@ class ProfileFragment : Fragment() {
         }
 
         if (user != null) {
+            name = user?.displayName
+            email = user?.email
             binding.profileName.text = user?.displayName
             binding.userEmail.text = user?.email
             if (user?.photoUrl != null) {
@@ -84,15 +88,28 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (uri != user?.photoUrl) {
-            uri = user?.photoUrl
-            Glide.with(this)
-                .load(uri)
-                .into(binding.userImage)
+override fun onResume() {
+    super.onResume()
+    val user = FirebaseAuth.getInstance().currentUser
+    if (user == null) {
+        val intent = Intent(requireContext(), WelcomeActivity::class.java)
+        startActivity(intent)
+    }
+    user?.reload()?.addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            if (uri != user.photoUrl) {
+                uri = user.photoUrl
+                Glide.with(this)
+                    .load(uri)
+                    .into(binding.userImage)
+            }
+            if (name != user.displayName) {
+                name = user.displayName
+                binding.profileName.text = user.displayName
+            }
         }
     }
+}
 
     private fun showLogoutConfirmationDialog() {
         AlertDialog.Builder(requireContext())

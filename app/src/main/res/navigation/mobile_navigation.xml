@@ -39,10 +39,20 @@
             app:destination="@id/changePasswordFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_profile_to_profileDetailFragment"
+            app:destination="@id/profileDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
         android:name="com.lokavo.ui.changePassword.ChangePasswordFragment"
         android:label="ChangePasswordFragment"
         tools:layout="@layout/fragment_change_password"/>
+    <fragment
+        android:id="@+id/profileDetailFragment"
+        android:name="com.lokavo.ui.profileDetail.ProfileDetailFragment"
+        android:label="ProfileDetailFragment"
+        tools:layout="@layout/fragment_profile_detail"/>
 </navigation>

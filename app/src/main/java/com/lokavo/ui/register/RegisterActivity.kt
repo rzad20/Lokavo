@@ -1,11 +1,13 @@
 package com.lokavo.ui.register
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -34,15 +36,10 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setupActionBar() {
+        setSupportActionBar(binding.topAppBar)
         supportActionBar?.apply {
-            val typedValue = TypedValue()
-            theme.resolveAttribute(android.R.attr.colorBackground, typedValue, true)
-            val color = typedValue.data
-            val colorDrawable = ColorDrawable(color)
-            setBackgroundDrawable(colorDrawable)
             setDisplayHomeAsUpEnabled(true)
             title = ""
-            elevation = 0f
         }
     }
 
@@ -59,6 +56,9 @@ private fun setupRegisterButton() {
         val pass = binding.edPassword.text.toString()
         val confirmPass = binding.edConfirmPassword.text.toString()
         val name = binding.edName.text.toString()
+
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.btnRegister.windowToken, 0)
 
         if (email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty() && name.isNotEmpty()) {
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {

@@ -1,12 +1,11 @@
 package com.lokavo.ui.changePassword
 
+import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -33,30 +32,23 @@ class ChangePasswordFragment : Fragment() {
         setHasOptionsMenu(true)
         firebaseAuth = FirebaseAuth.getInstance()
 
+        // Mengatur toolbar
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            activity?.onBackPressedDispatcher?.onBackPressed()
+        }
+
         binding.btnChangePassword.setOnClickListener {
             changePassword()
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        (activity as? AppCompatActivity)?.supportActionBar?.apply {
-            show()
-            title = "Ubah Password"
-            elevation = 0f
-            val typedValue = TypedValue()
-            activity?.theme?.resolveAttribute(android.R.attr.colorBackground, typedValue, true)
-            val color = typedValue.data
-            val colorDrawable = ColorDrawable(color)
-            setBackgroundDrawable(colorDrawable)
-            setDisplayHomeAsUpEnabled(true)
-        }
-    }
-
     private fun changePassword() {
         val newPassword = binding.edNewPassword.text.toString()
         val confirmPassword = binding.edConfirmNewPassword.text.toString()
         val currentPassword = binding.edOldPassword.text.toString()
+
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
 
         when {
             newPassword.isEmpty() || confirmPassword.isEmpty() || currentPassword.isEmpty() -> {
@@ -111,14 +103,12 @@ class ChangePasswordFragment : Fragment() {
                 activity?.supportFragmentManager?.popBackStack()
                 true
             }
-            else -> super.onOptionsItemSelected(item)
+            else -> false
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (activity as? AppCompatActivity)?.supportActionBar?.hide()
         _binding = null
     }
-
 }

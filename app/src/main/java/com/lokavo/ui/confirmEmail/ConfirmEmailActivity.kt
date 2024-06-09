@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.lokavo.databinding.ActivityConfirmEmailBinding
 import com.lokavo.ui.login.LoginActivity
+import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
+import com.lokavo.utils.showSnackbarOnNoConnection
 
 class ConfirmEmailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityConfirmEmailBinding
@@ -36,23 +39,26 @@ class ConfirmEmailActivity : AppCompatActivity() {
         }
 
         binding.btnProccess.setOnClickListener {
-            val email = binding.edEmail.text.toString()
-
-            if (email.isEmpty()) {
-                binding.root.showSnackbar("Email tidak boleh kosong")
-            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                binding.root.showSnackbar("Format email tidak valid")
+            if (!this.isOnline()) {
+                binding.root.showSnackbarOnNoConnection(this)
             } else {
-                binding.progress.visibility = View.VISIBLE
-                firebaseAuth.sendPasswordResetEmail(email)
-                    .addOnSuccessListener {
-                        binding.progress.visibility = View.GONE
-                        showConfirmationDialog()
-                    }
-                    .addOnFailureListener {
-                        binding.progress.visibility = View.GONE
-                        binding.root.showSnackbar("Terjadi kesalahan")
-                    }
+                val email = binding.edEmail.text.toString()
+                if (email.isEmpty()) {
+                    binding.root.showSnackbar("Email tidak boleh kosong")
+                } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    binding.root.showSnackbar("Format email tidak valid")
+                } else {
+                    showLoading()
+                    firebaseAuth.sendPasswordResetEmail(email)
+                        .addOnSuccessListener {
+                            hideLoading()
+                            showConfirmationDialog()
+                        }
+                        .addOnFailureListener {
+                            hideLoading()
+                            binding.root.showSnackbar("Terjadi kesalahan")
+                        }
+                }
             }
         }
     }
@@ -66,6 +72,26 @@ class ConfirmEmailActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
         builder.create().show()
+    }
+
+    private fun showLoading() {
+        binding.progress.visibility = View.VISIBLE
+        binding.btnProccess.isEnabled = false
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+    }
+
+    private fun hideLoading() {
+        binding.progress.visibility = View.GONE
+        binding.btnProccess.isEnabled = true
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

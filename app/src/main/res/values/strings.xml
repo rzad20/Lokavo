@@ -40,7 +40,7 @@
     <string name="rating_placeholder">4.5</string>
     <string name="chatbot_message">Chatbot Message</string>
     <string name="user_message">User Message</string>
-    <string name="no_internet_connection">No internet connection</string>
+    <string name="no_internet_connection">Tidak ada koneksi internet</string>
     <string name="not_found">Not found</string>
     <string name="star_icon"> </string>
     <string name="place_image"> </string>

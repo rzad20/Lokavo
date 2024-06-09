@@ -1,6 +1,8 @@
 package com.lokavo.ui.maps
 
+import android.app.Activity
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
@@ -10,12 +12,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.common.api.Status
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,10 +33,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PointOfInterest
+import com.google.android.gms.tasks.Task
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lokavo.BuildConfig
 import com.lokavo.R
 import com.lokavo.data.local.entity.History
@@ -210,8 +221,8 @@ class MapsFragment : Fragment() {
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                    location?.let {
-                        val currentLatLng = LatLng(it.latitude, it.longitude)
+                    if (location != null) {
+                        val currentLatLng = LatLng(location.latitude, location.longitude)
                         googleMap.animateCamera(
                             CameraUpdateFactory.newLatLngZoom(
                                 currentLatLng, 13f
@@ -219,6 +230,8 @@ class MapsFragment : Fragment() {
                             1000,
                             null
                         )
+                    } else {
+                        enableLocationAutomatically()
                     }
                 }
             } else {
@@ -315,6 +328,34 @@ class MapsFragment : Fragment() {
             val addressName =
                 address?.getAddressLine(0) ?: "${poi.latLng.latitude},${poi.latLng.longitude}"
             autocompleteSupportFragment.setText(addressName)
+        }
+    }
+
+
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { _ -> }
+
+    private fun enableLocationAutomatically() {
+        val locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val settingsClient: SettingsClient = LocationServices.getSettingsClient(requireActivity())
+        val task: Task<LocationSettingsResponse> =
+            settingsClient.checkLocationSettings(builder.build())
+
+        task.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                try {
+                    val intentSenderRequest =
+                        IntentSenderRequest.Builder(exception.resolution).build()
+                    resultLauncher.launch(intentSenderRequest)
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    MaterialAlertDialogBuilder(requireContext()).setMessage(sendEx.message)
+                        .show()
+                }
+            }
         }
     }
 

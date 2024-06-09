@@ -125,7 +125,8 @@ class ProfileDetailFragment : Fragment() {
     ) { uri: Uri? ->
         if (uri != null) {
             fileUri = uri
-            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, fileUri)
+            val bitmap: Bitmap =
+                MediaStore.Images.Media.getBitmap(context?.contentResolver, fileUri)
             binding.userImage.setImageBitmap(bitmap)
         }
         checkForChanges()
@@ -193,11 +194,16 @@ class ProfileDetailFragment : Fragment() {
     private fun showLoading() {
         binding.progress.visibility = View.VISIBLE
         binding.btnSave.isEnabled = false
+        requireActivity().window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
     }
 
     private fun hideLoading() {
         binding.progress.visibility = View.GONE
         binding.btnSave.isEnabled = true
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     @Deprecated("Deprecated in Java")
@@ -207,9 +213,11 @@ class ProfileDetailFragment : Fragment() {
                 activity?.supportFragmentManager?.popBackStack()
                 true
             }
+
             else -> false
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

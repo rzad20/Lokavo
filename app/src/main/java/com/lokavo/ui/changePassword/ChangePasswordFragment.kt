@@ -13,6 +13,7 @@ import com.lokavo.databinding.FragmentChangePasswordBinding
 import com.lokavo.ui.welcome.WelcomeActivity
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
+import com.lokavo.utils.showSnackbarOnNoConnection
 
 class ChangePasswordFragment : Fragment() {
     private var _binding: FragmentChangePasswordBinding? = null
@@ -39,9 +40,14 @@ class ChangePasswordFragment : Fragment() {
         }
 
         binding.btnChangePassword.setOnClickListener {
-            changePassword()
+            if (!requireContext().isOnline()) {
+                binding.root.showSnackbarOnNoConnection(requireContext())
+            } else {
+                changePassword()
+            }
         }
     }
+
     private fun changePassword() {
         val newPassword = binding.edNewPassword.text.toString()
         val confirmPassword = binding.edConfirmNewPassword.text.toString()
@@ -54,39 +60,42 @@ class ChangePasswordFragment : Fragment() {
             newPassword.isEmpty() || confirmPassword.isEmpty() || currentPassword.isEmpty() -> {
                 binding.root.showSnackbar("Silahkan isi semua kolom")
             }
+
             newPassword.length < 6 -> {
                 binding.root.showSnackbar("Password harus memiliki minimal 6 karakter")
             }
+
             newPassword != confirmPassword -> {
                 binding.root.showSnackbar("Password dan konfirmasi password tidak cocok")
             }
-            !requireContext().isOnline() -> {
-                binding.root.showSnackbar("Tidak ada koneksi internet")
-            }
+
             else -> {
                 val user = firebaseAuth.currentUser
                 user?.let {
                     val credential = EmailAuthProvider.getCredential(it.email!!, currentPassword)
-                    binding.progress.visibility = View.VISIBLE
+                    showLoading()
                     it.reauthenticate(credential).addOnCompleteListener { authTask ->
                         if (authTask.isSuccessful) {
                             it.updatePassword(newPassword).addOnCompleteListener { updateTask ->
-                                binding.progress.visibility = View.GONE
+                                hideLoading()
                                 if (updateTask.isSuccessful) {
                                     Toast.makeText(
                                         requireContext(),
                                         "Password berhasil diubah",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    activity?.finish()
+                                    activity?.supportFragmentManager?.popBackStack()
                                 } else {
                                     binding.root.showSnackbar("Gagal mengubah password")
                                 }
                             }
                         } else {
-                            binding.progress.visibility = View.GONE
-                            binding.root.showSnackbar("Password lama tidak cocok")
-                        }
+                            hideLoading()
+                            if (authTask.exception?.message?.contains("incorrect") == true) {
+                                binding.root.showSnackbar("Password lama tidak cocok")
+                            } else {
+                                binding.root.showSnackbar("Terjadi kesalahan")
+                            }                        }
                     }
                 } ?: run {
                     startActivity(Intent(requireContext(), WelcomeActivity::class.java))
@@ -96,6 +105,22 @@ class ChangePasswordFragment : Fragment() {
         }
     }
 
+    private fun showLoading() {
+        binding.progress.visibility = View.VISIBLE
+        binding.btnChangePassword.isEnabled = false
+        requireActivity().window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+    }
+
+    private fun hideLoading() {
+        binding.progress.visibility = View.GONE
+        binding.btnChangePassword.isEnabled = true
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -103,6 +128,7 @@ class ChangePasswordFragment : Fragment() {
                 activity?.supportFragmentManager?.popBackStack()
                 true
             }
+
             else -> false
         }
     }

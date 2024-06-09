@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +16,9 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.lokavo.databinding.ActivityRegisterBinding
 import com.lokavo.ui.login.LoginActivity
+import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
+import com.lokavo.utils.showSnackbarOnNoConnection
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -50,33 +53,38 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-private fun setupRegisterButton() {
-    binding.btnRegister.setOnClickListener {
-        val email = binding.edEmail.text.toString()
-        val pass = binding.edPassword.text.toString()
-        val confirmPass = binding.edConfirmPassword.text.toString()
-        val name = binding.edName.text.toString()
-
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.btnRegister.windowToken, 0)
-
-        if (email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty() && name.isNotEmpty()) {
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                binding.root.showSnackbar("Format email tidak valid")
-            } else if (pass.length < 6) {
-                binding.root.showSnackbar("Password harus memiliki minimal 6 karakter")
-            } else if (pass == confirmPass) {
-                registerUser(email, pass, name)
+    private fun setupRegisterButton() {
+        binding.btnRegister.setOnClickListener {
+            if (!this.isOnline()) {
+                binding.root.showSnackbarOnNoConnection(this)
             } else {
-                binding.root.showSnackbar("Password tidak sama")
+                val email = binding.edEmail.text.toString()
+                val pass = binding.edPassword.text.toString()
+                val confirmPass = binding.edConfirmPassword.text.toString()
+                val name = binding.edName.text.toString()
+
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.btnRegister.windowToken, 0)
+
+                if (email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty() && name.isNotEmpty()) {
+                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                        binding.root.showSnackbar("Format email tidak valid")
+                    } else if (pass.length < 6) {
+                        binding.root.showSnackbar("Password harus memiliki minimal 6 karakter")
+                    } else if (pass == confirmPass) {
+                        registerUser(email, pass, name)
+                    } else {
+                        binding.root.showSnackbar("Password tidak sama")
+                    }
+                } else {
+                    binding.root.showSnackbar("Tidak boleh ada bagian yang kosong")
+                }
             }
-        } else {
-            binding.root.showSnackbar("Tidak boleh ada bagian yang kosong")
         }
     }
-}
+
     private fun registerUser(email: String, pass: String, name: String) {
-        binding.progress.visibility = View.VISIBLE
+        showLoading()
         firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
             if (it.isSuccessful) {
                 val user = firebaseAuth.currentUser
@@ -87,25 +95,47 @@ private fun setupRegisterButton() {
                     usr.updateProfile(profileUpdates)
                         .addOnCompleteListener { profileTask ->
                             if (profileTask.isSuccessful) {
-                                binding.progress.visibility = View.GONE
-                                Toast.makeText(this, "Pendaftaran berhasil", Toast.LENGTH_SHORT).show()
+                                hideLoading()
+                                Toast.makeText(this, "Pendaftaran berhasil", Toast.LENGTH_SHORT)
+                                    .show()
                                 firebaseAuth.signOut()
                                 val intent = Intent(this, LoginActivity::class.java)
                                 startActivity(intent)
                                 finish()
                             } else {
+                                hideLoading()
                                 binding.root.showSnackbar(it.exception.toString())
                             }
                         }
                 }
             } else if (it.exception is FirebaseAuthUserCollisionException) {
-                binding.progress.visibility = View.GONE
+                hideLoading()
                 binding.root.showSnackbar("Email sudah terdaftar")
             } else {
-                binding.progress.visibility = View.GONE
+                hideLoading()
                 binding.root.showSnackbar("Terjadi Kesalahan")
             }
         }
+    }
+
+    private fun showLoading() {
+        binding.progress.visibility = View.VISIBLE
+        binding.btnRegister.isEnabled = false
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+    }
+
+    private fun hideLoading() {
+        binding.progress.visibility = View.GONE
+        binding.btnRegister.isEnabled = true
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

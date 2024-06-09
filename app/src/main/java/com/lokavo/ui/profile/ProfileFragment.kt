@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -17,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.lokavo.R
 import com.lokavo.databinding.FragmentProfileBinding
-import com.lokavo.ui.profileEdit.ProfileEditActivity
 import com.lokavo.ui.welcome.WelcomeActivity
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
@@ -70,8 +68,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.detailProfile.setOnClickListener {
-            val intent = Intent(requireContext(), ProfileEditActivity::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.action_navigation_profile_to_profileDetailFragment)
         }
 
         if (user != null) {

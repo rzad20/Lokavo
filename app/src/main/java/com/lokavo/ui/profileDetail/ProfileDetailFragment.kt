@@ -1,53 +1,48 @@
-package com.lokavo.ui.profileEdit
+package com.lokavo.ui.profileDetail
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.TypedValue
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
-import com.lokavo.databinding.ActivityProfileEditBinding
+import com.lokavo.databinding.FragmentProfileDetailBinding
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
 import com.lokavo.utils.showSnackbarOnNoConnection
 import java.util.concurrent.CountDownLatch
 
-class ProfileEditActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityProfileEditBinding
+class ProfileDetailFragment : Fragment() {
+    private var _binding: FragmentProfileDetailBinding? = null
+    private val binding get() = _binding!!
     private var fileUri: Uri? = null
     private val user = FirebaseAuth.getInstance().currentUser
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityProfileEditBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentProfileDetailBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        supportActionBar?.apply {
-            val typedValue = TypedValue()
-            theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
-            val color = typedValue.data
-            val colorDrawable = ColorDrawable(color)
-            supportActionBar?.setBackgroundDrawable(colorDrawable)
-            setDisplayHomeAsUpEnabled(true)
-            title = "Edit"
-            elevation = 0f
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+        val toolbar = binding.topAppBar
+        toolbar.setNavigationOnClickListener {
+            activity?.onBackPressedDispatcher?.onBackPressed()
         }
-
         if (user != null) {
             binding.edName.setText(user.displayName)
             binding.edEmail.setText(user.email)
@@ -63,11 +58,11 @@ class ProfileEditActivity : AppCompatActivity() {
         }
 
         binding.btnSave.setOnClickListener {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.btnSave.windowToken, 0)
 
-            if (!this.isOnline()) {
-                binding.root.showSnackbarOnNoConnection(this)
+            if (!requireContext().isOnline()) {
+                binding.root.showSnackbarOnNoConnection(requireContext())
             } else {
                 val nameChanged = binding.edName.text.toString() != user?.displayName
                 val imageChanged = fileUri != null
@@ -101,7 +96,7 @@ class ProfileEditActivity : AppCompatActivity() {
 
                 Thread {
                     latch.await()
-                    runOnUiThread {
+                    activity?.runOnUiThread {
                         hideLoading()
                         if (isUpdated) {
                             binding.root.showSnackbar("Profil berhasil diperbarui")
@@ -130,7 +125,7 @@ class ProfileEditActivity : AppCompatActivity() {
     ) { uri: Uri? ->
         if (uri != null) {
             fileUri = uri
-            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, fileUri)
+            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, fileUri)
             binding.userImage.setImageBitmap(bitmap)
         }
         checkForChanges()
@@ -156,7 +151,7 @@ class ProfileEditActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 callback(true)
             } else {
-               binding.root.showSnackbar("Terjadi kesalahan")
+                binding.root.showSnackbar("Terjadi kesalahan")
                 callback(false)
             }
         }
@@ -205,15 +200,19 @@ class ProfileEditActivity : AppCompatActivity() {
         binding.btnSave.isEnabled = true
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                activity?.supportFragmentManager?.popBackStack()
                 true
             }
-
             else -> false
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

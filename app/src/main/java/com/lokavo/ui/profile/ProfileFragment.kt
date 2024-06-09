@@ -63,6 +63,14 @@ class ProfileFragment : Fragment() {
                 showLogoutConfirmationDialog()
             }
         }
+
+        val navController = findNavController()
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.navigation_profile) {
+                navController.popBackStack(R.id.navigation_profile, false)
+            }
+        }
+
         binding.changePassword.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_profile_to_changePasswordFragment)
         }

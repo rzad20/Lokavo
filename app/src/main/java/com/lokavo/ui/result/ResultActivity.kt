@@ -16,6 +16,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
@@ -46,15 +47,10 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.topAppBar)
         supportActionBar?.apply {
-            val typedValue = TypedValue()
-            theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
-            val color = typedValue.data
-            val colorDrawable = ColorDrawable(color)
-            supportActionBar?.setBackgroundDrawable(colorDrawable)
             setDisplayHomeAsUpEnabled(true)
             title = getString(R.string.result)
-            elevation = 0f
         }
 
         latLng = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -220,6 +216,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                 isCompassEnabled = false
                 isMapToolbarEnabled = false
             }
+            setMapStyle(MapStyleOptions.loadRawResourceStyle(this@ResultActivity, R.raw.map_style))
             currentMarker = addMarker(
                 MarkerOptions().position(latLng)
                     .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_red))

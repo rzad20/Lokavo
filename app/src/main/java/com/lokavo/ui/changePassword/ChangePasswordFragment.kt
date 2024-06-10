@@ -42,6 +42,9 @@ class ChangePasswordFragment : Fragment() {
         }
 
         binding.btnChangePassword.setOnClickListener {
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.btnChangePassword.windowToken, 0)
+
             if (!requireContext().isOnline()) {
                 binding.root.showSnackbarOnNoConnection(requireContext())
             } else {
@@ -61,9 +64,6 @@ class ChangePasswordFragment : Fragment() {
         val newPassword = binding.edNewPassword.text.toString()
         val confirmPassword = binding.edConfirmNewPassword.text.toString()
         val currentPassword = binding.edOldPassword.text.toString()
-
-        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
 
         when {
             newPassword.isEmpty() || confirmPassword.isEmpty() || currentPassword.isEmpty() -> {

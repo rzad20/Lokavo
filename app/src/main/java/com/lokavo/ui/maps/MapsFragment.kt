@@ -261,8 +261,10 @@ class MapsFragment : Fragment() {
                 }
 
                 val intent = Intent(context, ResultActivity::class.java)
-                intent.putExtra(ResultActivity.LOCATION, currentMarker?.position)
-                startActivity(intent)
+                currentMarker?.position?.let {
+                    intent.putExtra(ResultActivity.LOCATION, it)
+                    startActivity(intent)
+                }
             }
         }
     }

@@ -32,245 +32,254 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="224dp"
-        android:backgroundTint="@color/white"
+        android:layout_marginBottom="10dp"
         android:visibility="gone"
+        android:backgroundTint="@color/white"
         android:src="@drawable/ic_pin_point"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:shapeAppearanceOverlay="@style/Shape.FAB"
         app:tint="@color/black" />
 
     <!--  Analisa  -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_result"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="5dp"
-        android:visibility="gone"
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:id="@+id/bottom"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/map"
         app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="10dp">
-
-            <TextView
-                android:id="@+id/analyzeResultTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:gravity="center"
-                android:paddingVertical="6dp"
-                android:text="@string/hasil_analisa"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/btn_close_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:padding="0dp"
-                android:src="@drawable/ic_close"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/kategoriResultTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:text="@string/category_result_title"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/kategoriResult"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle"
-                app:layout_constraintVertical_bias="0" />
-
-            <TextView
-                android:id="@+id/kategoriResult"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="end"
-                android:padding="5dp"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/kategoriResultTitle"
-                app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle"
-                app:layout_constraintVertical_bias="0" />
-
-            <TextView
-                android:id="@+id/shortAnalysis"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/label_background"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Analisa Singkat"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toTopOf="@id/btn_navToResult"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/kategoriResult"
-                app:layout_constraintVertical_bias="0" />
-
-            <Button
-                android:id="@+id/btn_navToResult"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="Lihat Hasil"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/shortAnalysis" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!--Detail-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_detail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"
-        android:visibility="gone"
-        app:cardCornerRadius="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/progress_detail"
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_result"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="5dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_detail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="4dp"
-            android:visibility="gone">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="10dp">
 
-            <ImageButton
-                android:id="@+id/btn_close_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:padding="0dp"
-                android:src="@drawable/ic_close"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/iv_detail"
-                android:layout_width="125dp"
-                android:layout_height="0dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars" />
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toStartOf="@+id/btn_close_detail"
-                app:layout_constraintStart_toEndOf="@+id/iv_detail"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Nama Tempat" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_detail"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name">
-
-                <ImageView
-                    android:id="@+id/image_star"
-                    android:layout_width="15dp"
+                <TextView
+                    android:id="@+id/analyzeResultTitle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/ic_star"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_rating"
+                    android:layout_marginVertical="4dp"
+                    android:gravity="center"
+                    android:paddingVertical="6dp"
+                    android:text="@string/hasil_analisa"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_rating"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/btn_close_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:src="@drawable/ic_close"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/kategoriResultTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="5dp"
+                    android:text="Kategori"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/kategoriResult"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle"
                     app:layout_constraintVertical_bias="0" />
 
                 <TextView
-                    android:id="@+id/tv_rating"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/kategoriResult"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:gravity="center"
-                    android:textSize="11sp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="end"
+                    android:padding="5dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/image_star"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="4.5" />
+                    app:layout_constraintStart_toEndOf="@id/kategoriResultTitle"
+                    app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle"
+                    app:layout_constraintVertical_bias="0" />
 
                 <TextView
-                    android:id="@+id/tv_review"
+                    android:id="@+id/shortAnalysis"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/label_background"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Analisa Singkat"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toTopOf="@id/btn_navToResult"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/kategoriResult"
+                    app:layout_constraintVertical_bias="0" />
+
+                <Button
+                    android:id="@+id/btn_navToResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="Lihat Hasil"
+                    android:textColor="@color/white"
+                    app:layout_constraintTop_toBottomOf="@+id/shortAnalysis" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!--Detail-->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_detail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"
+            app:cardCornerRadius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progress_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/btn_close_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="11sp" />
-            </LinearLayout>
+                    android:backgroundTint="@color/white"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:src="@drawable/ic_close"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_category"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:textSize="11sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_detail"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                app:layout_constraintVertical_bias="0" />
+                <ImageView
+                    android:id="@+id/iv_detail"
+                    android:layout_width="125dp"
+                    android:layout_height="0dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@tools:sample/avatars" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_close_detail"
+                    app:layout_constraintStart_toEndOf="@+id/iv_detail"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Nama Tempat" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_detail"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_name">
+
+                    <ImageView
+                        android:id="@+id/image_star"
+                        android:layout_width="15dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_star"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_rating"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_rating"
+                        app:layout_constraintVertical_bias="0" />
+
+                    <TextView
+                        android:id="@+id/tv_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:gravity="center"
+                        android:textSize="11sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/image_star"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="4.5" />
+
+                    <TextView
+                        android:id="@+id/tv_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="11sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_detail"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    app:layout_constraintVertical_bias="0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

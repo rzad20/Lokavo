@@ -6,36 +6,60 @@ import com.lokavo.R
 import com.lokavo.data.Result
 import com.lokavo.data.remote.request.ArgLatLong
 import com.lokavo.data.remote.request.PlaceId
+import com.lokavo.data.remote.response.ClusterProportion
+import com.lokavo.data.remote.response.DetailsItem
 import com.lokavo.data.remote.retrofit.ApiService
 import retrofit2.HttpException
-import com.lokavo.data.remote.response.MapsResponse
-import com.lokavo.data.remote.response.NearbyPlaces
-import com.lokavo.data.remote.response.PlacesItem
+import com.lokavo.data.remote.response.ModelingResultsResponse
+import com.lokavo.data.remote.response.PlaceDetailsResponse
+import com.lokavo.data.remote.response.PoiMapItem
 
 class MapsRepository private constructor(private var apiService: ApiService) {
-    fun getNearbyPlace(latitude: Double, longitude: Double) = liveData {
+
+    data class NearbyPlaceResult(
+        val placeList: List<PoiMapItem>,
+        val summaryHeader: String?,
+        val shortInterpretation: String?,
+        val longInterpretation: String?,
+        val clusterProportion: ClusterProportion?
+    )
+
+
+    fun getModelingResults(latitude: Double, longitude: Double) = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.getNearbyPlace(ArgLatLong(latitude, longitude))
-            val places = response.places
+            val response = apiService.getModelingResults(ArgLatLong(latitude, longitude))
+            val places = response.poiMap
+            val summaryHeader = response.summaryHeader
+            val shortInterpretation = response.shortInterpretation
+            val longInterpretation = response.longInterpretation
+            val clusterProportion = response.clusterProportion
             if (places != null) {
                 if (places.isEmpty()) {
                     emit(Result.Empty)
                 } else {
                     val placeList = places.map { place ->
-                        NearbyPlaces(
-                            place?.coordinates,
+                        PoiMapItem(
+                            place?.cluster,
                             place?.placeId,
+                            place?.coordinates
                         )
                     }
-                    emit(Result.Success(placeList))
+                    val result = ModelingResultsResponse(
+                        poiMap = placeList,
+                        summaryHeader = summaryHeader,
+                        shortInterpretation = shortInterpretation,
+                        longInterpretation = longInterpretation,
+                        clusterProportion = clusterProportion
+                    )
+                    emit(Result.Success(result))
                 }
             } else {
                 emit(Result.Error(response.message ?: R.string.not_found.toString()))
             }
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
-            val errorResponse = Gson().fromJson(errorBody, MapsResponse::class.java)
+            val errorResponse = Gson().fromJson(errorBody, ModelingResultsResponse::class.java)
             emit(errorResponse.message?.let { Result.Error(it) })
         } catch (e: Exception) {
             emit(e.message?.let { Result.Error(it) })
@@ -52,27 +76,27 @@ class MapsRepository private constructor(private var apiService: ApiService) {
                     emit(Result.Empty)
                 } else {
                     val detail = details[0]
-                    val detailItem = PlacesItem(
-                        detail?.averageHour,
-                        detail?.mostPopularTimes,
+                    val detailItem = DetailsItem(
+                        detail?.placeId,
+                        detail?.name,
                         detail?.address,
+                        detail?.featuredImage,
+                        detail?.reviews,
+                        detail?.mainCategory,
+                        detail?.categories,
                         detail?.rating,
+                        detail?.reviewsPerRating,
                         detail?.coordinates,
+                        detail?.mostPopularTimes,
+                        detail?.averageHour,
                         detail?.stdHour,
                         detail?.avgPopularity,
-                        detail?.featuredImage,
-                        detail?.nearestCompetitorTopHourPopularity,
-                        detail?.reviews,
-                        detail?.reviewsPerRating,
                         detail?.topHourPopularity,
-                        detail?.name,
-                        detail?.mainCategory,
-                        detail?.nearestCompetitorDistance,
-                        detail?.nearestCompetitorTopAveragePopularity,
-                        detail?.categories,
-                        detail?.placeId,
                         detail?.topAveragePopularity,
-                        detail?.nearestCompetitorPlaceId
+                        detail?.nearestCompetitorPlaceId,
+                        detail?.nearestCompetitorDistance,
+                        detail?.nearestCompetitorTopHourPopularity,
+                        detail?.nearestCompetitorTopAveragePopularity,
                     )
                     emit(Result.Success(detailItem))
                 }
@@ -81,7 +105,7 @@ class MapsRepository private constructor(private var apiService: ApiService) {
             }
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
-            val errorResponse = Gson().fromJson(errorBody, MapsResponse::class.java)
+            val errorResponse = Gson().fromJson(errorBody, PlaceDetailsResponse::class.java)
             emit(errorResponse.message?.let { Result.Error(it) })
         } catch (e: Exception) {
             emit(Result.Error("Terjadi Kesalahan, Silahkan Coba Lagi"))
@@ -99,3 +123,4 @@ class MapsRepository private constructor(private var apiService: ApiService) {
             }.also { instance = it }
     }
 }
+

@@ -90,3 +90,27 @@ fun View.showSnackbar(message: String) {
     snackbar.show()
 }
 
+fun extractRelevantText(input: String): String {
+    // Split the input into lines
+    val lines = input.lines()
+    val paragraphs = mutableListOf<String>()
+    var skipNextLine = false
+
+    // Collect paragraphs, skipping lines after headers
+    for (line in lines) {
+        if (line.startsWith("##")) {
+            skipNextLine = true
+        } else if (skipNextLine) {
+            skipNextLine = false
+        } else {
+            paragraphs.add(line.trim())
+        }
+    }
+
+    // Join paragraphs split by empty lines
+    val joinedParagraphs = paragraphs.joinToString("\n").split("\n\n")
+
+    // Return the first non-empty paragraph
+    return joinedParagraphs.firstOrNull { it.isNotBlank() } ?: "Relevant text not found"
+}
+

@@ -24,6 +24,30 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         navView.setupWithNavController(navController)
+
+        navView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_maps -> {
+                    if (navController.currentDestination?.id != R.id.navigation_maps) {
+                        navController.navigate(R.id.navigation_maps)
+                    }
+                    true
+                }
+                R.id.navigation_history -> {
+                    if (navController.currentDestination?.id != R.id.navigation_history) {
+                        navController.navigate(R.id.navigation_history)
+                    }
+                    true
+                }
+                R.id.navigation_profile -> {
+                    if (navController.currentDestination?.id != R.id.navigation_profile) {
+                        navController.navigate(R.id.navigation_profile)
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onBackPressed() {

@@ -22,12 +22,9 @@ class DetailAnalysisActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityDetailAnalysisBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
-        val anyChartView = binding.anyChartView
-        setupPieChart(anyChartView)
     }
 
     private fun setupPieChart(anyChartView: AnyChartView) {

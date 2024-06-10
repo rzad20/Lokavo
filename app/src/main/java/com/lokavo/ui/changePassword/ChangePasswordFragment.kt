@@ -7,8 +7,10 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.lokavo.R
 import com.lokavo.databinding.FragmentChangePasswordBinding
 import com.lokavo.ui.welcome.WelcomeActivity
 import com.lokavo.utils.isOnline
@@ -46,6 +48,13 @@ class ChangePasswordFragment : Fragment() {
                 changePassword()
             }
         }
+        val navController = findNavController()
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.navigation_profile) {
+                navController.popBackStack(R.id.navigation_profile, false)
+            }
+        }
+
     }
 
     private fun changePassword() {

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
     id("com.google.devtools.ksp")
     alias(libs.plugins.google.gms.google.services)
+    id("kotlin-parcelize")
 }
 
 android {

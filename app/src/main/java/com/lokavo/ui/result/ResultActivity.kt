@@ -22,9 +22,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import com.lokavo.R
 import com.lokavo.data.Result
+import com.lokavo.data.remote.response.ModelingResultsResponse
 import com.lokavo.databinding.ActivityResultBinding
 import com.lokavo.ui.detailAnalysis.DetailAnalysisActivity
 import com.lokavo.utils.bitmapFromVector
+import com.lokavo.utils.extractRelevantText
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
 import kotlinx.coroutines.CoroutineScope
@@ -41,6 +43,8 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapFragment: SupportMapFragment
     private val viewModel: ResultViewModel by viewModel()
     private val markers = mutableListOf<Marker>()
+
+    private var result : ModelingResultsResponse = ModelingResultsResponse()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,17 +86,19 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
 
         viewModel.latLng.observe(this) {
             if (it == null) {
-                getNearbyPlaces(latLng)
+                getModelingResults(latLng)
             }
         }
 
         binding.btnNavToResult.setOnClickListener {
-            startActivity(Intent(this, DetailAnalysisActivity::class.java))
+//            val moveWithObjectIntent = Intent(this, DetailAnalysisActivity::class.java)
+//            moveWithObjectIntent.putExtra(DetailAnalysisActivity.RESULT, result)
+//            startActivity(moveWithObjectIntent)
         }
     }
 
-    private fun getNearbyPlaces(latLng: LatLng) {
-        viewModel.getPlaces(latLng.latitude, latLng.longitude).observe(this) { res ->
+    private fun getModelingResults(latLng: LatLng) {
+        viewModel.getModelingResults(latLng.latitude, latLng.longitude).observe(this) { res ->
             if (!this.isOnline()) {
                 binding.root.showSnackbarOnNoConnection(this)
                 binding.progress.visibility = View.GONE
@@ -116,12 +122,18 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
 
                     is Result.Success -> {
+                        result = ModelingResultsResponse(
+                            shortInterpretation = res.data.shortInterpretation,
+                            longInterpretation = res.data.longInterpretation,
+                            summaryHeader = res.data.summaryHeader,
+                            clusterProportion = res.data.clusterProportion
+                        )
                         CoroutineScope(Dispatchers.IO).launch {
                             val builder = LatLngBounds.builder()
-                            res.data.forEach { place ->
+                            res.data.poiMap?.forEach { place ->
                                 val placeLatLng = LatLng(
-                                    place.coordinates?.latitude ?: 0.0,
-                                    place.coordinates?.longitude ?: 0.0
+                                    place?.coordinates?.latitude ?: 0.0,
+                                    place?.coordinates?.longitude ?: 0.0
                                 )
                                 withContext(Dispatchers.Main) {
                                     val marker = googleMap.addMarker(
@@ -130,12 +142,16 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                             .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_blue))
                                     )
                                     if (marker != null) {
-                                        marker.tag = place.placeId
+                                        marker.tag = place?.placeId
                                         markers.add(marker)
                                     }
                                 }
                                 builder.include(placeLatLng)
                             }
+
+                            binding.kategoriResult.text = res.data.summaryHeader
+                            val shortInterpretation = res.data.shortInterpretation?.let { extractRelevantText(it) }
+                            binding.shortAnalysis.text = shortInterpretation
 
                             val bounds = builder.build()
                             val padding = 50

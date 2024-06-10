@@ -91,9 +91,9 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.btnNavToResult.setOnClickListener {
-//            val moveWithObjectIntent = Intent(this, DetailAnalysisActivity::class.java)
-//            moveWithObjectIntent.putExtra(DetailAnalysisActivity.RESULT, result)
-//            startActivity(moveWithObjectIntent)
+            val moveWithObjectIntent = Intent(this, DetailAnalysisActivity::class.java)
+            moveWithObjectIntent.putExtra(DetailAnalysisActivity.RESULT, result)
+            startActivity(moveWithObjectIntent)
         }
     }
 

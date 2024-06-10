@@ -55,6 +55,8 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun setupRegisterButton() {
         binding.btnRegister.setOnClickListener {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.btnRegister.windowToken, 0)
             if (!this.isOnline()) {
                 binding.root.showSnackbarOnNoConnection(this)
             } else {
@@ -62,9 +64,6 @@ class RegisterActivity : AppCompatActivity() {
                 val pass = binding.edPassword.text.toString()
                 val confirmPass = binding.edConfirmPassword.text.toString()
                 val name = binding.edName.text.toString()
-
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(binding.btnRegister.windowToken, 0)
 
                 if (email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty() && name.isNotEmpty()) {
                     if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -95,16 +94,25 @@ class RegisterActivity : AppCompatActivity() {
                     usr.updateProfile(profileUpdates)
                         .addOnCompleteListener { profileTask ->
                             if (profileTask.isSuccessful) {
-                                hideLoading()
-                                Toast.makeText(this, "Pendaftaran berhasil", Toast.LENGTH_SHORT)
-                                    .show()
-                                firebaseAuth.signOut()
-                                val intent = Intent(this, LoginActivity::class.java)
-                                startActivity(intent)
-                                finish()
+                                user.sendEmailVerification().addOnCompleteListener { sendTask ->
+                                    hideLoading()
+                                    if (sendTask.isSuccessful) {
+                                        binding.progress.visibility = View.GONE
+                                        Toast.makeText(this, "Pendaftaran berhasil, silakan cek email untuk verifikasi", Toast.LENGTH_SHORT).show()
+                                        firebaseAuth.signOut()
+                                        val intent = Intent(this, LoginActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    } else {
+                                        binding.progress.visibility = View.GONE
+                                        binding.root.showSnackbar("Terjadi Kesalahan")
+                                        user.delete()
+                                    }
+                                }
                             } else {
                                 hideLoading()
-                                binding.root.showSnackbar(it.exception.toString())
+                                binding.root.showSnackbar("Terjadi Kesalahan")
+                                user.delete()
                             }
                         }
                 }

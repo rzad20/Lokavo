@@ -2,23 +2,19 @@ package com.lokavo.ui.login
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.lokavo.R
 import com.lokavo.databinding.ActivityLoginBinding
 import com.lokavo.ui.MainActivity
-import com.lokavo.ui.confirmEmail.ConfirmEmailActivity
+import com.lokavo.ui.forgotPassword.ForgotPasswordActivity
 import com.lokavo.ui.register.RegisterActivity
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
@@ -45,14 +41,14 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.btnLogin.windowToken, 0)
+
             if (!this.isOnline()) {
                 binding.root.showSnackbarOnNoConnection(this)
             } else {
                 val email = binding.edEmail.text.toString()
                 val pass = binding.edPassword.text.toString()
-
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(binding.btnLogin.windowToken, 0)
 
                 if (email.isNotEmpty() && pass.isNotEmpty()) {
                     if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -64,11 +60,29 @@ class LoginActivity : AppCompatActivity() {
                         firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
                             if (it.isSuccessful) {
                                 hideLoading()
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.flags =
-                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                                startActivity(intent)
-                                finish()
+                                if (firebaseAuth.currentUser?.isEmailVerified == true) {
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                    startActivity(intent)
+                                    finish()
+                                } else {
+                                    val snackbar = Snackbar.make(
+                                        binding.root,
+                                        "Email belum diverifikasi",
+                                        Snackbar.LENGTH_LONG
+                                    )
+                                    snackbar.setAction("Kirim Ulang") {
+                                        firebaseAuth.currentUser?.sendEmailVerification()
+                                            ?.addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
+                                                    Toast.makeText(this, "Email verifikasi telah dikirim ulang", Toast.LENGTH_SHORT).show()
+                                                } else {
+                                                    Toast.makeText(this, "Terjadi kesalahan, coba lagi nanti", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                    }
+                                    snackbar.show()
+                                }
                             } else {
                                 hideLoading()
                                 if (it.exception is FirebaseAuthInvalidCredentialsException) {
@@ -86,7 +100,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnForgot.setOnClickListener {
-            val intent = Intent(this, ConfirmEmailActivity::class.java)
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
     }

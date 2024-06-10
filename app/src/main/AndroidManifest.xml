@@ -19,7 +19,7 @@
         tools:ignore="DiscouragedApi"
         tools:targetApi="31">
         <activity
-            android:name=".ui.confirmEmail.ConfirmEmailActivity"
+            android:name=".ui.forgotPassword.ForgotPasswordActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

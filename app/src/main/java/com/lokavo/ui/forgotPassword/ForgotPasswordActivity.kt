@@ -1,44 +1,36 @@
-package com.lokavo.ui.confirmEmail
+package com.lokavo.ui.forgotPassword
 
+import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.lokavo.databinding.ActivityConfirmEmailBinding
+import com.lokavo.databinding.ActivityForgotPasswordBinding
 import com.lokavo.ui.login.LoginActivity
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
 import com.lokavo.utils.showSnackbarOnNoConnection
 
-class ConfirmEmailActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityConfirmEmailBinding
+class ForgotPasswordActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityForgotPasswordBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityConfirmEmailBinding.inflate(layoutInflater)
+        binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        supportActionBar?.apply {
-            val typedValue = TypedValue()
-            theme.resolveAttribute(android.R.attr.colorBackground, typedValue, true)
-            val color = typedValue.data
-            val colorDrawable = ColorDrawable(color)
-            supportActionBar?.setBackgroundDrawable(colorDrawable)
-            setDisplayHomeAsUpEnabled(true)
-            title = ""
-            elevation = 0f
-        }
-
         binding.btnProccess.setOnClickListener {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.btnProccess.windowToken, 0)
+
             if (!this.isOnline()) {
                 binding.root.showSnackbarOnNoConnection(this)
             } else {

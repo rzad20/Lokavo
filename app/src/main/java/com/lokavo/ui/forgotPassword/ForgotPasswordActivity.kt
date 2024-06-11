@@ -24,12 +24,16 @@ class ForgotPasswordActivity : AppCompatActivity() {
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        setSupportActionBar(binding.topAppBar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = ""
+        }
         firebaseAuth = FirebaseAuth.getInstance()
 
-        binding.btnProccess.setOnClickListener {
+        binding.btnSend.setOnClickListener {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(binding.btnProccess.windowToken, 0)
+            imm.hideSoftInputFromWindow(binding.btnSend.windowToken, 0)
 
             if (!this.isOnline()) {
                 binding.root.showSnackbarOnNoConnection(this)
@@ -68,7 +72,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     private fun showLoading() {
         binding.progress.visibility = View.VISIBLE
-        binding.btnProccess.isEnabled = false
+        binding.btnSend.isEnabled = false
         window.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -77,7 +81,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     private fun hideLoading() {
         binding.progress.visibility = View.GONE
-        binding.btnProccess.isEnabled = true
+        binding.btnSend.isEnabled = true
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 

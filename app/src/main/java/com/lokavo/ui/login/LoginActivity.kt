@@ -28,12 +28,12 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        firebaseAuth = FirebaseAuth.getInstance()
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             title = ""
         }
+        firebaseAuth = FirebaseAuth.getInstance()
 
         binding.btnRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))

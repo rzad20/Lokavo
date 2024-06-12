@@ -9,50 +9,36 @@
         android:id="@+id/navigation_maps"
         android:name="com.lokavo.ui.maps.MapsFragment"
         android:label="@string/title_maps"
-        tools:layout="@layout/fragment_maps" >
-        <action
-            android:id="@+id/action_navigation_maps_to_navigation_history2"
-            app:destination="@id/navigation_history"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_out_right"
-            app:popExitAnim="@android:anim/slide_in_left" />
+        tools:layout="@layout/fragment_maps">
     </fragment>
 
     <fragment
         android:id="@+id/navigation_history"
         android:name="com.lokavo.ui.history.HistoryFragment"
         android:label="@string/title_history"
-        tools:layout="@layout/fragment_history" >
-        <action
-            android:id="@+id/action_navigation_history_to_navigation_profile"
-            app:destination="@id/navigation_profile" />
+        tools:layout="@layout/fragment_history">
     </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.lokavo.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_navigation_profile_to_changePasswordFragment"
-            app:destination="@id/changePasswordFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
+            app:destination="@id/changePasswordFragment" />
         <action
             android:id="@+id/action_navigation_profile_to_profileDetailFragment"
-            app:destination="@id/profileDetailFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
+            app:destination="@id/profileDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
         android:name="com.lokavo.ui.changePassword.ChangePasswordFragment"
         android:label="ChangePasswordFragment"
-        tools:layout="@layout/fragment_change_password"/>
+        tools:layout="@layout/fragment_change_password" />
     <fragment
         android:id="@+id/profileDetailFragment"
         android:name="com.lokavo.ui.profileDetail.ProfileDetailFragment"
         android:label="ProfileDetailFragment"
-        tools:layout="@layout/fragment_profile_detail"/>
+        tools:layout="@layout/fragment_profile_detail" />
 </navigation>

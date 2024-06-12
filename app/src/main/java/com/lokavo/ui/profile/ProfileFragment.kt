@@ -93,28 +93,28 @@ class ProfileFragment : Fragment() {
         }
     }
 
-override fun onResume() {
-    super.onResume()
-    val user = FirebaseAuth.getInstance().currentUser
-    if (user == null) {
-        val intent = Intent(requireContext(), WelcomeActivity::class.java)
-        startActivity(intent)
-    }
-    user?.reload()?.addOnCompleteListener { task ->
-        if (task.isSuccessful) {
-            if (uri != user.photoUrl) {
-                uri = user.photoUrl
-                Glide.with(this)
-                    .load(uri)
-                    .into(binding.userImage)
-            }
-            if (name != user.displayName) {
-                name = user.displayName
-                binding.profileName.text = user.displayName
+    override fun onResume() {
+        super.onResume()
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            val intent = Intent(requireContext(), WelcomeActivity::class.java)
+            startActivity(intent)
+        }
+        user?.reload()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                if (uri != user.photoUrl) {
+                    uri = user.photoUrl
+                    Glide.with(this)
+                        .load(uri)
+                        .into(binding.userImage)
+                }
+                if (name != user.displayName) {
+                    name = user.displayName
+                    binding.profileName.text = user.displayName
+                }
             }
         }
     }
-}
 
     private fun showLogoutConfirmationDialog() {
         AlertDialog.Builder(requireContext())

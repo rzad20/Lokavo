@@ -53,9 +53,17 @@
     <string name="send">Kirim</string>
     <string name="ubah_password">Ubah Password</string>
     <string name="change_password_description">icon ubah password\n</string>
-<string name="change_password_desc">Kata sandi baru Anda harus memiliki setidaknya 6 karakter</string>    <string name="old_password">Masukkan Password Lama</string>
+    <string name="change_password_desc">Kata sandi baru Anda harus memiliki setidaknya 6 karakter</string>
+    <string name="old_password">Masukkan Password Lama</string>
     <string name="new_password">Masukkan Password Baru</string>
     <string name="confirm_new_password">Konfirmasi Password Baru</string>
     <string name="konfirmasi_password">Konfirmasi Password</string>
     <string name="edit_profil">Edit Profil</string>
+    <string name="second_onboarding_title">Dapatkan Insight Kompetitor</string>
+    <string name="second_onboarding_subtitle">Bandingkan kompetitor terbaik di area bisnismu</string>
+    <string name="next_onboarding">Next</string>
+    <string name="third_onboarding_title">Panduan Chatbot</string>
+    <string name="third_onboarding_subtitle">Dapatkan Insight tambahan mengenai lokasi bisnismu dengan chatbot kami</string>
+    <string name="first_onboarding_title">Temukan Lokasi Bisnis Terbaikmu</string>
+    <string name="first_onboarding_subtitle">Dapatkan Insight Mengenai Lokasi Bisnis dengan Analisa Kami</string>
 </resources>

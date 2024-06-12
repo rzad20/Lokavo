@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
+import com.lokavo.R
 import com.lokavo.databinding.FragmentProfileDetailBinding
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
@@ -39,10 +40,14 @@ class ProfileDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+
         val toolbar = binding.topAppBar
+        toolbar.menu.findItem(R.id.save).isVisible = false
+
         toolbar.setNavigationOnClickListener {
             activity?.onBackPressedDispatcher?.onBackPressed()
         }
+
         if (user != null) {
             binding.edName.setText(user.displayName)
             binding.edEmail.setText(user.email)
@@ -57,62 +62,21 @@ class ProfileDetailFragment : Fragment() {
             launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
-        binding.btnSave.setOnClickListener {
-            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(binding.btnSave.windowToken, 0)
-
-            if (!requireContext().isOnline()) {
-                binding.root.showSnackbarOnNoConnection(requireContext())
-            } else {
-                val nameChanged = binding.edName.text.toString() != user?.displayName
-                val imageChanged = fileUri != null
-
-                val operations = mutableListOf<() -> Unit>()
-                val latch = CountDownLatch(if (nameChanged) 1 else 0 + if (imageChanged) 1 else 0)
-
-                var isUpdated = false
-
-                if (nameChanged) {
-                    operations.add {
-                        updateName { success ->
-                            isUpdated = isUpdated || success
-                            if (!imageChanged) {
-                                latch.countDown()
-                            }
-                        }
-                    }
-                }
-                if (imageChanged) {
-                    operations.add {
-                        uploadImage { success ->
-                            isUpdated = isUpdated || success
-                            latch.countDown()
-                        }
-                    }
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.save -> {
+                    saveChanges()
+                    true
                 }
 
-                showLoading()
-                operations.forEach { it.invoke() }
-
-                Thread {
-                    latch.await()
-                    activity?.runOnUiThread {
-                        hideLoading()
-                        if (isUpdated) {
-                            binding.root.showSnackbar("Profil berhasil diperbarui")
-                            binding.btnSave.visibility = View.GONE
-                        }
-                    }
-                }.start()
+                else -> false
             }
         }
 
         binding.edName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable) {
                 checkForChanges()
@@ -132,14 +96,64 @@ class ProfileDetailFragment : Fragment() {
         checkForChanges()
     }
 
+    private fun saveChanges() {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.topAppBar.windowToken, 0)
+
+        if (!requireContext().isOnline()) {
+            binding.root.showSnackbarOnNoConnection(requireContext())
+        } else {
+            val nameChanged = binding.edName.text.toString() != user?.displayName
+            val imageChanged = fileUri != null
+
+            val operations = mutableListOf<() -> Unit>()
+            val latch = CountDownLatch(if (nameChanged) 1 else 0 + if (imageChanged) 1 else 0)
+
+            var isUpdated = false
+
+            if (nameChanged) {
+                operations.add {
+                    updateName { success ->
+                        isUpdated = isUpdated || success
+                        if (!imageChanged) {
+                            latch.countDown()
+                        }
+                    }
+                }
+            }
+            if (imageChanged) {
+                operations.add {
+                    uploadImage { success ->
+                        isUpdated = isUpdated || success
+                        latch.countDown()
+                    }
+                }
+            }
+
+            showLoading()
+            operations.forEach { it.invoke() }
+
+            Thread {
+                latch.await()
+                activity?.runOnUiThread {
+                    hideLoading()
+                    if (isUpdated) {
+                        binding.root.showSnackbar("Profil berhasil diperbarui")
+                        binding.topAppBar.menu.findItem(R.id.save).isVisible = false
+                    }
+                }
+            }.start()
+        }
+    }
+
     private fun checkForChanges() {
         val nameChanged = binding.edName.text.toString() != user?.displayName
         val imageChanged = fileUri != null
 
         if (nameChanged || imageChanged) {
-            binding.btnSave.visibility = View.VISIBLE
+            binding.topAppBar.menu.findItem(R.id.save).isVisible = true
         } else {
-            binding.btnSave.visibility = View.GONE
+            binding.topAppBar.menu.findItem(R.id.save).isVisible = false
         }
     }
 
@@ -193,7 +207,7 @@ class ProfileDetailFragment : Fragment() {
 
     private fun showLoading() {
         binding.progress.visibility = View.VISIBLE
-        binding.btnSave.isEnabled = false
+        binding.topAppBar.menu.findItem(R.id.save).isEnabled = false
         requireActivity().window.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -202,7 +216,7 @@ class ProfileDetailFragment : Fragment() {
 
     private fun hideLoading() {
         binding.progress.visibility = View.GONE
-        binding.btnSave.isEnabled = true
+        binding.topAppBar.menu.findItem(R.id.save).isEnabled = true
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 

@@ -5,11 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.lokavo.R
 import com.lokavo.databinding.FragmentFirstOnboardingBinding
-import com.lokavo.databinding.FragmentViewPagerBinding
 
 class FirstOnboarding : Fragment() {
     private var _binding: FragmentFirstOnboardingBinding? = null

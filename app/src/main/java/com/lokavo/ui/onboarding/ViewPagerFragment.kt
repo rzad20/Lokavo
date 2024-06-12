@@ -5,9 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.lokavo.R
 import com.lokavo.databinding.FragmentViewPagerBinding
-import com.lokavo.databinding.FragmentWelcomeBinding
 import com.lokavo.ui.adapter.ViewPagerAdapter
 import com.lokavo.ui.onboarding.screens.FirstOnboarding
 import com.lokavo.ui.onboarding.screens.SecondOnboarding

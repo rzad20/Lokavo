@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.Marker
 
 class MapsViewModel : ViewModel() {
-    private val _isShow = MutableLiveData<Boolean>(false)
+    private val _isShow = MutableLiveData(false)
     val isShow: LiveData<Boolean> get() = _isShow
     private val _currentMarker = MutableLiveData<Marker?>(null)
     val currentMarker: LiveData<Marker?> get() = _currentMarker

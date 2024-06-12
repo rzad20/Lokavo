@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow"
+            app:title="@string/Analysis_Result"
             app:navigationIconTint="@color/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:titleTextColor="@color/colorPrimary"/>

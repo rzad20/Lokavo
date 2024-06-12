@@ -2,9 +2,7 @@ package com.lokavo.ui.register
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager

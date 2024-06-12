@@ -26,15 +26,9 @@ class DetailAnalysisActivity : AppCompatActivity() {
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            title = "Detail"
         }
 
-        result = if (Build.VERSION.SDK_INT >= 33) {
-            intent.getParcelableExtra(RESULT, ModelingResultsResponse::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableExtra(RESULT)
-        } ?: ModelingResultsResponse()
+        result = intent.getParcelableExtra(RESULT) ?: ModelingResultsResponse()
 
         binding.txtSentimentCategory.text = result.summaryHeader
         binding.detailAnalysis.text = "${result.longInterpretation}"

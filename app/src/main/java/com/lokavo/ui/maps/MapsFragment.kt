@@ -1,6 +1,5 @@
 package com.lokavo.ui.maps
 
-import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -12,12 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.LocationRequest
@@ -86,6 +86,7 @@ class MapsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkGooglePlayServices()
 
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), BuildConfig.API_KEY)
@@ -358,6 +359,17 @@ class MapsFragment : Fragment() {
                     MaterialAlertDialogBuilder(requireContext()).setMessage(sendEx.message)
                         .show()
                 }
+            }
+        }
+    }
+
+    private fun checkGooglePlayServices() {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val resultCode = googleApiAvailability.isGooglePlayServicesAvailable(requireContext())
+
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (googleApiAvailability.isUserResolvableError(resultCode)) {
+               binding.cardView.visibility = View.GONE
             }
         }
     }

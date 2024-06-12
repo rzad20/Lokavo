@@ -9,7 +9,6 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.lokavo.databinding.ActivityLoginBinding
@@ -62,26 +61,33 @@ class LoginActivity : AppCompatActivity() {
                                 hideLoading()
                                 if (firebaseAuth.currentUser?.isEmailVerified == true) {
                                     val intent = Intent(this, MainActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                    intent.flags =
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                                     startActivity(intent)
                                     finish()
                                 } else {
-                                    val snackbar = Snackbar.make(
-                                        binding.root,
-                                        "Email belum diverifikasi",
-                                        Snackbar.LENGTH_LONG
-                                    )
-                                    snackbar.setAction("Kirim Ulang") {
-                                        firebaseAuth.currentUser?.sendEmailVerification()
-                                            ?.addOnCompleteListener { task ->
-                                                if (task.isSuccessful) {
-                                                    Toast.makeText(this, "Email verifikasi telah dikirim ulang", Toast.LENGTH_SHORT).show()
-                                                } else {
-                                                    Toast.makeText(this, "Terjadi kesalahan, coba lagi nanti", Toast.LENGTH_SHORT).show()
+                                    binding.root.showSnackbar(
+                                        message = "Email belum diverifikasi",
+                                        actionText = "Kirim Ulang",
+                                        action = {
+                                            firebaseAuth.currentUser?.sendEmailVerification()
+                                                ?.addOnCompleteListener { task ->
+                                                    if (task.isSuccessful) {
+                                                        Toast.makeText(
+                                                            this,
+                                                            "Email verifikasi telah dikirim ulang",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    } else {
+                                                        Toast.makeText(
+                                                            this,
+                                                            "Terjadi kesalahan, coba lagi nanti",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
                                                 }
-                                            }
-                                    }
-                                    snackbar.show()
+                                        }
+                                    )
                                 }
                             } else {
                                 hideLoading()

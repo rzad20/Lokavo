@@ -4,22 +4,22 @@ import androidx.lifecycle.liveData
 import com.google.gson.Gson
 import com.lokavo.R
 import com.lokavo.data.Result
-import com.lokavo.data.remote.request.ArgLatLong
-import com.lokavo.data.remote.request.PlaceId
+import com.lokavo.data.remote.request.ModelingResultsRequest
+import com.lokavo.data.remote.request.PlaceDetailsRequest
 import com.lokavo.data.remote.response.DetailsItem
-import com.lokavo.data.remote.retrofit.ApiService
+import com.lokavo.data.remote.retrofit.ApiService1
 import retrofit2.HttpException
 import com.lokavo.data.remote.response.ModelingResultsResponse
 import com.lokavo.data.remote.response.PlaceDetailsResponse
 import com.lokavo.data.remote.response.PoiMapItem
 import java.net.SocketTimeoutException
 
-class MapsRepository private constructor(private var apiService: ApiService) {
+class MapsRepository private constructor(private var apiService1: ApiService1) {
 
     fun getModelingResults(latitude: Double, longitude: Double) = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.getModelingResults(ArgLatLong(latitude, longitude))
+            val response = apiService1.getModelingResults(ModelingResultsRequest(latitude, longitude))
             val places = response.poiMap
             val summaryHeader = response.summaryHeader
             val shortInterpretation = response.shortInterpretation
@@ -62,7 +62,7 @@ class MapsRepository private constructor(private var apiService: ApiService) {
     fun getPlaceDetail(placeId: String) = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.getPlaceDetail(PlaceId(placeId))
+            val response = apiService1.getPlaceDetail(PlaceDetailsRequest(placeId))
             val details = response.details
             if (details != null) {
                 if (details.isEmpty()) {
@@ -109,10 +109,10 @@ class MapsRepository private constructor(private var apiService: ApiService) {
         @Volatile
         private var instance: MapsRepository? = null
         fun getInstance(
-            apiService: ApiService
+            apiService1: ApiService1
         ) =
             instance ?: synchronized(this) {
-                instance ?: MapsRepository(apiService)
+                instance ?: MapsRepository(apiService1)
             }.also { instance = it }
     }
 }

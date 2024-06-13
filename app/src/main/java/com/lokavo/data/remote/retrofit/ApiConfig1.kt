@@ -7,9 +7,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class ApiConfig {
+class ApiConfig1 {
     companion object {
-        fun getApiService(): ApiService {
+        fun getApiService(): ApiService1 {
             val loggingInterceptor = HttpLoggingInterceptor().setLevel(
                 if (com.android.volley.BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
             )
@@ -22,11 +22,11 @@ class ApiConfig {
                 .build()
 
             return Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
+                .baseUrl(BuildConfig.BASE_URL1)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
-                .create(ApiService::class.java)
+                .create(ApiService1::class.java)
         }
     }
 }

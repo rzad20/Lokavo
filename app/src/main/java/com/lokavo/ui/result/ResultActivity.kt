@@ -126,7 +126,8 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                             shortInterpretation = res.data.shortInterpretation,
                             longInterpretation = res.data.longInterpretation,
                             summaryHeader = res.data.summaryHeader,
-                            clusterProportion = res.data.clusterProportion
+                            clusterProportion = res.data.clusterProportion,
+                            latLng = LatLng(this.latLng.latitude, this.latLng.longitude)
                         )
                         CoroutineScope(Dispatchers.IO).launch {
                             val builder = LatLngBounds.builder()

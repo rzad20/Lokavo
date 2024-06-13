@@ -1,29 +1,25 @@
 package com.lokavo.ui.adapter
 
-import android.os.Handler
-import android.os.Looper
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.lokavo.R
-import com.lokavo.utils.animateText
 
 data class Message(
     val isUser: Boolean,
     val user: String?,
-    val messenger: String?,
-    val text: String
+    val bot: String?,
+    val text: String,
+    val photo: Uri?
 )
-
-interface TextAnimationCompleteListener {
-    fun onTextAnimationComplete()
-}
 
 class ChatAdapter(
     private val messages: List<Message>,
-    private val animationCompleteListener: TextAnimationCompleteListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -34,10 +30,11 @@ class ChatAdapter(
     class UserMessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvUser: TextView = view.findViewById(R.id.tvUser)
         val tvMessage: TextView = view.findViewById(R.id.tvUserMessage)
+        val ivUser: ImageView = view.findViewById(R.id.ivUser)
     }
 
     class ChatBotMessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvMessenger: TextView = view.findViewById(R.id.tvBot)
+        val tvBot: TextView = view.findViewById(R.id.tvBot)
         val tvMessage: TextView = view.findViewById(R.id.tvBotMessage)
     }
 
@@ -60,14 +57,14 @@ class ChatAdapter(
         if (holder is UserMessageViewHolder) {
             holder.tvUser.text = message.user
             holder.tvMessage.text = message.text
+            Glide.with(holder.ivUser.context)
+                .load(message.photo)
+                .into(holder.ivUser)
         } else if (holder is ChatBotMessageViewHolder) {
-            holder.tvMessenger.text = message.messenger
-            holder.tvMessage.animateText(message.text) {
-                animationCompleteListener.onTextAnimationComplete()
-            }
+            holder.tvBot.text = message.bot
+            holder.tvMessage.text = message.text
         }
     }
 
     override fun getItemCount() = messages.size
 }
-

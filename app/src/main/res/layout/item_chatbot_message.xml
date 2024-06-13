@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingStart="16dp"
+    android:paddingHorizontal="16dp"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chatbot1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,7 +35,7 @@
 
         <TextView
             android:id="@+id/tvBotMessage"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:background="@drawable/bubble_left"
@@ -43,21 +43,21 @@
             android:padding="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white"
+            app:layout_constraintEnd_toStartOf="@+id/tvTimestamp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvBot"
             tools:text="This is a message" />
 
         <TextView
             android:id="@+id/tvTimestamp"
-            tools:text="Just Now"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginStart="4dp"
             android:maxLines="2"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvBotMessage"
-            app:layout_constraintStart_toEndOf="@+id/tvBotMessage" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Just Now" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

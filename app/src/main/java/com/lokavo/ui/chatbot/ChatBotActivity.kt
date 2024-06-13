@@ -8,15 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.lokavo.data.Result
-import com.lokavo.data.remote.response.ChatBotMessageResponse
 import com.lokavo.databinding.ActivityChatBotBinding
 import com.lokavo.ui.adapter.ChatAdapter
 import com.lokavo.ui.adapter.Message
-import com.lokavo.ui.adapter.TextAnimationCompleteListener
 import com.lokavo.utils.showSnackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ChatBotActivity : AppCompatActivity(), TextAnimationCompleteListener {
+class ChatBotActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBotBinding
     private val viewModel: ChatBotViewModel by viewModel()
     private var currentQuestionIndex = 1
@@ -25,6 +23,7 @@ class ChatBotActivity : AppCompatActivity(), TextAnimationCompleteListener {
     private lateinit var chatAdapter: ChatAdapter
     private var userText = ""
     private var botText = ""
+    private var visible = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +35,7 @@ class ChatBotActivity : AppCompatActivity(), TextAnimationCompleteListener {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        chatAdapter = ChatAdapter(messages, this)
+        chatAdapter = ChatAdapter(messages)
 
         binding.rvMessages.adapter = chatAdapter
         binding.rvMessages.layoutManager = LinearLayoutManager(this)
@@ -50,13 +49,13 @@ class ChatBotActivity : AppCompatActivity(), TextAnimationCompleteListener {
         binding.btnNext.setOnClickListener {
             if (uid != null) {
                 binding.messageChoice.visibility = View.GONE
-
                 messages.add(
                     Message(
                         user = user.displayName,
                         text = userText,
                         isUser = true,
-                        messenger = null
+                        bot = null,
+                        photo = user.photoUrl
                     )
                 )
                 chatAdapter.notifyItemInserted(messages.size - 1)
@@ -66,22 +65,21 @@ class ChatBotActivity : AppCompatActivity(), TextAnimationCompleteListener {
                         user = null,
                         text = botText,
                         isUser = false,
-                        messenger = "Chatbot"
+                        bot = "Chatbot",
+                        photo = null
                     )
                 )
                 chatAdapter.notifyItemInserted(messages.size - 1)
                 if (currentQuestionIndex < 3) {
                     currentQuestionIndex++
                     getChatBotMessage(uid, currentQuestionIndex)
-                } else {
-                    binding.btnNext.isEnabled = false
-                    binding.messageChoice.visibility = View.GONE
                 }
             }
         }
     }
 
     private fun getChatBotMessage(uid: String, index: Int) {
+        Log.i("call", index.toString())
         viewModel.getChatBotMessage(uid, index).observe(this) { res ->
             when (res) {
                 is Result.Loading -> {
@@ -104,10 +102,7 @@ class ChatBotActivity : AppCompatActivity(), TextAnimationCompleteListener {
                     }
                     binding.progress.visibility = View.GONE
                     binding.btnNext.text = res.data.question
-                    if (currentQuestionIndex == 1) {
-
-                        binding.messageChoice.visibility = View.VISIBLE
-                    }
+                    binding.messageChoice.visibility = View.VISIBLE
                 }
 
                 else -> {}
@@ -124,9 +119,5 @@ class ChatBotActivity : AppCompatActivity(), TextAnimationCompleteListener {
 
             else -> false
         }
-    }
-
-    override fun onTextAnimationComplete() {
-        binding.messageChoice.visibility = View.VISIBLE
     }
 }

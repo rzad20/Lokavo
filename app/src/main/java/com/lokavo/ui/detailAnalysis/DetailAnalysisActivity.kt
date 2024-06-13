@@ -1,9 +1,11 @@
 package com.lokavo.ui.detailAnalysis
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.anychart.AnyChart
 import com.anychart.AnyChartView
@@ -29,6 +31,11 @@ class DetailAnalysisActivity : AppCompatActivity() {
             title = "Detail"
         }
 
+        val animatedImageButton: ImageButton = binding.animatedImageButton
+        animatedImageButton.post {
+            val drawable = animatedImageButton.drawable as? AnimatedVectorDrawable
+            drawable?.start()
+        }
         result = if (Build.VERSION.SDK_INT >= 33) {
             intent.getParcelableExtra(RESULT, ModelingResultsResponse::class.java)
         } else {

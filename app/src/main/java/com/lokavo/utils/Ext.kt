@@ -76,27 +76,25 @@ fun Context.bitmapFromVector(vectorResId: Int): BitmapDescriptor {
     return BitmapDescriptorFactory.fromBitmap(bitmap)
 }
 
-fun View.showSnackbar(message: String) {
-    val snackbar = Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
-    val snackbarView = snackbar.view
-    val context = snackbarView.context
-    val typedValue = TypedValue()
-    context.theme.resolveAttribute(com.google.android.material.R.attr.snackbarStyle, typedValue, true)
-    val backgroundColor = typedValue.data
+fun View.showSnackbar(message: String, actionText: String? = null, action: (() -> Unit)? = null) {
+    val duration = if (action != null) Snackbar.LENGTH_INDEFINITE else Snackbar.LENGTH_LONG
+    val snackbar = Snackbar.make(this, message, duration)
 
-    snackbarView.setBackgroundColor(backgroundColor)
-    snackbar.setTextColor(context.getColor(R.color.white))
-
+    if (actionText != null && action != null) {
+        snackbar.setAction(actionText) {
+            action()
+        }
+        val primaryColor = context.theme.obtainStyledAttributes(intArrayOf(com.anychart.R.attr.colorPrimary)).getColor(0, 0)
+        snackbar.setActionTextColor(primaryColor)
+    }
     snackbar.show()
 }
 
 fun extractRelevantText(input: String): String {
-    // Split the input into lines
     val lines = input.lines()
     val paragraphs = mutableListOf<String>()
     var skipNextLine = false
 
-    // Collect paragraphs, skipping lines after headers
     for (line in lines) {
         if (line.startsWith("##")) {
             skipNextLine = true
@@ -106,11 +104,7 @@ fun extractRelevantText(input: String): String {
             paragraphs.add(line.trim())
         }
     }
-
-    // Join paragraphs split by empty lines
     val joinedParagraphs = paragraphs.joinToString("\n").split("\n\n")
-
-    // Return the first non-empty paragraph
     return joinedParagraphs.firstOrNull { it.isNotBlank() } ?: "Relevant text not found"
 }
 

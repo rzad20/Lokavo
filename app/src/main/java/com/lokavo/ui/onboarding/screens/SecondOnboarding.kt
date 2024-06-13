@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.lokavo.R
-import com.lokavo.databinding.FragmentFirstOnboardingBinding
 import com.lokavo.databinding.FragmentSecondOnboardingBinding
 
 class SecondOnboarding : Fragment() {

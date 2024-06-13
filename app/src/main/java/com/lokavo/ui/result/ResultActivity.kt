@@ -1,11 +1,8 @@
 package com.lokavo.ui.result
 
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +16,6 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.snackbar.Snackbar
 import com.lokavo.R
 import com.lokavo.data.Result
 import com.lokavo.data.remote.response.ModelingResultsResponse
@@ -28,6 +24,7 @@ import com.lokavo.ui.detailAnalysis.DetailAnalysisActivity
 import com.lokavo.utils.bitmapFromVector
 import com.lokavo.utils.extractRelevantText
 import com.lokavo.utils.isOnline
+import com.lokavo.utils.showSnackbar
 import com.lokavo.utils.showSnackbarOnNoConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,8 +40,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapFragment: SupportMapFragment
     private val viewModel: ResultViewModel by viewModel()
     private val markers = mutableListOf<Marker>()
-
-    private var result : ModelingResultsResponse = ModelingResultsResponse()
+    private var result: ModelingResultsResponse = ModelingResultsResponse()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,14 +50,9 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            title = getString(R.string.result)
         }
 
-        latLng = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(LOCATION, LatLng::class.java)
-        } else {
-            intent.getParcelableExtra(LOCATION)
-        }) ?: LatLng(0.0, 0.0)
+        latLng = intent.getParcelableExtra(LOCATION) ?: LatLng(0.0, 0.0)
 
         mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -111,13 +102,22 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
 
                     is Result.Error -> {
-                        Snackbar.make(binding.root, res.error, Snackbar.LENGTH_LONG).show()
+                        if (res.error == "Request timeout") {
+                            binding.root.showSnackbar(
+                                message = "Request timeout",
+                                actionText = "Coba Lagi",
+                                action = {
+                                    getModelingResults(this.latLng)
+                                }
+                            )
+                        } else {
+                            binding.root.showSnackbar(res.error)
+                        }
                         binding.progress.visibility = View.GONE
                     }
 
                     is Result.Empty -> {
-                        Snackbar.make(binding.root, R.string.not_found, Snackbar.LENGTH_LONG)
-                            .show()
+                        binding.root.showSnackbar(getString(R.string.not_found))
                         binding.progress.visibility = View.GONE
                     }
 
@@ -150,7 +150,8 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                             }
 
                             binding.kategoriResult.text = res.data.summaryHeader
-                            val shortInterpretation = res.data.shortInterpretation?.let { extractRelevantText(it) }
+                            val shortInterpretation =
+                                res.data.shortInterpretation?.let { extractRelevantText(it) }
                             binding.shortAnalysis.text = shortInterpretation
 
                             val bounds = builder.build()
@@ -209,14 +210,14 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                     binding.progressDetail.visibility = View.GONE
                     binding.clDetail.visibility = View.GONE
                     binding.cvDetail.visibility = View.GONE
-                    Snackbar.make(binding.root, result.error, Snackbar.LENGTH_LONG).show()
+                    binding.root.showSnackbar(result.error)
                 }
 
                 is Result.Empty -> {
                     binding.progressDetail.visibility = View.GONE
                     binding.clDetail.visibility = View.GONE
                     binding.cvDetail.visibility = View.GONE
-                    Snackbar.make(binding.root, R.string.not_found, Snackbar.LENGTH_LONG).show()
+                    binding.root.showSnackbar(getString(R.string.not_found))
                 }
 
                 null -> {}

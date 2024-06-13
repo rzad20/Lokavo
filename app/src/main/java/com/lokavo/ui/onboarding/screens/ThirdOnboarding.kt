@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.lokavo.R
-import com.lokavo.databinding.FragmentSecondOnboardingBinding
 import com.lokavo.databinding.FragmentThirdOnboardingBinding
 
 class ThirdOnboarding : Fragment() {

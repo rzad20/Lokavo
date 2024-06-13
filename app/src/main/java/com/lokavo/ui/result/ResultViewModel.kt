@@ -9,7 +9,6 @@ import com.lokavo.data.repository.MapsRepository
 import com.lokavo.data.Result
 import com.lokavo.data.remote.response.DetailsItem
 import com.lokavo.data.remote.response.ModelingResultsResponse
-import com.lokavo.data.remote.response.PoiMapItem
 
 class ResultViewModel(private val repository: MapsRepository) : ViewModel() {
     private val _latLng = MutableLiveData<LatLng>(null)

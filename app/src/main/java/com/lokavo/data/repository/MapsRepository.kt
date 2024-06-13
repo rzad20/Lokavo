@@ -6,24 +6,15 @@ import com.lokavo.R
 import com.lokavo.data.Result
 import com.lokavo.data.remote.request.ArgLatLong
 import com.lokavo.data.remote.request.PlaceId
-import com.lokavo.data.remote.response.ClusterProportion
 import com.lokavo.data.remote.response.DetailsItem
 import com.lokavo.data.remote.retrofit.ApiService
 import retrofit2.HttpException
 import com.lokavo.data.remote.response.ModelingResultsResponse
 import com.lokavo.data.remote.response.PlaceDetailsResponse
 import com.lokavo.data.remote.response.PoiMapItem
+import java.net.SocketTimeoutException
 
 class MapsRepository private constructor(private var apiService: ApiService) {
-
-    data class NearbyPlaceResult(
-        val placeList: List<PoiMapItem>,
-        val summaryHeader: String?,
-        val shortInterpretation: String?,
-        val longInterpretation: String?,
-        val clusterProportion: ClusterProportion?
-    )
-
 
     fun getModelingResults(latitude: Double, longitude: Double) = liveData {
         emit(Result.Loading)
@@ -61,8 +52,10 @@ class MapsRepository private constructor(private var apiService: ApiService) {
             val errorBody = e.response()?.errorBody()?.string()
             val errorResponse = Gson().fromJson(errorBody, ModelingResultsResponse::class.java)
             emit(errorResponse.message?.let { Result.Error(it) })
-        } catch (e: Exception) {
-            emit(e.message?.let { Result.Error(it) })
+        } catch (e: SocketTimeoutException) {
+            emit(Result.Error("Request timeout"))
+        }catch (e: Exception) {
+            emit(Result.Error("Terjadi Kesalahan"))
         }
     }
 
@@ -108,7 +101,7 @@ class MapsRepository private constructor(private var apiService: ApiService) {
             val errorResponse = Gson().fromJson(errorBody, PlaceDetailsResponse::class.java)
             emit(errorResponse.message?.let { Result.Error(it) })
         } catch (e: Exception) {
-            emit(Result.Error("Terjadi Kesalahan, Silahkan Coba Lagi"))
+            emit(Result.Error("Terjadi Kesalahan"))
         }
     }
 

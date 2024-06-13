@@ -35,7 +35,6 @@ class ChangePasswordFragment : Fragment() {
         setHasOptionsMenu(true)
         firebaseAuth = FirebaseAuth.getInstance()
 
-        // Mengatur toolbar
         val toolbar = binding.topAppBar
         toolbar.setNavigationOnClickListener {
             activity?.onBackPressedDispatcher?.onBackPressed()

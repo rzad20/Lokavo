@@ -16,9 +16,12 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Handler
+import android.os.Looper
 import android.util.TypedValue
 import com.google.android.material.snackbar.Snackbar
 import android.view.View
+import android.widget.TextView
 import com.lokavo.R
 
 fun Context.isOnline(): Boolean {
@@ -107,4 +110,3 @@ fun extractRelevantText(input: String): String {
     val joinedParagraphs = paragraphs.joinToString("\n").split("\n\n")
     return joinedParagraphs.firstOrNull { it.isNotBlank() } ?: "Relevant text not found"
 }
-

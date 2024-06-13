@@ -27,7 +27,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.chatbot.ChatbotActivity"
+            android:name=".ui.chatbot.ChatBotActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

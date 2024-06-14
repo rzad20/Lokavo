@@ -1,7 +1,10 @@
 package com.lokavo.data.remote.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class DetailsItem(
     @field:SerializedName("place_id")
     val placeId: String? = null,
@@ -62,4 +65,4 @@ data class DetailsItem(
 
     @field:SerializedName("nearest_competitor_top_average_popularity")
     val nearestCompetitorTopAveragePopularity: Double? = null,
-)
+): Parcelable

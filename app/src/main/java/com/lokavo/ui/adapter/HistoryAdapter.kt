@@ -11,6 +11,8 @@ import com.lokavo.databinding.ItemHistoryBinding
 import com.lokavo.ui.history.HistoryViewModel
 import com.lokavo.ui.result.ResultActivity
 import com.lokavo.utils.DateFormatter
+import com.lokavo.utils.isOnline
+import com.lokavo.utils.showSnackbarOnNoConnection
 
 class HistoryAdapter(private val historyViewModel: HistoryViewModel) :
     RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
@@ -46,24 +48,28 @@ class HistoryAdapter(private val historyViewModel: HistoryViewModel) :
             binding.deleteButton.setOnClickListener {
                 historyViewModel.delete(history)
             }
-            binding.root.setOnClickListener {
-                val context = it.context
-                val intent = Intent(
-                    context,
-                    ResultActivity::class.java
-                ) // Ganti DestinationActivity dengan activity tujuan Anda
-                intent.putExtra(
-                    ResultActivity.LOCATION,
-                    history.latitude?.let { it1 ->
-                        history.longitude?.let { it2 ->
-                            LatLng(
-                                it1,
-                                it2
-                            )
-                        }
-                    })
-                context.startActivity(intent)
 
+            binding.root.setOnClickListener {
+                if (!binding.root.context.isOnline()) {
+                    binding.root.showSnackbarOnNoConnection(binding.root.context)
+                } else {
+                    val context = it.context
+                    val intent = Intent(
+                        context,
+                        ResultActivity::class.java
+                    )
+                    intent.putExtra(
+                        ResultActivity.LOCATION,
+                        history.latitude?.let { it1 ->
+                            history.longitude?.let { it2 ->
+                                LatLng(
+                                    it1,
+                                    it2
+                                )
+                            }
+                        })
+                    context.startActivity(intent)
+                }
             }
         }
     }

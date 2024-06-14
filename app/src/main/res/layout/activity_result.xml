@@ -151,22 +151,6 @@
                     app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle"
                     app:layout_constraintVertical_bias="0" />
 
-                <TextView
-                    android:id="@+id/shortAnalysis"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/label_background"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="Analisa Singkat"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="15sp"
-                    app:layout_constraintBottom_toTopOf="@id/btn_navToResult"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/kategoriResult"
-                    app:layout_constraintVertical_bias="0" />
-
                 <Button
                     android:id="@+id/btn_navToResult"
                     android:layout_width="match_parent"
@@ -174,7 +158,7 @@
                     android:backgroundTint="@color/colorPrimary"
                     android:text="Lihat Hasil"
                     android:textColor="@color/white"
-                    app:layout_constraintTop_toBottomOf="@+id/shortAnalysis" />
+                    app:layout_constraintTop_toBottomOf="@+id/kategoriResult" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

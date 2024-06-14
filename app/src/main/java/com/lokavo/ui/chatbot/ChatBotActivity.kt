@@ -13,19 +13,19 @@ import com.lokavo.data.Result
 import com.lokavo.databinding.ActivityChatBotBinding
 import com.lokavo.ui.adapter.ChatAdapter
 import com.lokavo.ui.adapter.Message
+import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
+import com.lokavo.utils.showSnackbarOnNoConnection
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ChatBotActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBotBinding
     private val viewModel: ChatBotViewModel by viewModel()
     private var currentQuestionIndex = 1
-
     private val messages = mutableListOf<Message>()
     private lateinit var chatAdapter: ChatAdapter
     private var userText = ""
     private var botText = ""
-    private var visible = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,45 +49,53 @@ class ChatBotActivity : AppCompatActivity() {
         loadingDrawable.start()
 
         if (uid != null && messages.isEmpty()) {
-            getChatBotMessage(uid, currentQuestionIndex)
+            if (!this.isOnline()) {
+                binding.root.showSnackbarOnNoConnection(this)
+            } else {
+                getChatBotMessage(uid, currentQuestionIndex)
+            }
         }
+
         binding.btnNext.setOnClickListener {
-            if (uid != null) {
-                binding.messageChoice.visibility = View.GONE
-                messages.add(
-                    Message(
-                        user = user.displayName,
-                        text = userText,
-                        isUser = true,
-                        bot = null,
-                        photo = user.photoUrl
+            if (!this.isOnline()) {
+                binding.root.showSnackbarOnNoConnection(this)
+            } else {
+                if (uid != null) {
+                    binding.messageChoice.visibility = View.GONE
+                    messages.add(
+                        Message(
+                            user = user.displayName,
+                            text = userText,
+                            isUser = true,
+                            bot = null,
+                            photo = user.photoUrl
+                        )
                     )
-                )
-                chatAdapter.notifyItemInserted(messages.size - 1)
+                    chatAdapter.notifyItemInserted(messages.size - 1)
 
-                messages.add(
-                    Message(
-                        user = null,
-                        text = botText,
-                        isUser = false,
-                        bot = "Chatbot",
-                        photo = null
+                    messages.add(
+                        Message(
+                            user = null,
+                            text = botText,
+                            isUser = false,
+                            bot = "Chatbot",
+                            photo = null
+                        )
                     )
-                )
-                chatAdapter.notifyItemInserted(messages.size - 1)
-                if (currentQuestionIndex < 3) {
-                    currentQuestionIndex++
-                    getChatBotMessage(uid, currentQuestionIndex)
+                    chatAdapter.notifyItemInserted(messages.size - 1)
+                    if (currentQuestionIndex < 3) {
+                        currentQuestionIndex++
+                        getChatBotMessage(uid, currentQuestionIndex)
+                    }
+
+                    loadingDrawable.stop()
+                    binding.ivLoading.visibility = View.GONE
                 }
-
-                loadingDrawable.stop()
-                binding.ivLoading.visibility = View.GONE
             }
         }
     }
 
     private fun getChatBotMessage(uid: String, index: Int) {
-        Log.i("call", index.toString())
         viewModel.getChatBotMessage(uid, index).observe(this) { res ->
             when (res) {
                 is Result.Loading -> {

@@ -14,5 +14,23 @@ data class PoiMapItem(
     val placeId: String? = null,
 
     @field:SerializedName("coordinates")
-    val coordinates: Coordinates? = null
+    val coordinates: Coordinates? = null,
+
+    @field:SerializedName("top")
+    val top: Int? = null,
+
+    @field:SerializedName("name")
+    val name: String? = null,
+
+    @field:SerializedName("main_category")
+    val mainCategory: String? = null,
+
+    @field:SerializedName("featured_image")
+    val featuredImage: String? = null,
+
+    @field:SerializedName("reviews")
+    val reviews: Int? = null,
+
+    @field:SerializedName("rating")
+    val rating: Double? = null,
 ): Parcelable

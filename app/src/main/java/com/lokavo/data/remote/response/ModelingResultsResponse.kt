@@ -20,9 +20,6 @@ data class ModelingResultsResponse(
     @field:SerializedName("count")
     val count: Int? = null,
 
-    @field:SerializedName("short_interpretation")
-    val shortInterpretation: String? = null,
-
     @field:SerializedName("status")
     val status: Int? = null,
 
@@ -32,6 +29,8 @@ data class ModelingResultsResponse(
     @field:SerializedName("message")
     val message: String? = null,
 
-    val latLng: LatLng? = null // untuk parcelable
+    val latLng: LatLng? = null, // untuk parcelable
+
+    val top: List<PoiMapItem?>? = null // untuk top3
 ) : Parcelable
 

@@ -123,11 +123,11 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     is Result.Success -> {
                         result = ModelingResultsResponse(
-                            shortInterpretation = res.data.shortInterpretation,
                             longInterpretation = res.data.longInterpretation,
                             summaryHeader = res.data.summaryHeader,
                             clusterProportion = res.data.clusterProportion,
-                            latLng = LatLng(this.latLng.latitude, this.latLng.longitude)
+                            latLng = LatLng(this.latLng.latitude, this.latLng.longitude),
+                            top = res.data.top
                         )
                         CoroutineScope(Dispatchers.IO).launch {
                             val builder = LatLngBounds.builder()
@@ -149,11 +149,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                 }
                                 builder.include(placeLatLng)
                             }
-
                             binding.kategoriResult.text = res.data.summaryHeader
-                            val shortInterpretation =
-                                res.data.shortInterpretation?.let { extractRelevantText(it) }
-                            binding.shortAnalysis.text = shortInterpretation
 
                             val bounds = builder.build()
                             val padding = 50

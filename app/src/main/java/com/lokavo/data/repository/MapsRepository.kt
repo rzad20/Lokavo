@@ -22,26 +22,28 @@ class MapsRepository private constructor(private var apiService1: ApiService1) {
             val response = apiService1.getModelingResults(ModelingResultsRequest(latitude, longitude))
             val places = response.poiMap
             val summaryHeader = response.summaryHeader
-            val shortInterpretation = response.shortInterpretation
             val longInterpretation = response.longInterpretation
             val clusterProportion = response.clusterProportion
             if (places != null) {
                 if (places.isEmpty()) {
                     emit(Result.Empty)
                 } else {
+
                     val placeList = places.map { place ->
                         PoiMapItem(
                             place?.cluster,
                             place?.placeId,
-                            place?.coordinates
+                            place?.coordinates,
                         )
                     }
+                    val filteredPlaces = places.filter { it?.top != 0 }
+
                     val result = ModelingResultsResponse(
                         poiMap = placeList,
                         summaryHeader = summaryHeader,
-                        shortInterpretation = shortInterpretation,
                         longInterpretation = longInterpretation,
-                        clusterProportion = clusterProportion
+                        clusterProportion = clusterProportion,
+                        top = filteredPlaces
                     )
                     emit(Result.Success(result))
                 }

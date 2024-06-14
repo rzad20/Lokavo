@@ -66,4 +66,10 @@
     <string name="third_onboarding_subtitle">Dapatkan Insight tambahan mengenai lokasi bisnismu dengan chatbot kami</string>
     <string name="first_onboarding_title">Temukan Lokasi Bisnis Terbaikmu</string>
     <string name="first_onboarding_subtitle">Dapatkan Insight Mengenai Lokasi Bisnis dengan Analisa Kami</string>
+    <string name="title_article">Artikel</string>
+    <string name="article_title">Judul Artikel</string>
+    <string name="article_detail">Detail Article</string>
+    <string name="chatbot_name">Lokavo Chatbot</string>
+    <string name="chatbot_name_feature">Dapatkan insight kompetitor disini</string>
+    <string name="top_3_kompetitor">Top 3 Kompetitor</string>
 </resources>

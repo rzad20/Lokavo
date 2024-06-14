@@ -1,5 +1,6 @@
 package com.lokavo.ui.chatbot
 
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -7,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.lokavo.R
 import com.lokavo.data.Result
 import com.lokavo.databinding.ActivityChatBotBinding
 import com.lokavo.ui.adapter.ChatAdapter
@@ -43,6 +45,9 @@ class ChatBotActivity : AppCompatActivity() {
         val user = FirebaseAuth.getInstance().currentUser
         val uid = user?.uid
 
+        val loadingDrawable = binding.ivLoading.drawable as AnimatedVectorDrawable
+        loadingDrawable.start()
+
         if (uid != null && messages.isEmpty()) {
             getChatBotMessage(uid, currentQuestionIndex)
         }
@@ -74,6 +79,9 @@ class ChatBotActivity : AppCompatActivity() {
                     currentQuestionIndex++
                     getChatBotMessage(uid, currentQuestionIndex)
                 }
+
+                loadingDrawable.stop()
+                binding.ivLoading.visibility = View.GONE
             }
         }
     }

@@ -2,11 +2,9 @@ package com.lokavo.ui.detailAnalysis
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageButton
 import com.lokavo.data.Result
 import androidx.appcompat.app.AppCompatActivity
 import com.anychart.AnyChart
@@ -40,11 +38,6 @@ class DetailAnalysisActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        val animatedImageButton: ImageButton = binding.animatedImageButton
-        animatedImageButton.post {
-            val drawable = animatedImageButton.drawable as? AnimatedVectorDrawable
-            drawable?.start()
-        }
 
         val user = FirebaseAuth.getInstance().currentUser
         val uid = user?.uid
@@ -63,7 +56,7 @@ class DetailAnalysisActivity : AppCompatActivity() {
         val anyChartView = binding.anyChartView
         setupPieChart(anyChartView)
 
-        binding.animatedImageButton.setOnClickListener {
+        binding.chatbotNavigation.setOnClickListener {
             result.latLng.let {
                 if (it != null) {
                     if (uid != null) {

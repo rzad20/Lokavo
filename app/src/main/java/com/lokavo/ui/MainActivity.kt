@@ -38,6 +38,9 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.profileDetailFragment -> binding.navView.menu.findItem(R.id.navigation_profile).isChecked =
                     true
+
+                R.id.changePasswordFragment -> binding.navView.menu.findItem(R.id.navigation_profile).isChecked =
+                    true
             }
         }
     }

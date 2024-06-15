@@ -9,14 +9,18 @@
         android:id="@+id/navigation_maps"
         android:name="com.lokavo.ui.maps.MapsFragment"
         android:label="@string/title_maps"
-        tools:layout="@layout/fragment_maps">
-    </fragment>
+        tools:layout="@layout/fragment_maps" />
 
     <fragment
         android:id="@+id/navigation_article"
         android:name="com.lokavo.ui.article.ArticleFragment"
         android:label="fragment_article"
-        tools:layout="@layout/fragment_article" />
+        tools:layout="@layout/fragment_article">
+        <action
+            android:id="@+id/action_navigation_article_to_articleWebView"
+            app:destination="@id/articleWebView" />
+    </fragment>
+
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.lokavo.ui.profile.ProfileFragment"
@@ -29,19 +33,39 @@
             android:id="@+id/action_navigation_profile_to_profileDetailFragment"
             app:destination="@id/profileDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/changePasswordFragment"
         android:name="com.lokavo.ui.changePassword.ChangePasswordFragment"
         android:label="ChangePasswordFragment"
         tools:layout="@layout/fragment_change_password" />
+
     <fragment
         android:id="@+id/profileDetailFragment"
         android:name="com.lokavo.ui.profileDetail.ProfileDetailFragment"
         android:label="ProfileDetailFragment"
         tools:layout="@layout/fragment_profile_detail" />
+
     <fragment
         android:id="@+id/navigation_history"
         android:name="com.lokavo.ui.historyFragment.HistoryFragment"
         android:label="HistoryFragment"
         tools:layout="@layout/fragment_history"/>
+
+    <fragment
+        android:id="@+id/articleWebView"
+        android:name="com.lokavo.ui.article.ArticleWebView"
+        android:label="ArticleWebView"
+        tools:layout="@layout/fragment_article_web_view">
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_articleWebView_to_navigation_article"
+            app:destination="@id/navigation_article"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navigation_article"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

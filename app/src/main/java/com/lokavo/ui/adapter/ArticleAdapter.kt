@@ -3,13 +3,14 @@ package com.lokavo.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.lokavo.R
 import com.lokavo.data.remote.response.ListItem
 import com.lokavo.databinding.ItemArticleBinding
+import com.lokavo.ui.article.ArticleFragmentDirections
 import com.lokavo.ui.article.ArticleWebView
 
 class ArticleAdapter(private val activity: FragmentActivity) : ListAdapter<ListItem, ArticleAdapter.MyViewHolder>(DIFF_CALLBACK) {
@@ -34,11 +35,8 @@ class ArticleAdapter(private val activity: FragmentActivity) : ListAdapter<ListI
 
             binding.root.setOnClickListener {
                 val url = article.link
-                val fragment = ArticleWebView.newInstance(url)
-                activity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment_activity_main, fragment)
-                    .addToBackStack(null)
-                    .commit()
+                val action = ArticleFragmentDirections.actionNavigationArticleToArticleWebView(url)
+                binding.root.findNavController().navigate(action)
             }
         }
     }

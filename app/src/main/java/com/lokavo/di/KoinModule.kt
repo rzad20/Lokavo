@@ -6,8 +6,10 @@ import com.lokavo.data.local.room.LokavoDatabase
 import com.lokavo.data.preferences.SwitchThemePreferences
 import com.lokavo.data.remote.retrofit.ApiConfig1
 import com.lokavo.data.remote.retrofit.ApiConfig2
+import com.lokavo.data.repository.ArticleRepository
 import com.lokavo.data.repository.ChatBotRepository
 import com.lokavo.data.repository.ProfileRepository
+import com.lokavo.ui.article.ArticleViewModel
 import com.lokavo.ui.chatbot.ChatBotViewModel
 import com.lokavo.ui.detailAnalysis.DetailAnalysisViewModel
 import com.lokavo.ui.searchHistory.SearchHistoryViewModel
@@ -24,6 +26,7 @@ val appModule = module {
     single { ApiConfig2.getApiService() }
     single { MapsRepository.getInstance(get()) }
     single { ChatBotRepository.getInstance(get()) }
+    single { ArticleRepository.getInstance(get()) }
     single { Executors.newSingleThreadExecutor() }
     single { LokavoDatabase.getDatabase(androidApplication()) }
     single { get<LokavoDatabase>().historyDao() }
@@ -36,4 +39,5 @@ val appModule = module {
     viewModel { SearchHistoryViewModel(get()) }
     viewModel { MapsViewModel() }
     viewModel { ProfileViewModel(get()) }
+    viewModel { ArticleViewModel(get()) }
 }

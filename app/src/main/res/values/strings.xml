@@ -41,7 +41,7 @@
     <string name="chatbot_message">Chatbot Message</string>
     <string name="user_message">User Message</string>
     <string name="no_internet_connection">Tidak ada koneksi internet</string>
-    <string name="not_found">Not found</string>
+    <string name="not_found">Data tidak ditemukan</string>
     <string name="star_icon"> </string>
     <string name="place_image"> </string>
     <string name="place_image_description">The Picture of the place</string>
@@ -72,5 +72,4 @@
     <string name="chatbot_name">Lokavo Chatbot</string>
     <string name="chatbot_name_feature">Dapatkan insight kompetitor disini</string>
     <string name="top_3_kompetitor">Top 3 Kompetitor</string>
-    <string name="save_chatbot">Simpan Chat</string>
 </resources>

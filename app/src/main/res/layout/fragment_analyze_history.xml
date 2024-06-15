@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.chatbotHistory.ChatbotHistoryFragment">
+    tools:context=".ui.analyzeHistory.AnalyzeHistoryFragment">
 
     <Button
         android:id="@+id/btn_clear"
@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_clear"
-        tools:listitem="@layout/item_chatbot_history" />
+        tools:listitem="@layout/item_search_history" />
 
     <TextView
         android:id="@+id/tv_empty_history"

@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.lokavo.data.local.entity.History
+import com.lokavo.data.local.entity.AnalyzeHistory
+import com.lokavo.data.local.entity.ChatBotHistory
 
-@Database(entities = [History::class], version = 1, exportSchema = false)
+@Database(entities = [AnalyzeHistory::class, ChatBotHistory::class], version = 1, exportSchema = false)
 abstract class LokavoDatabase : RoomDatabase() {
-    abstract fun historyDao(): HistoryDao
+    abstract fun analyzeHistoryDao(): AnalyzeHistoryDao
+    abstract fun chatBotHistoryDao(): ChatBotHistoryDao
 
     companion object {
         @Volatile

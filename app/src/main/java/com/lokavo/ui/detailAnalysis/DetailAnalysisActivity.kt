@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.widget.Button
 import com.lokavo.data.Result
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import com.anychart.AnyChartView
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.anychart.charts.Pie
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.lokavo.R
 import com.lokavo.data.remote.response.ModelingResultsResponse
@@ -94,6 +96,7 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
                 is Result.Success -> {
                     hideLoading()
                     val intent = Intent(this, ChatBotActivity::class.java)
+                    intent.putExtra(ChatBotActivity.LOCATION, LatLng(latitude, longitude))
                     startActivity(intent)
                 }
 
@@ -132,15 +135,17 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
         }
     }
 
-    override fun onItemClick(placeId: String) {
+    override fun onItemClick(placeId: String, button: Button) {
         detailViewModel.getPlaceDetail(placeId).observe(this) { result ->
             when (result) {
                 is Result.Loading -> {
                     showLoading()
+                    button.isEnabled = false
                 }
 
                 is Result.Success -> {
                     hideLoading()
+                    button.isEnabled = true
                     val detail = result.data
                     val moveWithObjectIntent = Intent(this, PlaceDetailActivity::class.java)
                     moveWithObjectIntent.putExtra(PlaceDetailActivity.RESULT, detail)
@@ -149,11 +154,13 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
 
                 is Result.Error -> {
                     hideLoading()
+                    button.isEnabled = true
                     binding.root.showSnackbar(result.error)
                 }
 
                 is Result.Empty -> {
                     hideLoading()
+                    button.isEnabled = true
                     binding.root.showSnackbar(getString(R.string.not_found))
                 }
 
@@ -164,15 +171,12 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
 
     private fun showLoading() {
         binding.progress.visibility = View.VISIBLE
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        )
+        binding.chatbotNavigation.isEnabled = false
     }
 
     private fun hideLoading() {
         binding.progress.visibility = View.GONE
-        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        binding.chatbotNavigation.isEnabled = true
     }
 
     override fun onBackPressed() {

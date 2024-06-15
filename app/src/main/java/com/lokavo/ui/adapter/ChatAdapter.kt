@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lokavo.R
-import com.lokavo.databinding.ItemChatbotMessageBinding
+import com.lokavo.databinding.ItemChatBotMessageBinding
 import com.lokavo.databinding.ItemUserMessageBinding
 
 data class Message(
@@ -30,7 +30,7 @@ class ChatAdapter(
     }
 
     class UserMessageViewHolder(val binding: ItemUserMessageBinding) : RecyclerView.ViewHolder(binding.root)
-    class ChatBotMessageViewHolder(val binding: ItemChatbotMessageBinding) : RecyclerView.ViewHolder(binding.root)
+    class ChatBotMessageViewHolder(val binding: ItemChatBotMessageBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun getItemViewType(position: Int): Int {
         return if (messages[position].isUser) VIEW_TYPE_USER_MESSAGE else VIEW_TYPE_CHATBOT_MESSAGE
@@ -41,7 +41,7 @@ class ChatAdapter(
             val binding = ItemUserMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             UserMessageViewHolder(binding)
         } else {
-            val binding = ItemChatbotMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = ItemChatBotMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             ChatBotMessageViewHolder(binding)
         }
     }

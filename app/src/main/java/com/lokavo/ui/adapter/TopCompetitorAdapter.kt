@@ -2,6 +2,7 @@ package com.lokavo.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lokavo.R
@@ -16,7 +17,7 @@ class TopCompetitorAdapter(
 ) : RecyclerView.Adapter<TopCompetitorAdapter.CompetitorViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClick(placeId: String)
+        fun onItemClick(placeId: String, button: Button)
     }
 
     class CompetitorViewHolder(val binding: PlaceItemCardBinding) :
@@ -42,7 +43,7 @@ class TopCompetitorAdapter(
                 if (!it.context.isOnline()) {
                     holder.binding.root.showSnackbarOnNoConnection(holder.itemView.context)
                 } else {
-                    competitor.placeId?.let { it1 -> listener.onItemClick(it1) }
+                    competitor.placeId?.let { it1 -> listener.onItemClick(it1, holder.binding.btnDetail) }
                 }
             }
         }

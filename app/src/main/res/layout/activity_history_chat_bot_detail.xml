@@ -86,19 +86,6 @@
                 android:textColor="@color/white"/>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnSaveChat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/save_chatbot"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:shapeAppearanceOverlay="@style/Shape.Button"
-            android:layout_marginBottom="16dp"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

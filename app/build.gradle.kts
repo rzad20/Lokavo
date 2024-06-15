@@ -47,7 +47,7 @@ android {
 }
 
 dependencies {
-
+    // Core Android Libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -57,35 +57,46 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.datastore.preferences)
+
+    // Play Services
     implementation(libs.play.services.maps)
+
+    // Google Places
+    implementation(libs.google.places)
+
+    // Visualization
     implementation(libs.circleimageview)
     implementation(libs.anychart.android)
-    implementation(libs.pie.chart)
-    implementation(libs.androidx.datastore.preferences)
+
+    // Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+
+    // Firebase
     implementation(libs.firebase.auth)
     implementation(libs.firebase.storage)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 
     // Splash Screen
     implementation(libs.core.splashscreen)
-    // Google Places
-    implementation(libs.google.places)
+
     // Dependency Injection
     implementation(libs.koin.android)
+
     // Networking
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+
     // Load Image
     implementation(libs.glide)
+
     // Room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
-    // Paging
-    implementation(libs.androidx.paging.runtime.ktx)
 
+    // Testing
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

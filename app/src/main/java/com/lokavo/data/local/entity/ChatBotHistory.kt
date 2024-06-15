@@ -4,10 +4,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "history")
-data class History(
+@Entity(tableName = "chat_bot_history")
+data class ChatBotHistory(
     @PrimaryKey(autoGenerate = true)
     var id: Long? = null,
+
+    @ColumnInfo(name = "user_id")
+    var userId: String? = null,
 
     @ColumnInfo(name = "address")
     var address: String? = null,

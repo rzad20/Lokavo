@@ -27,7 +27,7 @@ class HistoryFragment : Fragment() {
         val adapter = HistoryPagerAdapter(this)
         binding.viewPager.adapter = adapter
 
-        val tabTitles = arrayOf("Riwayat Pencarian", "Riwayat Chatbot")
+        val tabTitles = arrayOf("Riwayat Analisa", "Riwayat ChatBot")
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = tabTitles[position]

@@ -1,32 +1,42 @@
 package com.lokavo.ui.chatbot
 
 import android.graphics.drawable.AnimatedVectorDrawable
+import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
-import com.lokavo.R
 import com.lokavo.data.Result
+import com.lokavo.data.local.entity.ChatBotHistory
 import com.lokavo.databinding.ActivityChatBotBinding
 import com.lokavo.ui.adapter.ChatAdapter
 import com.lokavo.ui.adapter.Message
+import com.lokavo.ui.chatBotHistory.ChatBotHistoryViewModel
+import com.lokavo.utils.DateFormatter
+import com.lokavo.utils.getAddress
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
 import com.lokavo.utils.showSnackbarOnNoConnection
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 class ChatBotActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBotBinding
     private val viewModel: ChatBotViewModel by viewModel()
+    private val chatBotHistoryViewModel: ChatBotHistoryViewModel by viewModel()
     private var currentQuestionIndex = 1
     private val messages = mutableListOf<Message>()
     private lateinit var chatAdapter: ChatAdapter
     private var userText = ""
     private var botText = ""
-
+    private lateinit var latLng: LatLng
+    private val geocoder by lazy { Geocoder(this, Locale.getDefault()) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBotBinding.inflate(layoutInflater)
@@ -36,6 +46,8 @@ class ChatBotActivity : AppCompatActivity() {
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
         }
+
+        latLng = intent.getParcelableExtra(LOCATION) ?: LatLng(0.0, 0.0)
 
         chatAdapter = ChatAdapter(messages)
 
@@ -87,9 +99,23 @@ class ChatBotActivity : AppCompatActivity() {
                         currentQuestionIndex++
                         getChatBotMessage(uid, currentQuestionIndex)
                     } else {
-                        binding.btnSaveChat.visibility = View.VISIBLE
+                        lifecycleScope.launch {
+                            val lat = latLng.latitude
+                            val long = latLng.longitude
+                            val address = geocoder.getAddress(lat, long)
+                            val addressName = address?.getAddressLine(0) ?: "${lat},${long}"
+                                chatBotHistoryViewModel.insertOrUpdate(
+                                    uid,
+                                    ChatBotHistory(
+                                        userId = uid,
+                                        latitude = lat,
+                                        longitude = long,
+                                        address = addressName,
+                                        date = DateFormatter.getCurrentDate()
+                                    )
+                                )
+                        }
                     }
-
                     loadingDrawable.stop()
                     binding.ivLoading.visibility = View.GONE
                 }
@@ -137,5 +163,9 @@ class ChatBotActivity : AppCompatActivity() {
 
             else -> false
         }
+    }
+
+    companion object {
+        const val LOCATION = "location"
     }
 }

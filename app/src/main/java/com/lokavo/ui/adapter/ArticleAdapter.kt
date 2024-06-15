@@ -1,20 +1,21 @@
 package com.lokavo.ui.adapter
 
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.lokavo.R
 import com.lokavo.data.remote.response.ListItem
 import com.lokavo.databinding.ItemArticleBinding
+import com.lokavo.ui.article.ArticleWebView
 
-class ArticleAdapter : ListAdapter<ListItem, ArticleAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class ArticleAdapter(private val activity: FragmentActivity) : ListAdapter<ListItem, ArticleAdapter.MyViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyViewHolder(binding)
+        return MyViewHolder(binding, activity)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -22,7 +23,7 @@ class ArticleAdapter : ListAdapter<ListItem, ArticleAdapter.MyViewHolder>(DIFF_C
         holder.bind(news)
     }
 
-    class MyViewHolder(private val binding: ItemArticleBinding) :
+    class MyViewHolder(private val binding: ItemArticleBinding, private val activity: FragmentActivity) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(article: ListItem) {
             binding.articleTitle.text = article.headline
@@ -33,12 +34,15 @@ class ArticleAdapter : ListAdapter<ListItem, ArticleAdapter.MyViewHolder>(DIFF_C
 
             binding.root.setOnClickListener {
                 val url = article.link
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(url)
-                binding.root.context.startActivity(intent)
+                val fragment = ArticleWebView.newInstance(url)
+                activity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.nav_host_fragment_activity_main, fragment)
+                    .addToBackStack(null)
+                    .commit()
             }
         }
     }
+
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListItem>() {

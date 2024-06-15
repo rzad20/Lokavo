@@ -14,16 +14,12 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
         firebaseAuth = FirebaseAuth.getInstance()
-
-        splashScreen.setKeepOnScreenCondition {
-            !isNavigationReady()
-        }
 
         if (firebaseAuth.currentUser != null || onBoardingFinished()) {
             navigateToWelcomeFragment()

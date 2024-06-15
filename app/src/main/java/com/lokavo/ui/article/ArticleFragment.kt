@@ -64,7 +64,7 @@ class ArticleFragment : Fragment() {
     }
 
     private fun setArticlesData(newsData: List<ListItem?>?) {
-        val adapter = ArticleAdapter()
+        val adapter = ArticleAdapter(requireActivity())
         adapter.submitList(newsData)
         binding.rvArticle.adapter = adapter
     }

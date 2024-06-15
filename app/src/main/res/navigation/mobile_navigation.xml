@@ -13,13 +13,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_history"
-        android:name="com.lokavo.ui.history.HistoryFragment"
-        android:label="@string/title_history"
-        tools:layout="@layout/fragment_history">
-    </fragment>
-
-    <fragment
         android:id="@+id/navigation_article"
         android:name="com.lokavo.ui.article.ArticleFragment"
         android:label="fragment_article"
@@ -46,4 +39,9 @@
         android:name="com.lokavo.ui.profileDetail.ProfileDetailFragment"
         android:label="ProfileDetailFragment"
         tools:layout="@layout/fragment_profile_detail" />
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="com.lokavo.ui.historyFragment.HistoryFragment"
+        android:label="HistoryFragment"
+        tools:layout="@layout/fragment_history"/>
 </navigation>

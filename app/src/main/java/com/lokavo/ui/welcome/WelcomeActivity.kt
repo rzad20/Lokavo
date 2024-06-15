@@ -14,12 +14,16 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
         firebaseAuth = FirebaseAuth.getInstance()
+
+        splashScreen.setKeepOnScreenCondition {
+            !isNavigationReady()
+        }
 
         if (firebaseAuth.currentUser != null || onBoardingFinished()) {
             navigateToWelcomeFragment()
@@ -36,6 +40,10 @@ class WelcomeActivity : AppCompatActivity() {
             .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         navController.navigate(R.id.welcomeFragment)
+    }
+
+    private fun isNavigationReady(): Boolean {
+        return firebaseAuth.currentUser != null || onBoardingFinished()
     }
 
 }

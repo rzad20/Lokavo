@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.chatbot.ChatBotActivity">
+    tools:context=".ui.historyChatbotDetail.HistoryChatbotDetail">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout6"
+        android:id="@+id/appBarLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,13 +34,13 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout6" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout7" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout6">
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout7">
         <ImageView
             android:id="@+id/ivLoading"
             android:layout_width="wrap_content"

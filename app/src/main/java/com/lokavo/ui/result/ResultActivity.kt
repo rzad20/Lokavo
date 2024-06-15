@@ -86,6 +86,11 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
             moveWithObjectIntent.putExtra(DetailAnalysisActivity.RESULT, result)
             startActivity(moveWithObjectIntent)
         }
+
+        when (result.summaryHeader?.lowercase()) {
+            "highly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconhighly)
+            "fairly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconfairly)
+        }
     }
 
     private fun getModelingResults(latLng: LatLng) {
@@ -149,7 +154,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                 }
                                 builder.include(placeLatLng)
                             }
-                            binding.kategoriResult.text = res.data.summaryHeader
+                            binding.txtSentimentCategory.text = res.data.summaryHeader
 
                             val bounds = builder.build()
                             val padding = 50

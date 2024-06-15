@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.model.LatLng
 import com.lokavo.data.local.entity.History
-import com.lokavo.databinding.ItemHistoryBinding
-import com.lokavo.ui.history.HistoryViewModel
+import com.lokavo.databinding.ItemSearchHistoryBinding
+import com.lokavo.ui.searchHistory.SearchHistoryViewModel
 import com.lokavo.ui.result.ResultActivity
 import com.lokavo.utils.DateFormatter
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
 
-class HistoryAdapter(private val historyViewModel: HistoryViewModel) :
+class HistoryAdapter(private val searchHistoryViewModel: SearchHistoryViewModel) :
     RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     private val listHistory = ArrayList<History>()
@@ -28,7 +28,7 @@ class HistoryAdapter(private val historyViewModel: HistoryViewModel) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
-        val binding = ItemHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemSearchHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HistoryViewHolder(binding)
     }
 
@@ -40,13 +40,13 @@ class HistoryAdapter(private val historyViewModel: HistoryViewModel) :
         return listHistory.size
     }
 
-    inner class HistoryViewHolder(private val binding: ItemHistoryBinding) :
+    inner class HistoryViewHolder(private val binding: ItemSearchHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(history: History) {
             binding.tvAddress.text = history.address
             binding.tvDate.text = history.date?.let { DateFormatter.getRelativeTime(it) }
             binding.deleteButton.setOnClickListener {
-                historyViewModel.delete(history)
+                searchHistoryViewModel.delete(history)
             }
 
             binding.root.setOnClickListener {

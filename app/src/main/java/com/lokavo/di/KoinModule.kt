@@ -10,7 +10,7 @@ import com.lokavo.data.repository.ChatBotRepository
 import com.lokavo.data.repository.ProfileRepository
 import com.lokavo.ui.chatbot.ChatBotViewModel
 import com.lokavo.ui.detailAnalysis.DetailAnalysisViewModel
-import com.lokavo.ui.history.HistoryViewModel
+import com.lokavo.ui.searchHistory.SearchHistoryViewModel
 import com.lokavo.ui.maps.MapsViewModel
 import com.lokavo.ui.profile.ProfileViewModel
 import com.lokavo.ui.result.ResultViewModel
@@ -33,7 +33,7 @@ val appModule = module {
     viewModel { ResultViewModel(get()) }
     viewModel { DetailAnalysisViewModel(get()) }
     viewModel { ChatBotViewModel(get()) }
-    viewModel { HistoryViewModel(get()) }
+    viewModel { SearchHistoryViewModel(get()) }
     viewModel { MapsViewModel() }
     viewModel { ProfileViewModel(get()) }
 }

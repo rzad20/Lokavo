@@ -86,6 +86,8 @@ class ChatBotActivity : AppCompatActivity() {
                     if (currentQuestionIndex < 3) {
                         currentQuestionIndex++
                         getChatBotMessage(uid, currentQuestionIndex)
+                    } else {
+                        binding.btnSaveChat.visibility = View.VISIBLE
                     }
 
                     loadingDrawable.stop()

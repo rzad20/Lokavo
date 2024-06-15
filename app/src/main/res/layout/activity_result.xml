@@ -86,7 +86,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="10dp">
 
@@ -94,7 +94,6 @@
                     android:id="@+id/analyzeResultTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
                     android:gravity="center"
                     android:paddingVertical="6dp"
                     android:text="@string/hasil_analisa"
@@ -120,36 +119,48 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/kategoriResultTitle"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/linearKategoriResult"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:padding="5dp"
-                    android:text="Kategori"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/kategoriResult"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle"
-                    app:layout_constraintVertical_bias="0" />
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:paddingVertical="15dp"
+                    android:paddingHorizontal="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle">
 
-                <TextView
-                    android:id="@+id/kategoriResult"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="end"
-                    android:padding="5dp"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/kategoriResultTitle"
-                    app:layout_constraintTop_toBottomOf="@id/analyzeResultTitle"
-                    app:layout_constraintVertical_bias="0" />
+                    <ImageView
+                        android:id="@+id/icon_competitive"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/iconhighly" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtSentimentCategory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/competitor_category"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtDetailMessage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Klik Lihat Hasil untuk analisa selengkapnya"
+                            android:textColor="@color/black"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_navToResult"
@@ -158,10 +169,11 @@
                     android:backgroundTint="@color/colorPrimary"
                     android:text="Lihat Hasil"
                     android:textColor="@color/white"
-                    app:layout_constraintTop_toBottomOf="@+id/kategoriResult" />
+                    app:layout_constraintTop_toBottomOf="@id/linearKategoriResult" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+
 
         <!--Detail-->
         <androidx.cardview.widget.CardView
@@ -264,7 +276,6 @@
                         app:layout_constraintStart_toEndOf="@id/image_star"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="4.5" />
-
                     <TextView
                         android:id="@+id/tv_review"
                         android:layout_width="wrap_content"

@@ -45,7 +45,7 @@ import com.lokavo.R
 import com.lokavo.data.local.entity.History
 import com.lokavo.databinding.FragmentMapsBinding
 import com.lokavo.ui.result.ResultActivity
-import com.lokavo.ui.history.HistoryViewModel
+import com.lokavo.ui.searchHistory.SearchHistoryViewModel
 import com.lokavo.utils.DateFormatter
 import com.lokavo.utils.bitmapFromVector
 import com.lokavo.utils.getAddress
@@ -60,7 +60,7 @@ class MapsFragment : Fragment() {
     private var _binding: FragmentMapsBinding? = null
     private val binding get() = _binding!!
     private var currentMarker: Marker? = null
-    private val historyViewModel: HistoryViewModel by viewModel()
+    private val searchHistoryViewModel: SearchHistoryViewModel by viewModel()
     private val mapsViewModel: MapsViewModel by viewModel()
     private val fusedLocationClient by lazy {
         LocationServices.getFusedLocationProviderClient(
@@ -252,7 +252,7 @@ class MapsFragment : Fragment() {
                     val long = currentMarker?.position?.longitude ?: 0.0
                     val address = geocoder.getAddress(lat, long)
                     val addressName = address?.getAddressLine(0) ?: "${lat},${long}"
-                    historyViewModel.insertOrUpdate(
+                    searchHistoryViewModel.insertOrUpdate(
                         History(
                             latitude = lat,
                             longitude = long,

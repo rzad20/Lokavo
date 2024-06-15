@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.lokavo.databinding.FragmentArticleWebViewBinding
 
 class ArticleWebView : Fragment() {
     private var _binding: FragmentArticleWebViewBinding? = null
     private val binding get() = _binding!!
+    private val args : ArticleWebViewArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,16 +26,17 @@ class ArticleWebView : Fragment() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val url = arguments?.getString(EXTRA_URL)
+        val url = args.url
+        binding.webView.webViewClient = WebViewClient()
+        binding.webView.settings.javaScriptEnabled = true
         if (url != null) {
-            binding.webView.webViewClient = WebViewClient()
-            binding.webView.settings.javaScriptEnabled = true
             binding.webView.loadUrl(url)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.webView.destroy()
         _binding = null
     }
 

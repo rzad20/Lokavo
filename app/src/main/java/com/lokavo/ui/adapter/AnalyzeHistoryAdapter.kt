@@ -6,24 +6,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.model.LatLng
-import com.lokavo.data.local.entity.History
+import com.lokavo.data.local.entity.AnalyzeHistory
 import com.lokavo.databinding.ItemSearchHistoryBinding
-import com.lokavo.ui.searchHistory.SearchHistoryViewModel
+import com.lokavo.ui.analyzeHistory.AnalyzeHistoryViewModel
 import com.lokavo.ui.result.ResultActivity
 import com.lokavo.utils.DateFormatter
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
 
-class HistoryAdapter(private val searchHistoryViewModel: SearchHistoryViewModel) :
-    RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
+class AnalyzeHistoryAdapter(private val analyzeHistoryViewModel: AnalyzeHistoryViewModel) :
+    RecyclerView.Adapter<AnalyzeHistoryAdapter.HistoryViewHolder>() {
 
-    private val listHistory = ArrayList<History>()
+    private val listAnalyzeHistory = ArrayList<AnalyzeHistory>()
 
-    fun setListHistory(listHistory: List<History>) {
-        val diffCallback = HistoryDiffCallback(this.listHistory, listHistory)
+    fun setListHistory(listAnalyzeHistory: List<AnalyzeHistory>) {
+        val diffCallback = HistoryDiffCallback(this.listAnalyzeHistory, listAnalyzeHistory)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
-        this.listHistory.clear()
-        this.listHistory.addAll(listHistory)
+        this.listAnalyzeHistory.clear()
+        this.listAnalyzeHistory.addAll(listAnalyzeHistory)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -33,20 +33,20 @@ class HistoryAdapter(private val searchHistoryViewModel: SearchHistoryViewModel)
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        holder.bind(listHistory[position])
+        holder.bind(listAnalyzeHistory[position])
     }
 
     override fun getItemCount(): Int {
-        return listHistory.size
+        return listAnalyzeHistory.size
     }
 
     inner class HistoryViewHolder(private val binding: ItemSearchHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(history: History) {
-            binding.tvAddress.text = history.address
-            binding.tvDate.text = history.date?.let { DateFormatter.getRelativeTime(it) }
+        fun bind(analyzeHistory: AnalyzeHistory) {
+            binding.tvAddress.text = analyzeHistory.address
+            binding.tvDate.text = analyzeHistory.date?.let { DateFormatter.getRelativeTime(it) }
             binding.deleteButton.setOnClickListener {
-                searchHistoryViewModel.delete(history)
+                analyzeHistoryViewModel.delete(analyzeHistory)
             }
 
             binding.root.setOnClickListener {
@@ -60,8 +60,8 @@ class HistoryAdapter(private val searchHistoryViewModel: SearchHistoryViewModel)
                     )
                     intent.putExtra(
                         ResultActivity.LOCATION,
-                        history.latitude?.let { it1 ->
-                            history.longitude?.let { it2 ->
+                        analyzeHistory.latitude?.let { it1 ->
+                            analyzeHistory.longitude?.let { it2 ->
                                 LatLng(
                                     it1,
                                     it2
@@ -76,23 +76,23 @@ class HistoryAdapter(private val searchHistoryViewModel: SearchHistoryViewModel)
 }
 
 class HistoryDiffCallback(
-    private val oldHistoryList: List<History>,
-    private val newHistoryList: List<History>
+    private val oldAnalyzeHistoryList: List<AnalyzeHistory>,
+    private val newAnalyzeHistoryList: List<AnalyzeHistory>
 ) : DiffUtil.Callback() {
 
-    override fun getOldListSize(): Int = oldHistoryList.size
+    override fun getOldListSize(): Int = oldAnalyzeHistoryList.size
 
-    override fun getNewListSize(): Int = newHistoryList.size
+    override fun getNewListSize(): Int = newAnalyzeHistoryList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldHistory = oldHistoryList[oldItemPosition]
-        val newHistory = newHistoryList[newItemPosition]
+        val oldHistory = oldAnalyzeHistoryList[oldItemPosition]
+        val newHistory = newAnalyzeHistoryList[newItemPosition]
         return oldHistory.latitude == newHistory.latitude && oldHistory.longitude == newHistory.longitude && oldHistory.address == newHistory.address
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldHistory = oldHistoryList[oldItemPosition]
-        val newHistory = newHistoryList[newItemPosition]
+        val oldHistory = oldAnalyzeHistoryList[oldItemPosition]
+        val newHistory = newAnalyzeHistoryList[newItemPosition]
         return oldHistory.latitude == newHistory.latitude && oldHistory.longitude == newHistory.longitude && oldHistory.address == newHistory.address
     }
 }

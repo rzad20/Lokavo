@@ -1,39 +1,45 @@
-package com.lokavo.ui.searchHistory
+package com.lokavo.ui.chatBotHistory
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.lokavo.databinding.FragmentHistoryBinding
-import com.lokavo.databinding.FragmentSearchHistoryBinding
-import com.lokavo.ui.adapter.HistoryAdapter
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.lokavo.databinding.FragmentChatBotHistoryBinding
+import com.lokavo.ui.adapter.ChatBotHistoryAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchHistoryFragment : Fragment() {
-    private var _binding: FragmentSearchHistoryBinding? = null
+class ChatBotHistoryFragment : Fragment() {
+    private var _binding: FragmentChatBotHistoryBinding? = null
     private val binding get() = _binding!!
-    private lateinit var adapter: HistoryAdapter
-    private val searchHistoryViewModel: SearchHistoryViewModel by viewModel()
+    private lateinit var adapter: ChatBotHistoryAdapter
+    private val analyzeHistoryViewModel: ChatBotHistoryViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchHistoryBinding.inflate(inflater, container, false)
+        _binding = FragmentChatBotHistoryBinding.inflate(inflater, container, false)
         setupRecyclerView()
-        observeHistory()
+        val userId = Firebase.auth.currentUser?.uid
+        if (userId != null) {
+            observeHistory(userId)
+        }
         binding.btnClear.setOnClickListener {
-            searchHistoryViewModel.deleteAll()
+            if (userId != null) {
+                analyzeHistoryViewModel.deleteAll(userId)
+            }
         }
         return binding.root
     }
 
     private fun setupRecyclerView() {
-        adapter = HistoryAdapter(searchHistoryViewModel)
+        adapter = ChatBotHistoryAdapter(analyzeHistoryViewModel)
         with(binding.rvHistory) {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(
@@ -43,12 +49,12 @@ class SearchHistoryFragment : Fragment() {
                 )
             )
             setHasFixedSize(true)
-            adapter = this@SearchHistoryFragment.adapter
+            adapter = this@ChatBotHistoryFragment.adapter
         }
     }
 
-    private fun observeHistory() {
-        searchHistoryViewModel.getAll().observe(viewLifecycleOwner) { historyList ->
+    private fun observeHistory(userId: String) {
+        analyzeHistoryViewModel.getAll(userId).observe(viewLifecycleOwner) { historyList ->
             historyList?.let { adapter.setListHistory(it) }
             if (adapter.itemCount == 0) {
                 binding.tvEmptyHistory.visibility = View.VISIBLE

@@ -40,12 +40,14 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.lokavo.BuildConfig
 import com.lokavo.R
-import com.lokavo.data.local.entity.History
+import com.lokavo.data.local.entity.AnalyzeHistory
 import com.lokavo.databinding.FragmentMapsBinding
 import com.lokavo.ui.result.ResultActivity
-import com.lokavo.ui.searchHistory.SearchHistoryViewModel
+import com.lokavo.ui.analyzeHistory.AnalyzeHistoryViewModel
 import com.lokavo.utils.DateFormatter
 import com.lokavo.utils.bitmapFromVector
 import com.lokavo.utils.getAddress
@@ -60,7 +62,7 @@ class MapsFragment : Fragment() {
     private var _binding: FragmentMapsBinding? = null
     private val binding get() = _binding!!
     private var currentMarker: Marker? = null
-    private val searchHistoryViewModel: SearchHistoryViewModel by viewModel()
+    private val analyzeHistoryViewModel: AnalyzeHistoryViewModel by viewModel()
     private val mapsViewModel: MapsViewModel by viewModel()
     private val fusedLocationClient by lazy {
         LocationServices.getFusedLocationProviderClient(
@@ -252,14 +254,21 @@ class MapsFragment : Fragment() {
                     val long = currentMarker?.position?.longitude ?: 0.0
                     val address = geocoder.getAddress(lat, long)
                     val addressName = address?.getAddressLine(0) ?: "${lat},${long}"
-                    searchHistoryViewModel.insertOrUpdate(
-                        History(
-                            latitude = lat,
-                            longitude = long,
-                            address = addressName,
-                            date = DateFormatter.getCurrentDate()
-                        )
-                    )
+                    val userId = Firebase.auth.currentUser?.uid
+                    userId.let {
+                        if (it != null) {
+                            analyzeHistoryViewModel.insertOrUpdate(
+                                it,
+                                AnalyzeHistory(
+                                    userId = it,
+                                    latitude = lat,
+                                    longitude = long,
+                                    address = addressName,
+                                    date = DateFormatter.getCurrentDate()
+                                )
+                            )
+                        }
+                    }
                 }
 
                 val intent = Intent(context, ResultActivity::class.java)
@@ -369,7 +378,7 @@ class MapsFragment : Fragment() {
 
         if (resultCode != ConnectionResult.SUCCESS) {
             if (googleApiAvailability.isUserResolvableError(resultCode)) {
-               binding.cardView.visibility = View.GONE
+                binding.cardView.visibility = View.GONE
             }
         }
     }

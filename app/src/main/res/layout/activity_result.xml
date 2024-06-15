@@ -168,12 +168,12 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorPrimary"
                     android:text="Lihat Hasil"
+                    app:shapeAppearanceOverlay="@style/Shape.Button"
                     android:textColor="@color/white"
                     app:layout_constraintTop_toBottomOf="@id/linearKategoriResult" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
-
 
         <!--Detail-->
         <androidx.cardview.widget.CardView

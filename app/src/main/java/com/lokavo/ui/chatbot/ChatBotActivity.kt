@@ -34,7 +34,7 @@ class ChatBotActivity : AppCompatActivity() {
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var chatbotMessages: List<ChatBotMessageResponse>
     private var currentIndex = 0
-    private lateinit var userNane: String
+    private lateinit var userName: String
     private lateinit var photoUrl: Uri
     private lateinit var uid: String
     private lateinit var latLng: LatLng
@@ -52,7 +52,7 @@ class ChatBotActivity : AppCompatActivity() {
 
         latLng = intent.getParcelableExtra(LOCATION) ?: LatLng(0.0, 0.0)
         chatbotMessages = intent.getParcelableArrayListExtra(MESSAGES) ?: emptyList()
-        userNane = Firebase.auth.currentUser?.displayName ?: "User"
+        userName = Firebase.auth.currentUser?.displayName ?: "User"
         photoUrl = Firebase.auth.currentUser?.photoUrl ?: Uri.EMPTY
         uid = Firebase.auth.currentUser?.uid ?: ""
 
@@ -85,7 +85,7 @@ class ChatBotActivity : AppCompatActivity() {
             messages.add(
                 Message(
                     isUser = true,
-                    user = userNane,
+                    user = userName,
                     bot = null,
                     text = question ?: "",
                     photo = photoUrl

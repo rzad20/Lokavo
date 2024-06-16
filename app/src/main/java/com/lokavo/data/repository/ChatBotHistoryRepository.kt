@@ -22,6 +22,7 @@ class ChatBotHistoryRepository(
                 chatBotHistory.longitude!!
             )
             if (existingHistory != null) {
+                existingHistory.chatBotHistory.date = chatBotHistory.date
                 chatBotHistoryDao.updateChatBotHistoryWithDetails(existingHistory.chatBotHistory, details)
             } else {
                 chatBotHistoryDao.insertChatBotHistoryWithDetails(chatBotHistory, details)
@@ -39,6 +40,9 @@ class ChatBotHistoryRepository(
 
     fun getAll(userId: String): LiveData<List<ChatBotHistory>> =
         chatBotHistoryDao.getAll(userId)
+
+    fun findByLatLong(userId: String, latitude: Double, longitude: Double)
+    = chatBotHistoryDao.findByLatLong(userId, latitude, longitude)
 
     companion object {
         @Volatile

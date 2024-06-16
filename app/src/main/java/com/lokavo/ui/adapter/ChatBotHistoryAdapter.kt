@@ -5,14 +5,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.model.LatLng
 import com.lokavo.data.local.entity.ChatBotHistory
+import com.lokavo.data.remote.response.ChatBotMessageResponse
 import com.lokavo.databinding.ItemSearchHistoryBinding
 import com.lokavo.ui.chatBotHistory.ChatBotHistoryViewModel
-import com.lokavo.ui.result.ResultActivity
+import com.lokavo.ui.historyChatbotDetail.HistoryChatbotDetail
 import com.lokavo.utils.DateFormatter
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ChatBotHistoryAdapter(private val chatBotHistoryViewModel: ChatBotHistoryViewModel) :
     RecyclerView.Adapter<ChatBotHistoryAdapter.HistoryViewHolder>() {
@@ -28,7 +32,8 @@ class ChatBotHistoryAdapter(private val chatBotHistoryViewModel: ChatBotHistoryV
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
-        val binding = ItemSearchHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemSearchHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HistoryViewHolder(binding)
     }
 
@@ -49,13 +54,39 @@ class ChatBotHistoryAdapter(private val chatBotHistoryViewModel: ChatBotHistoryV
                 chatBotHistoryViewModel.delete(chatbotHistory)
             }
 
-            binding.root.setOnClickListener {
-                if (!binding.root.context.isOnline()) {
-                    binding.root.showSnackbarOnNoConnection(binding.root.context)
-                } else {
-
+            binding.root.setOnClickListener { it ->
+    if (!binding.root.context.isOnline()) {
+        binding.root.showSnackbarOnNoConnection(binding.root.context)
+    } else {
+        val context = it.context
+        val messages = mutableListOf<ChatBotMessageResponse>()
+        CoroutineScope(Dispatchers.IO).launch {
+            val existingHistory = chatbotHistory.userId?.let { it1 ->
+                chatbotHistory.latitude?.let { it2 ->
+                    chatbotHistory.longitude?.let { it3 ->
+                        chatBotHistoryViewModel.findByLatLong(
+                            it1,
+                            it2,
+                            it3
+                        )
+                    }
                 }
             }
+            existingHistory?.details?.forEach { detail->
+                val message = ChatBotMessageResponse(
+                    answer = detail.answer,
+                    question = detail.question,
+                )
+                messages.add(message)
+            }
+            withContext(Dispatchers.Main) {
+                val intent = Intent(binding.root.context, HistoryChatbotDetail::class.java)
+                intent.putParcelableArrayListExtra(HistoryChatbotDetail.MESSAGES, ArrayList(messages))
+                context.startActivity(intent)
+            }
+        }
+    }
+}
         }
     }
 }

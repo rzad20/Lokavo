@@ -42,33 +42,18 @@ class ChatBotHistoryAdapter(private val chatBotHistoryViewModel: ChatBotHistoryV
 
     inner class HistoryViewHolder(private val binding: ItemSearchHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(analyzeHistory: ChatBotHistory) {
-            binding.tvAddress.text = analyzeHistory.address
-            binding.tvDate.text = analyzeHistory.date?.let { DateFormatter.getRelativeTime(it) }
+        fun bind(chatbotHistory: ChatBotHistory) {
+            binding.tvAddress.text = chatbotHistory.address
+            binding.tvDate.text = chatbotHistory.date?.let { DateFormatter.getRelativeTime(it) }
             binding.deleteButton.setOnClickListener {
-                chatBotHistoryViewModel.delete(analyzeHistory)
+                chatBotHistoryViewModel.delete(chatbotHistory)
             }
 
             binding.root.setOnClickListener {
                 if (!binding.root.context.isOnline()) {
                     binding.root.showSnackbarOnNoConnection(binding.root.context)
                 } else {
-                    val context = it.context
-                    val intent = Intent(
-                        context,
-                        ResultActivity::class.java
-                    )
-                    intent.putExtra(
-                        ResultActivity.LOCATION,
-                        analyzeHistory.latitude?.let { it1 ->
-                            analyzeHistory.longitude?.let { it2 ->
-                                LatLng(
-                                    it1,
-                                    it2
-                                )
-                            }
-                        })
-                    context.startActivity(intent)
+
                 }
             }
         }

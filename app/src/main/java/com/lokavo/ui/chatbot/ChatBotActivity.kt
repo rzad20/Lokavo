@@ -1,18 +1,20 @@
 package com.lokavo.ui.chatbot
 
-import android.graphics.drawable.AnimatedVectorDrawable
+import android.annotation.SuppressLint
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.auth.FirebaseAuth
-import com.lokavo.data.Result
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.lokavo.data.local.entity.ChatBotHistory
+import com.lokavo.data.local.entity.ChatBotHistoryDetail
+import com.lokavo.data.remote.response.ChatBotMessageResponse
 import com.lokavo.databinding.ActivityChatBotBinding
 import com.lokavo.ui.adapter.ChatAdapter
 import com.lokavo.ui.adapter.Message
@@ -23,134 +25,116 @@ import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
 import com.lokavo.utils.showSnackbarOnNoConnection
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ChatBotActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBotBinding
-    private val viewModel: ChatBotViewModel by viewModel()
-    private val chatBotHistoryViewModel: ChatBotHistoryViewModel by viewModel()
-    private var currentQuestionIndex = 1
     private val messages = mutableListOf<Message>()
     private lateinit var chatAdapter: ChatAdapter
-    private var userText = ""
-    private var botText = ""
+    private lateinit var chatbotMessages: List<ChatBotMessageResponse>
+    private var currentIndex = 0
+    private lateinit var userNane: String
+    private lateinit var photoUrl: Uri
+    private lateinit var uid: String
     private lateinit var latLng: LatLng
     private val geocoder by lazy { Geocoder(this, Locale.getDefault()) }
+    private val chatBotHistoryViewModel: ChatBotHistoryViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBotBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
         }
 
         latLng = intent.getParcelableExtra(LOCATION) ?: LatLng(0.0, 0.0)
+        chatbotMessages = intent.getParcelableArrayListExtra(MESSAGES) ?: emptyList()
+        userNane = Firebase.auth.currentUser?.displayName ?: "User"
+        photoUrl = Firebase.auth.currentUser?.photoUrl ?: Uri.EMPTY
+        uid = Firebase.auth.currentUser?.uid ?: ""
 
         chatAdapter = ChatAdapter(messages)
-
         binding.rvMessages.adapter = chatAdapter
         binding.rvMessages.layoutManager = LinearLayoutManager(this)
 
-        val user = FirebaseAuth.getInstance().currentUser
-        val uid = user?.uid
-
-        val loadingDrawable = binding.ivLoading.drawable as AnimatedVectorDrawable
-        loadingDrawable.start()
-
-        if (uid != null && messages.isEmpty()) {
-            if (!this.isOnline()) {
-                binding.root.showSnackbarOnNoConnection(this)
-            } else {
-                getChatBotMessage(uid, currentQuestionIndex)
-            }
+        if (chatbotMessages.isNotEmpty()) {
+            binding.btnNext.text = chatbotMessages[currentIndex].question
+        } else {
+            binding.messageChoice.visibility = View.GONE
+            binding.root.showSnackbar("Terjadi Kesalahan")
         }
 
         binding.btnNext.setOnClickListener {
             if (!this.isOnline()) {
                 binding.root.showSnackbarOnNoConnection(this)
             } else {
-                if (uid != null) {
-                    binding.messageChoice.visibility = View.GONE
-                    messages.add(
-                        Message(
-                            user = user.displayName,
-                            text = userText,
-                            isUser = true,
-                            bot = null,
-                            photo = user.photoUrl
-                        )
-                    )
-                    chatAdapter.notifyItemInserted(messages.size - 1)
-
-                    messages.add(
-                        Message(
-                            user = null,
-                            text = botText,
-                            isUser = false,
-                            bot = "Chatbot",
-                            photo = null
-                        )
-                    )
-                    chatAdapter.notifyItemInserted(messages.size - 1)
-                    if (currentQuestionIndex < 3) {
-                        currentQuestionIndex++
-                        getChatBotMessage(uid, currentQuestionIndex)
-                    } else {
-                        lifecycleScope.launch {
-                            val lat = latLng.latitude
-                            val long = latLng.longitude
-                            val address = geocoder.getAddress(lat, long)
-                            val addressName = address?.getAddressLine(0) ?: "${lat},${long}"
-                                chatBotHistoryViewModel.insertOrUpdate(
-                                    uid,
-                                    ChatBotHistory(
-                                        userId = uid,
-                                        latitude = lat,
-                                        longitude = long,
-                                        address = addressName,
-                                        date = DateFormatter.getCurrentDate()
-                                    )
-                                )
-                        }
-                    }
-                    loadingDrawable.stop()
-                    binding.ivLoading.visibility = View.GONE
-                }
+                nextQuestion()
             }
         }
     }
 
-    private fun getChatBotMessage(uid: String, index: Int) {
-        viewModel.getChatBotMessage(uid, index).observe(this) { res ->
-            when (res) {
-                is Result.Loading -> {
-                    binding.progress.visibility = View.VISIBLE
-                    binding.btnNext.text = ""
-                    binding.messageChoice.visibility = View.GONE
-                }
+    @SuppressLint("NotifyDataSetChanged")
+    private fun nextQuestion() {
+        if (currentIndex < chatbotMessages.size) {
+            val question = chatbotMessages[currentIndex].question
+            val answer = chatbotMessages[currentIndex].answer
 
-                is Result.Error -> {
-                    binding.progress.visibility = View.GONE
-                    binding.root.showSnackbar(res.error)
-                }
+            messages.add(
+                Message(
+                    isUser = true,
+                    user = userNane,
+                    bot = null,
+                    text = question ?: "",
+                    photo = photoUrl
+                )
+            )
+            messages.add(
+                Message(
+                    isUser = false,
+                    user = null,
+                    bot = "ChatBot",
+                    text = answer ?: "",
+                    photo = null
+                )
+            )
+            chatAdapter.notifyDataSetChanged()
+            binding.rvMessages.scrollToPosition(messages.size - 1)
 
-                is Result.Success -> {
-                    res.data.answer?.let {
-                        botText = it
-                    }
-                    res.data.question?.let {
-                        userText = it
-                    }
-                    binding.progress.visibility = View.GONE
-                    binding.btnNext.text = res.data.question
-                    binding.messageChoice.visibility = View.VISIBLE
-                }
+            currentIndex++
+            if (currentIndex < chatbotMessages.size) {
+                binding.btnNext.text = chatbotMessages[currentIndex].question
+            } else {
+                binding.messageChoice.visibility = View.GONE
+                saveChatHistory()            }
+        }
+    }
 
-                else -> {}
-            }
+    private fun saveChatHistory() {
+        val chatBotHistoryDetails = chatbotMessages.map { message ->
+            ChatBotHistoryDetail(
+                question = message.question ?: "",
+                answer = message.answer ?: ""
+            )
+        }
+        lifecycleScope.launch {
+            val lat = latLng.latitude
+            val long = latLng.longitude
+            val address = geocoder.getAddress(lat, long)
+            val addressName = address?.getAddressLine(0) ?: "${lat},${long}"
+            chatBotHistoryViewModel.insertOrUpdate(
+                uid,
+                ChatBotHistory(
+                    userId = uid,
+                    latitude = lat,
+                    longitude = long,
+                    address = addressName,
+                    date = DateFormatter.getCurrentDate()
+                ),
+                chatBotHistoryDetails
+            )
         }
     }
 
@@ -167,5 +151,6 @@ class ChatBotActivity : AppCompatActivity() {
 
     companion object {
         const val LOCATION = "location"
+        const val MESSAGES = "messages"
     }
 }

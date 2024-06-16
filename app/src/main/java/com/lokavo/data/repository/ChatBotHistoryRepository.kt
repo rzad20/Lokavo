@@ -2,6 +2,7 @@ package com.lokavo.data.repository
 
 import androidx.lifecycle.LiveData
 import com.lokavo.data.local.entity.ChatBotHistory
+import com.lokavo.data.local.entity.ChatBotHistoryDetail
 import com.lokavo.data.local.room.ChatBotHistoryDao
 import java.util.concurrent.ExecutorService
 
@@ -9,22 +10,21 @@ class ChatBotHistoryRepository(
     private val chatBotHistoryDao: ChatBotHistoryDao,
     private val executorService: ExecutorService
 ) {
-    fun insertOrUpdate(userId: String, chatBotHistory: ChatBotHistory) {
+    fun insertOrUpdate(
+        userId: String,
+        chatBotHistory: ChatBotHistory,
+        details: List<ChatBotHistoryDetail>
+    ) {
         executorService.execute {
-            val existingHistory = chatBotHistory.latitude?.let {
-                chatBotHistory.longitude?.let { it1 ->
-                    chatBotHistoryDao.findByLatLong(
-                        userId,
-                        it,
-                        it1
-                    )
-                }
-            }
+            val existingHistory = chatBotHistoryDao.findByLatLong(
+                userId,
+                chatBotHistory.latitude!!,
+                chatBotHistory.longitude!!
+            )
             if (existingHistory != null) {
-                existingHistory.date = chatBotHistory.date
-                chatBotHistoryDao.update(existingHistory)
+                chatBotHistoryDao.updateChatBotHistoryWithDetails(existingHistory.chatBotHistory, details)
             } else {
-                chatBotHistoryDao.insert(chatBotHistory)
+                chatBotHistoryDao.insertChatBotHistoryWithDetails(chatBotHistory, details)
             }
         }
     }

@@ -17,7 +17,7 @@ class ChatBotHistoryFragment : Fragment() {
     private var _binding: FragmentChatBotHistoryBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: ChatBotHistoryAdapter
-    private val analyzeHistoryViewModel: ChatBotHistoryViewModel by viewModel()
+    private val chatBotistoryViewModel: ChatBotHistoryViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,14 +32,14 @@ class ChatBotHistoryFragment : Fragment() {
         }
         binding.btnClear.setOnClickListener {
             if (userId != null) {
-                analyzeHistoryViewModel.deleteAll(userId)
+                chatBotistoryViewModel.deleteAll(userId)
             }
         }
         return binding.root
     }
 
     private fun setupRecyclerView() {
-        adapter = ChatBotHistoryAdapter(analyzeHistoryViewModel)
+        adapter = ChatBotHistoryAdapter(chatBotistoryViewModel)
         with(binding.rvHistory) {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(
@@ -54,7 +54,7 @@ class ChatBotHistoryFragment : Fragment() {
     }
 
     private fun observeHistory(userId: String) {
-        analyzeHistoryViewModel.getAll(userId).observe(viewLifecycleOwner) { historyList ->
+        chatBotistoryViewModel.getAll(userId).observe(viewLifecycleOwner) { historyList ->
             historyList?.let { adapter.setListHistory(it) }
             if (adapter.itemCount == 0) {
                 binding.tvEmptyHistory.visibility = View.VISIBLE

@@ -16,9 +16,6 @@
         android:name="com.lokavo.ui.article.ArticleFragment"
         android:label="fragment_article"
         tools:layout="@layout/fragment_article">
-        <action
-            android:id="@+id/action_navigation_article_to_articleWebView"
-            app:destination="@id/articleWebView" />
     </fragment>
 
     <fragment
@@ -52,20 +49,4 @@
         android:label="HistoryFragment"
         tools:layout="@layout/fragment_history"/>
 
-    <fragment
-        android:id="@+id/articleWebView"
-        android:name="com.lokavo.ui.article.ArticleWebView"
-        android:label="ArticleWebView"
-        tools:layout="@layout/fragment_article_web_view">
-        <argument
-            android:name="url"
-            app:argType="string"
-            app:nullable="true" />
-        <action
-            android:id="@+id/action_articleWebView_to_navigation_article"
-            app:destination="@id/navigation_article"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/navigation_article"
-            app:popUpToInclusive="true" />
-    </fragment>
 </navigation>

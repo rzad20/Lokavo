@@ -73,4 +73,9 @@
     <string name="chatbot_name_feature">Dapatkan insight kompetitor disini</string>
     <string name="top_3_kompetitor">Top 3 Kompetitor</string>
     <string name="belum_ada_chat_bot">Belum ada Riwayat ChatBot.</string>
+    <string name="visit_times">%1$s Jam</string>
+    <string name="place_location">Medan, Sumatera Utara</string>
+    <string name="popular_times">Waktu Paling Populer</string>
+    <string name="average_time">Jam Rata Rata Kunjungan</string>
+    <string name="rating_count">%1$d (%2$d)</string>
 </resources>

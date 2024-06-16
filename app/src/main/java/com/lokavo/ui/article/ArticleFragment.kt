@@ -1,5 +1,6 @@
 package com.lokavo.ui.article
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -64,7 +65,12 @@ class ArticleFragment : Fragment() {
     }
 
     private fun setArticlesData(newsData: List<ListItem?>?) {
-        val adapter = ArticleAdapter(requireActivity())
+        val adapter = ArticleAdapter(requireActivity()) { url ->
+            val intent = Intent(requireContext(), ArticleWebViewActivity::class.java).apply {
+                putExtra(ArticleWebViewActivity.EXTRA_URL, url)
+            }
+            startActivity(intent)
+        }
         adapter.submitList(newsData)
         binding.rvArticle.adapter = adapter
     }

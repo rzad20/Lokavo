@@ -2,13 +2,9 @@ package com.lokavo.ui.adapter
 
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.lokavo.R
 import com.lokavo.databinding.ItemChatBotMessageBinding
 import com.lokavo.databinding.ItemUserMessageBinding
 
@@ -29,8 +25,11 @@ class ChatAdapter(
         private const val VIEW_TYPE_CHATBOT_MESSAGE = 2
     }
 
-    class UserMessageViewHolder(val binding: ItemUserMessageBinding) : RecyclerView.ViewHolder(binding.root)
-    class ChatBotMessageViewHolder(val binding: ItemChatBotMessageBinding) : RecyclerView.ViewHolder(binding.root)
+    class UserMessageViewHolder(val binding: ItemUserMessageBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
+    class ChatBotMessageViewHolder(val binding: ItemChatBotMessageBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun getItemViewType(position: Int): Int {
         return if (messages[position].isUser) VIEW_TYPE_USER_MESSAGE else VIEW_TYPE_CHATBOT_MESSAGE
@@ -38,10 +37,15 @@ class ChatAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_USER_MESSAGE) {
-            val binding = ItemUserMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding =
+                ItemUserMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             UserMessageViewHolder(binding)
         } else {
-            val binding = ItemChatBotMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = ItemChatBotMessageBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
             ChatBotMessageViewHolder(binding)
         }
     }

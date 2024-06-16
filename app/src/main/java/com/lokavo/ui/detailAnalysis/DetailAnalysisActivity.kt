@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.Button
 import com.lokavo.data.Result
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +18,7 @@ import com.anychart.charts.Pie
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.lokavo.R
+import com.lokavo.data.remote.response.ChatBotMessageResponse
 import com.lokavo.data.remote.response.ModelingResultsResponse
 import com.lokavo.databinding.ActivityDetailAnalysisBinding
 import com.lokavo.ui.adapter.TopCompetitorAdapter
@@ -94,16 +94,62 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
                 }
 
                 is Result.Success -> {
-                    hideLoading()
-                    val intent = Intent(this, ChatBotActivity::class.java)
-                    intent.putExtra(ChatBotActivity.LOCATION, LatLng(latitude, longitude))
-                    startActivity(intent)
+                    fetchChatBotMessages(uid, latitude, longitude)
                 }
 
                 else -> {}
             }
         }
+    }
 
+    private fun fetchChatBotMessages(uid: String, latitude: Double, longitude: Double) {
+        val messages = mutableListOf<ChatBotMessageResponse>()
+        val indices = listOf(1, 2, 3)
+
+        val messageFetchers = indices.map { index ->
+            viewModel.getChatBotMessage(uid, index)
+        }
+
+        messageFetchers.forEachIndexed { _, liveData ->
+            liveData.observe(this) { res ->
+                when (res) {
+                    is Result.Loading -> {
+                      showLoading()
+                    }
+
+                    is Result.Error -> {
+                        hideLoading()
+                        binding.root.showSnackbar(res.error)
+                    }
+
+                    is Result.Success -> {
+                        hideLoading()
+                        val message = ChatBotMessageResponse(
+                            answer = res.data.answer,
+                            question = res.data.question,
+                        )
+                        messages.add(message)
+                        if (messages.size == indices.size) {
+                            navigateToChatBotActivity(latitude, longitude, messages)
+                        }
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    private fun navigateToChatBotActivity(
+        latitude: Double,
+        longitude: Double,
+        messages: List<ChatBotMessageResponse>
+    ) {
+        val intent = Intent(this, ChatBotActivity::class.java).apply {
+            putExtra(ChatBotActivity.LOCATION, LatLng(latitude, longitude))
+            putParcelableArrayListExtra(ChatBotActivity.MESSAGES, ArrayList(messages))
+        }
+        startActivity(intent)
     }
 
     private fun setupPieChart(anyChartView: AnyChartView) {
@@ -179,8 +225,4 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
         binding.chatbotNavigation.isEnabled = true
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        this.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-    }
 }

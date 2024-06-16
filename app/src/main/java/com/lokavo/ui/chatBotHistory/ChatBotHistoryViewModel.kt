@@ -3,6 +3,7 @@ package com.lokavo.ui.chatBotHistory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.lokavo.data.local.entity.ChatBotHistory
+import com.lokavo.data.local.entity.ChatBotHistoryDetail
 import com.lokavo.data.repository.ChatBotHistoryRepository
 
 class ChatBotHistoryViewModel(private val chatBotHistoryRepository: ChatBotHistoryRepository) : ViewModel() {
@@ -10,8 +11,8 @@ class ChatBotHistoryViewModel(private val chatBotHistoryRepository: ChatBotHisto
         chatBotHistoryRepository.delete(chatBotHistory)
     }
 
-    fun insertOrUpdate(userId: String, chatBotHistory: ChatBotHistory) {
-        chatBotHistoryRepository.insertOrUpdate(userId, chatBotHistory)
+    fun insertOrUpdate(userId: String, chatBotHistory: ChatBotHistory, chatBotHiastoryDetail: List<ChatBotHistoryDetail>) {
+        chatBotHistoryRepository.insertOrUpdate(userId, chatBotHistory, chatBotHiastoryDetail)
     }
 
     fun getAll(userId: String): LiveData<List<ChatBotHistory>> {

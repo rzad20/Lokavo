@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import com.lokavo.data.Result
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.anychart.AnyChart
@@ -18,6 +18,7 @@ import com.anychart.charts.Pie
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.lokavo.R
+import com.lokavo.data.Result
 import com.lokavo.data.remote.response.ChatBotMessageResponse
 import com.lokavo.data.remote.response.ModelingResultsResponse
 import com.lokavo.databinding.ActivityDetailAnalysisBinding
@@ -59,7 +60,6 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = TopCompetitorAdapter(result.top, this)
 
-
         when (result.summaryHeader?.lowercase()) {
             "highly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconhighly)
             "fairly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconfairly)
@@ -94,7 +94,7 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
                 }
 
                 is Result.Success -> {
-                    fetchChatBotMessages(uid, latitude, longitude)
+                    fetchChatBotMessagesSequentially(uid, latitude, longitude)
                 }
 
                 else -> {}
@@ -102,42 +102,72 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
         }
     }
 
-    private fun fetchChatBotMessages(uid: String, latitude: Double, longitude: Double) {
+    private fun fetchChatBotMessagesSequentially(uid: String, latitude: Double, longitude: Double) {
         val messages = mutableListOf<ChatBotMessageResponse>()
-        val indices = listOf(1, 2, 3)
 
-        val messageFetchers = indices.map { index ->
-            viewModel.getChatBotMessage(uid, index)
-        }
-
-        messageFetchers.forEachIndexed { _, liveData ->
-            liveData.observe(this) { res ->
-                when (res) {
-                    is Result.Loading -> {
-                      showLoading()
-                    }
-
-                    is Result.Error -> {
-                        hideLoading()
-                        binding.root.showSnackbar(res.error)
-                    }
-
-                    is Result.Success -> {
-                        hideLoading()
-                        val message = ChatBotMessageResponse(
-                            answer = res.data.answer,
-                            question = res.data.question,
+        fetchChatBotMessage(uid, 1).observe(this) { res1 ->
+            when (res1) {
+                is Result.Success -> {
+                    messages.add(
+                        ChatBotMessageResponse(
+                            answer = res1.data.answer,
+                            question = res1.data.question,
                         )
-                        messages.add(message)
-                        if (messages.size == indices.size) {
-                            navigateToChatBotActivity(latitude, longitude, messages)
+                    )
+                    fetchChatBotMessage(uid, 2).observe(this) { res2 ->
+                        when (res2) {
+                            is Result.Success -> {
+                                messages.add(
+                                    ChatBotMessageResponse(
+                                        answer = res2.data.answer,
+                                        question = res2.data.question,
+                                    )
+                                )
+                                fetchChatBotMessage(uid, 3).observe(this) { res3 ->
+                                    when (res3) {
+                                        is Result.Success -> {
+                                            messages.add(
+                                                ChatBotMessageResponse(
+                                                    answer = res3.data.answer,
+                                                    question = res3.data.question,
+                                                )
+                                            )
+                                            hideLoading()
+                                            navigateToChatBotActivity(latitude, longitude, messages)
+                                        }
+
+                                        is Result.Error -> {
+                                            hideLoading()
+                                            binding.root.showSnackbar(res3.error)
+                                        }
+
+                                        else -> {}
+                                    }
+                                }
+                            }
+
+                            is Result.Error -> {
+                                hideLoading()
+                                binding.root.showSnackbar(res2.error)
+                            }
+
+                            else -> {}
                         }
                     }
-
-                    else -> {}
                 }
+
+                is Result.Error -> {
+                    hideLoading()
+                    binding.root.showSnackbar(res1.error)
+                }
+
+                else -> {}
             }
         }
+    }
+
+    private fun fetchChatBotMessage(uid: String, index: Int): LiveData<Result<ChatBotMessageResponse>?> {
+        return viewModel.getChatBotMessage(uid, index)
     }
 
     private fun navigateToChatBotActivity(
@@ -164,10 +194,6 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
         pie.data(data)
 
         anyChartView.setChart(pie)
-    }
-
-    companion object {
-        const val RESULT = "result"
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -225,4 +251,7 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
         binding.chatbotNavigation.isEnabled = true
     }
 
+    companion object {
+        const val RESULT = "result"
+    }
 }

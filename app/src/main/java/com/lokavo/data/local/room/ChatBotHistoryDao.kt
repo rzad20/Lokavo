@@ -46,10 +46,10 @@ interface ChatBotHistoryDao {
         chatBotHistory: ChatBotHistory,
         details: List<ChatBotHistoryDetail>
     ) {
-        delete(chatBotHistory)
-        val historyId = insert(chatBotHistory)
+        update(chatBotHistory)
+        chatBotHistory.id?.let { deleteDetailsByHistoryId(it) }
         details.forEach { detail ->
-            detail.historyId = historyId
+            detail.historyId = chatBotHistory.id
             insertDetail(detail)
         }
     }
@@ -59,4 +59,7 @@ interface ChatBotHistoryDao {
 
     @Query("DELETE FROM chat_bot_history WHERE user_id = :userId")
     fun deleteAll(userId: String)
+
+    @Query("DELETE FROM chat_bot_history_detail WHERE historyId = :historyId")
+    fun deleteDetailsByHistoryId(historyId: Long)
 }

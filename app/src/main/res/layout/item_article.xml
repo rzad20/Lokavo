@@ -45,11 +45,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingTop="4dp"
+            android:paddingHorizontal="10dp"
             android:text="@string/article_title"
             android:textColor="@color/colorPrimary"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/guideline_right"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/guideline_left"
             app:layout_constraintTop_toBottomOf="@id/articleImage" />
 
@@ -57,7 +59,8 @@
             android:id="@+id/articleShortDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingVertical="4dp"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="10dp"
             android:text="@string/article_detail"
             android:textColor="@color/black"
             android:textSize="12sp"

@@ -3,20 +3,18 @@ package com.lokavo.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lokavo.data.remote.response.ListItem
 import com.lokavo.databinding.ItemArticleBinding
-import com.lokavo.ui.article.ArticleFragmentDirections
-import com.lokavo.ui.article.ArticleWebView
 
-class ArticleAdapter(private val activity: FragmentActivity) : ListAdapter<ListItem, ArticleAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class ArticleAdapter(private val activity: FragmentActivity,
+    private val onItemClick : (String?) -> Unit) : ListAdapter<ListItem, ArticleAdapter.MyViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyViewHolder(binding, activity)
+        return MyViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -24,7 +22,7 @@ class ArticleAdapter(private val activity: FragmentActivity) : ListAdapter<ListI
         holder.bind(news)
     }
 
-    class MyViewHolder(private val binding: ItemArticleBinding, private val activity: FragmentActivity) :
+    class MyViewHolder(private val binding: ItemArticleBinding, private val onItemClick: (String?) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(article: ListItem) {
             binding.articleTitle.text = article.headline
@@ -35,8 +33,7 @@ class ArticleAdapter(private val activity: FragmentActivity) : ListAdapter<ListI
 
             binding.root.setOnClickListener {
                 val url = article.link
-                val action = ArticleFragmentDirections.actionNavigationArticleToArticleWebView(url)
-                binding.root.findNavController().navigate(action)
+                onItemClick(url)
             }
         }
     }

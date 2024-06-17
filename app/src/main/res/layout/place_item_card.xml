@@ -1,101 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@color/lightBlue"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:background="@drawable/label_background">
-        <!-- Guideline to align the text elements -->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="100dp" />
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/placeImage"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:srcCompat="@drawable/ic_person"
+            android:layout_height="200dp"
+            android:contentDescription="@string/place_image_description"
             android:scaleType="centerCrop"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/guideline"
-            android:contentDescription="@string/place_image" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_marginStart="5dp"
-            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/ic_article" />
 
-            <TextView
-                android:id="@+id/txtPlaceName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/btn_detail"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/place_name" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/textContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#CCE6F4F1"
+            android:padding="14dp"
+            app:layout_constraintBottom_toBottomOf="@id/placeImage"
+            app:layout_constraintEnd_toEndOf="@id/placeImage"
+            app:layout_constraintStart_toStartOf="@id/placeImage"
+            app:layout_constraintTop_toTopOf="@id/placeImage">
 
             <LinearLayout
-                android:id="@+id/ratingContainer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_detail"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtPlaceName">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/txtRating"
+                    android:id="@+id/txtPlaceName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    tools:text="4,5" />
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="Place Name" />
 
-                <ImageView
-                    android:id="@+id/starIcon"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_star" />
+                <LinearLayout
+                    android:id="@+id/ratingContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:id="@+id/txtRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        tools:text="4.5" />
+
+                    <ImageView
+                        android:id="@+id/starIcon"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_star"/>
+
+                    <TextView
+                        android:id="@+id/txtReviewCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        tools:text="(220 Reviews)" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtReviewCount"
+                    android:id="@+id/txtKategori"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    tools:text="(220 Ratings)" />
-
+                    android:layout_marginTop="4dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    tools:text="Category" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtKategori"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="11sp"
-                app:layout_constraintEnd_toEndOf="@+id/ratingContainer"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ratingContainer"
-                tools:text="Kategori" />
 
             <Button
                 android:id="@+id/btn_detail"
@@ -109,7 +110,5 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/Shape.Button" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

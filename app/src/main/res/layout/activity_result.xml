@@ -156,7 +156,7 @@
                             android:id="@+id/txtDetailMessage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Klik Lihat Hasil untuk analisa selengkapnya"
+                            android:text="@string/click_result"
                             android:textColor="@color/black"
                             android:textSize="11sp" />
                     </LinearLayout>
@@ -167,7 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorPrimary"
-                    android:text="Lihat Hasil"
+                    android:text="@string/click_result_button"
                     app:shapeAppearanceOverlay="@style/Shape.Button"
                     android:textColor="@color/white"
                     app:layout_constraintTop_toBottomOf="@id/linearKategoriResult" />

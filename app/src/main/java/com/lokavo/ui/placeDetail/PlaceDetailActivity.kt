@@ -37,8 +37,13 @@ class PlaceDetailActivity : AppCompatActivity() {
             binding.placereview.text = getString(R.string.ulasan, it.reviews)
             Glide.with(this).load(it.featuredImage)
                 .into(binding.placeImage)
-            val popularTimes = it.mostPopularTimes?.joinToString("\n") { timeItem -> timeItem?.timeLabel ?: "" } ?: "Tidak Ada Data"
-            binding.txtPopular.text = popularTimes
+            val popularTimes = it.mostPopularTimes?.joinToString(", ") { timeItem -> timeItem?.timeLabel ?: "" }
+            val visitTimesText = if (!popularTimes.isNullOrEmpty()) {
+                getString(R.string.visit_times, popularTimes)
+            } else {
+                getString(R.string.no_popular_times)
+            }
+            binding.txtPopular.text = visitTimesText
 
             it.reviewsPerRating?.let { reviewsPerRating ->
                 binding.rating5.text = getString(R.string.rating_count, 5, reviewsPerRating.five ?: 0)

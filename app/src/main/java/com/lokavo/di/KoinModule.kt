@@ -11,7 +11,6 @@ import com.lokavo.data.repository.ChatBotHistoryRepository
 import com.lokavo.data.repository.ChatBotRepository
 import com.lokavo.data.repository.ProfileRepository
 import com.lokavo.ui.article.ArticleViewModel
-import com.lokavo.ui.chatbot.ChatBotViewModel
 import com.lokavo.ui.detailAnalysis.DetailAnalysisViewModel
 import com.lokavo.ui.analyzeHistory.AnalyzeHistoryViewModel
 import com.lokavo.ui.chatBotHistory.ChatBotHistoryViewModel
@@ -43,7 +42,6 @@ val appModule = module {
 
     viewModel { ResultViewModel(get()) }
     viewModel { DetailAnalysisViewModel(get()) }
-    viewModel { ChatBotViewModel(get()) }
     viewModel { AnalyzeHistoryViewModel(get()) }
     viewModel { ChatBotHistoryViewModel(get()) }
     viewModel { MapsViewModel() }

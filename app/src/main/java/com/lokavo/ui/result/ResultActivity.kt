@@ -86,11 +86,6 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
             moveWithObjectIntent.putExtra(DetailAnalysisActivity.RESULT, result)
             startActivity(moveWithObjectIntent)
         }
-
-        when (result.summaryHeader?.lowercase()) {
-            "highly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconhighly)
-            "fairly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconfairly)
-        }
     }
 
     private fun getModelingResults(latLng: LatLng) {
@@ -161,6 +156,9 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                             val cu = CameraUpdateFactory.newLatLngBounds(bounds, padding)
 
                             withContext(Dispatchers.Main) {
+                                when (result.summaryHeader?.lowercase()) {
+                                    "highly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconhighly)
+                                    "fairly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconfairly) }
                                 googleMap.animateCamera(cu)
                                 currentMarker?.remove()
                                 currentMarker = googleMap.addMarker(

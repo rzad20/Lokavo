@@ -1,6 +1,7 @@
 package com.lokavo.ui.chatbot
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
@@ -60,6 +61,9 @@ class ChatBotActivity : AppCompatActivity() {
         binding.rvMessages.adapter = chatAdapter
         binding.rvMessages.layoutManager = LinearLayoutManager(this)
 
+        val loadingDrawable = binding.ivLoading.drawable as AnimatedVectorDrawable
+        loadingDrawable.start()
+
         if (chatbotMessages.isNotEmpty()) {
             binding.btnNext.text = chatbotMessages[currentIndex].question
         } else {
@@ -71,6 +75,8 @@ class ChatBotActivity : AppCompatActivity() {
             if (!this.isOnline()) {
                 binding.root.showSnackbarOnNoConnection(this)
             } else {
+                loadingDrawable.stop()
+                binding.ivLoading.visibility = View.GONE
                 nextQuestion()
             }
         }

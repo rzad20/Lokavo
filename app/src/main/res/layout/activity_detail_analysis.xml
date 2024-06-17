@@ -111,7 +111,7 @@
                             android:id="@+id/txtDetailMessage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Detail Analisa Terdapat dibawah"
+                            android:text="@string/analyze_detail_info"
                             android:textColor="@color/black"
                             android:textSize="10sp" />
                     </LinearLayout>
@@ -161,6 +161,7 @@
                 android:layout_marginBottom="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/topThreeTitle"
                 tools:itemCount="3"
                 tools:listitem="@layout/place_item_card" />
@@ -181,7 +182,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:paddingVertical="8dp">
+                    android:paddingVertical="8dp"
+                    android:paddingHorizontal="8dp">
 
                     <ImageView
                         android:id="@+id/animated_image_button"
@@ -195,7 +197,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:orientation="vertical"
-                        android:paddingStart="8dp">
+                        android:paddingVertical="4dp">
 
                         <TextView
                             android:id="@+id/chatbot_title"

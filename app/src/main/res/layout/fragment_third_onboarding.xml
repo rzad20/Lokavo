@@ -55,7 +55,7 @@
         android:id="@+id/finishText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Finish"
+        android:text="@string/finish"
         android:textSize="22sp"
         android:padding="30dp"
         android:textStyle="bold"

@@ -22,7 +22,6 @@ import com.lokavo.data.remote.response.ModelingResultsResponse
 import com.lokavo.databinding.ActivityResultBinding
 import com.lokavo.ui.detailAnalysis.DetailAnalysisActivity
 import com.lokavo.utils.bitmapFromVector
-import com.lokavo.utils.extractRelevantText
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
 import com.lokavo.utils.showSnackbarOnNoConnection
@@ -89,92 +88,93 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun getModelingResults(latLng: LatLng) {
-        viewModel.getModelingResults(latLng.latitude, latLng.longitude).observe(this) { res ->
-            if (!this.isOnline()) {
-                binding.root.showSnackbarOnNoConnection(this)
-                binding.progress.visibility = View.GONE
-                return@observe
-            }
-            if (res != null) {
-                when (res) {
-                    is Result.Loading -> {
-                        binding.progress.visibility = View.VISIBLE
-                    }
-
-                    is Result.Error -> {
-                        if (res.error == "Request timeout") {
-                            binding.root.showSnackbar(
-                                message = "Request timeout",
-                                actionText = "Coba Lagi",
-                                action = {
-                                    getModelingResults(this.latLng)
-                                }
-                            )
-                        } else {
-                            binding.root.showSnackbar(res.error)
+            viewModel.getModelingResults(latLng.latitude, latLng.longitude).observe(this) { res ->
+                if (!this.isOnline()) {
+                    binding.root.showSnackbarOnNoConnection(this)
+                    binding.progress.visibility = View.GONE
+                    return@observe
+                }
+                if (res != null) {
+                    when (res) {
+                        is Result.Loading -> {
+                            binding.progress.visibility = View.VISIBLE
                         }
-                        binding.progress.visibility = View.GONE
-                    }
 
-                    is Result.Empty -> {
-                        binding.root.showSnackbar(getString(R.string.not_found))
-                        binding.progress.visibility = View.GONE
-                    }
-
-                    is Result.Success -> {
-                        result = ModelingResultsResponse(
-                            longInterpretation = res.data.longInterpretation,
-                            summaryHeader = res.data.summaryHeader,
-                            clusterProportion = res.data.clusterProportion,
-                            latLng = LatLng(this.latLng.latitude, this.latLng.longitude),
-                            top = res.data.top
-                        )
-                        CoroutineScope(Dispatchers.IO).launch {
-                            val builder = LatLngBounds.builder()
-                            res.data.poiMap?.forEach { place ->
-                                val placeLatLng = LatLng(
-                                    place?.coordinates?.latitude ?: 0.0,
-                                    place?.coordinates?.longitude ?: 0.0
-                                )
-                                withContext(Dispatchers.Main) {
-                                    val marker = googleMap.addMarker(
-                                        MarkerOptions()
-                                            .position(placeLatLng)
-                                            .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_blue))
-                                    )
-                                    if (marker != null) {
-                                        marker.tag = place?.placeId
-                                        markers.add(marker)
+                        is Result.Error -> {
+                            if (res.error == "Request timeout") {
+                                binding.root.showSnackbar(
+                                    message = "Request timeout",
+                                    actionText = "Coba Lagi",
+                                    action = {
+                                        getModelingResults(this.latLng)
                                     }
-                                }
-                                builder.include(placeLatLng)
-                            }
-                            binding.txtSentimentCategory.text = res.data.summaryHeader
-
-                            val bounds = builder.build()
-                            val padding = 50
-                            val cu = CameraUpdateFactory.newLatLngBounds(bounds, padding)
-
-                            withContext(Dispatchers.Main) {
-                                when (result.summaryHeader?.lowercase()) {
-                                    "highly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconhighly)
-                                    "fairly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconfairly) }
-                                googleMap.animateCamera(cu)
-                                currentMarker?.remove()
-                                currentMarker = googleMap.addMarker(
-                                    MarkerOptions().position(latLng)
-                                        .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_red))
                                 )
-                                binding.progress.visibility = View.GONE
-                                binding.cvDetail.visibility = View.GONE
-                                binding.cvResult.visibility = View.VISIBLE
-                                binding.btnAnalyzeResult.visibility = View.VISIBLE
+                            } else {
+                                binding.root.showSnackbar(res.error)
+                            }
+                            binding.progress.visibility = View.GONE
+                        }
+
+                        is Result.Empty -> {
+                            binding.root.showSnackbar(getString(R.string.not_found))
+                            binding.progress.visibility = View.GONE
+                        }
+
+                        is Result.Success -> {
+                            result = ModelingResultsResponse(
+                                longInterpretation = res.data.longInterpretation,
+                                summaryHeader = res.data.summaryHeader,
+                                clusterProportion = res.data.clusterProportion,
+                                latLng = LatLng(this.latLng.latitude, this.latLng.longitude),
+                                top = res.data.top
+                            )
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val builder = LatLngBounds.builder()
+                                res.data.poiMap?.forEach { place ->
+                                    val placeLatLng = LatLng(
+                                        place?.coordinates?.latitude ?: 0.0,
+                                        place?.coordinates?.longitude ?: 0.0
+                                    )
+                                    withContext(Dispatchers.Main) {
+                                        val marker = googleMap.addMarker(
+                                            MarkerOptions()
+                                                .position(placeLatLng)
+                                                .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_blue))
+                                        )
+                                        if (marker != null) {
+                                            marker.tag = place?.placeId
+                                            markers.add(marker)
+                                        }
+                                    }
+                                    builder.include(placeLatLng)
+                                }
+                                binding.txtSentimentCategory.text = res.data.summaryHeader
+
+                                val bounds = builder.build()
+                                val padding = 50
+                                val cu = CameraUpdateFactory.newLatLngBounds(bounds, padding)
+
+                                withContext(Dispatchers.Main) {
+                                    when (result.summaryHeader?.lowercase()) {
+                                        "highly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconhighly)
+                                        "fairly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconfairly)
+                                    }
+                                    googleMap.animateCamera(cu)
+                                    currentMarker?.remove()
+                                    currentMarker = googleMap.addMarker(
+                                        MarkerOptions().position(latLng)
+                                            .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_red))
+                                    )
+                                    binding.progress.visibility = View.GONE
+                                    binding.cvDetail.visibility = View.GONE
+                                    binding.cvResult.visibility = View.VISIBLE
+                                    binding.btnAnalyzeResult.visibility = View.VISIBLE
+                                }
                             }
                         }
                     }
                 }
             }
-        }
     }
 
     private fun getDetail(placeId: String) {
@@ -191,7 +191,6 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                         binding.tvRating.text = it.rating.toString()
                         binding.tvReview.text = getString(R.string.ulasan, it.reviews)
                         binding.tvCategory.text = it.mainCategory
-
 
                         if (binding.cvResult.visibility == View.GONE) {
                             binding.progressDetail.visibility = View.GONE

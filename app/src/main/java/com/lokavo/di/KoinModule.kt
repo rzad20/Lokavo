@@ -3,19 +3,16 @@ package com.lokavo.di
 import com.lokavo.data.repository.AnalyzeHistoryRepository
 import com.lokavo.data.repository.MapsRepository
 import com.lokavo.data.local.room.LokavoDatabase
-import com.lokavo.data.preferences.SwitchThemePreferences
 import com.lokavo.data.remote.retrofit.ApiConfig1
 import com.lokavo.data.remote.retrofit.ApiConfig2
 import com.lokavo.data.repository.ArticleRepository
 import com.lokavo.data.repository.ChatBotHistoryRepository
 import com.lokavo.data.repository.ChatBotRepository
-import com.lokavo.data.repository.ProfileRepository
 import com.lokavo.ui.article.ArticleViewModel
 import com.lokavo.ui.detailAnalysis.DetailAnalysisViewModel
 import com.lokavo.ui.analyzeHistory.AnalyzeHistoryViewModel
 import com.lokavo.ui.chatBotHistory.ChatBotHistoryViewModel
 import com.lokavo.ui.maps.MapsViewModel
-import com.lokavo.ui.profile.ProfileViewModel
 import com.lokavo.ui.result.ResultViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -34,17 +31,14 @@ val appModule = module {
     single { MapsRepository.getInstance(get()) }
     single { ChatBotRepository.getInstance(get()) }
     single { ArticleRepository.getInstance(get()) }
-    single { ProfileRepository.getInstance(get())}
     single { AnalyzeHistoryRepository.getInstance(get(), get()) }
     single { ChatBotHistoryRepository.getInstance(get(), get()) }
 
-    single { SwitchThemePreferences.getInstance(androidApplication())}
 
     viewModel { ResultViewModel(get()) }
     viewModel { DetailAnalysisViewModel(get()) }
     viewModel { AnalyzeHistoryViewModel(get()) }
     viewModel { ChatBotHistoryViewModel(get()) }
     viewModel { MapsViewModel() }
-    viewModel { ProfileViewModel(get()) }
     viewModel { ArticleViewModel(get()) }
 }

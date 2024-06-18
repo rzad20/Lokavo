@@ -12,98 +12,103 @@ import retrofit2.HttpException
 import com.lokavo.data.remote.response.ModelingResultsResponse
 import com.lokavo.data.remote.response.PlaceDetailsResponse
 import com.lokavo.data.remote.response.PoiMapItem
+import com.lokavo.utils.wrapEspressoIdlingResource
 import java.net.SocketTimeoutException
 
 class MapsRepository private constructor(private var apiService1: ApiService1) {
 
     fun getModelingResults(latitude: Double, longitude: Double) = liveData {
-        emit(Result.Loading)
-        try {
-            val response = apiService1.getModelingResults(ModelingResultsRequest(latitude, longitude))
-            val places = response.poiMap
-            val summaryHeader = response.summaryHeader
-            val longInterpretation = response.longInterpretation
-            val clusterProportion = response.clusterProportion
-            if (places != null) {
-                if (places.isEmpty()) {
-                    emit(Result.Empty)
-                } else {
+        wrapEspressoIdlingResource {
+            emit(Result.Loading)
+            try {
+                val response = apiService1.getModelingResults(ModelingResultsRequest(latitude, longitude))
+                val places = response.poiMap
+                val summaryHeader = response.summaryHeader
+                val longInterpretation = response.longInterpretation
+                val clusterProportion = response.clusterProportion
+                if (places != null) {
+                    if (places.isEmpty()) {
+                        emit(Result.Empty)
+                    } else {
 
-                    val placeList = places.map { place ->
-                        PoiMapItem(
-                            place?.cluster,
-                            place?.placeId,
-                            place?.coordinates,
+                        val placeList = places.map { place ->
+                            PoiMapItem(
+                                place?.cluster,
+                                place?.placeId,
+                                place?.coordinates,
+                            )
+                        }
+                        val filteredPlaces = places.filter { it?.top != 0 }
+
+                        val result = ModelingResultsResponse(
+                            poiMap = placeList,
+                            summaryHeader = summaryHeader,
+                            longInterpretation = longInterpretation,
+                            clusterProportion = clusterProportion,
+                            top = filteredPlaces
                         )
+                        emit(Result.Success(result))
                     }
-                    val filteredPlaces = places.filter { it?.top != 0 }
-
-                    val result = ModelingResultsResponse(
-                        poiMap = placeList,
-                        summaryHeader = summaryHeader,
-                        longInterpretation = longInterpretation,
-                        clusterProportion = clusterProportion,
-                        top = filteredPlaces
-                    )
-                    emit(Result.Success(result))
+                } else {
+                    emit(Result.Error(response.message ?: R.string.not_found.toString()))
                 }
-            } else {
-                emit(Result.Error(response.message ?: R.string.not_found.toString()))
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ModelingResultsResponse::class.java)
+                emit(errorResponse.message?.let { Result.Error(it) })
+            } catch (e: SocketTimeoutException) {
+                emit(Result.Error("Request timeout"))
+            } catch (e: Exception) {
+                emit(Result.Error("Terjadi Kesalahan"))
             }
-        } catch (e: HttpException) {
-            val errorBody = e.response()?.errorBody()?.string()
-            val errorResponse = Gson().fromJson(errorBody, ModelingResultsResponse::class.java)
-            emit(errorResponse.message?.let { Result.Error(it) })
-        } catch (e: SocketTimeoutException) {
-            emit(Result.Error("Request timeout"))
-        }catch (e: Exception) {
-            emit(Result.Error("Terjadi Kesalahan"))
         }
     }
 
     fun getPlaceDetail(placeId: String) = liveData {
-        emit(Result.Loading)
-        try {
-            val response = apiService1.getPlaceDetail(PlaceDetailsRequest(placeId))
-            val details = response.details
-            if (details != null) {
-                if (details.isEmpty()) {
-                    emit(Result.Empty)
+        wrapEspressoIdlingResource {
+            emit(Result.Loading)
+            try {
+                val response = apiService1.getPlaceDetail(PlaceDetailsRequest(placeId))
+                val details = response.details
+                if (details != null) {
+                    if (details.isEmpty()) {
+                        emit(Result.Empty)
+                    } else {
+                        val detail = details[0]
+                        val detailItem = DetailsItem(
+                            detail?.placeId,
+                            detail?.name,
+                            detail?.address,
+                            detail?.featuredImage,
+                            detail?.reviews,
+                            detail?.mainCategory,
+                            detail?.categories,
+                            detail?.rating,
+                            detail?.reviewsPerRating,
+                            detail?.coordinates,
+                            detail?.mostPopularTimes,
+                            detail?.averageHour,
+                            detail?.stdHour,
+                            detail?.avgPopularity,
+                            detail?.topHourPopularity,
+                            detail?.topAveragePopularity,
+                            detail?.nearestCompetitorPlaceId,
+                            detail?.nearestCompetitorDistance,
+                            detail?.nearestCompetitorTopHourPopularity,
+                            detail?.nearestCompetitorTopAveragePopularity,
+                        )
+                        emit(Result.Success(detailItem))
+                    }
                 } else {
-                    val detail = details[0]
-                    val detailItem = DetailsItem(
-                        detail?.placeId,
-                        detail?.name,
-                        detail?.address,
-                        detail?.featuredImage,
-                        detail?.reviews,
-                        detail?.mainCategory,
-                        detail?.categories,
-                        detail?.rating,
-                        detail?.reviewsPerRating,
-                        detail?.coordinates,
-                        detail?.mostPopularTimes,
-                        detail?.averageHour,
-                        detail?.stdHour,
-                        detail?.avgPopularity,
-                        detail?.topHourPopularity,
-                        detail?.topAveragePopularity,
-                        detail?.nearestCompetitorPlaceId,
-                        detail?.nearestCompetitorDistance,
-                        detail?.nearestCompetitorTopHourPopularity,
-                        detail?.nearestCompetitorTopAveragePopularity,
-                    )
-                    emit(Result.Success(detailItem))
+                    emit(Result.Error(response.message ?: R.string.not_found.toString()))
                 }
-            } else {
-                emit(Result.Error(response.message ?: R.string.not_found.toString()))
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, PlaceDetailsResponse::class.java)
+                emit(errorResponse.message?.let { Result.Error(it) })
+            } catch (e: Exception) {
+                emit(Result.Error("Terjadi Kesalahan"))
             }
-        } catch (e: HttpException) {
-            val errorBody = e.response()?.errorBody()?.string()
-            val errorResponse = Gson().fromJson(errorBody, PlaceDetailsResponse::class.java)
-            emit(errorResponse.message?.let { Result.Error(it) })
-        } catch (e: Exception) {
-            emit(Result.Error("Terjadi Kesalahan"))
         }
     }
 
@@ -118,4 +123,3 @@ class MapsRepository private constructor(private var apiService1: ApiService1) {
             }.also { instance = it }
     }
 }
-

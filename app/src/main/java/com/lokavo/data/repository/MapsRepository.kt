@@ -26,6 +26,7 @@ class MapsRepository private constructor(private var apiService1: ApiService1) {
                 val summaryHeader = response.summaryHeader
                 val longInterpretation = response.longInterpretation
                 val clusterProportion = response.clusterProportion
+                val clusterInterpretation = response.clusterInterpretation
                 if (places != null) {
                     if (places.isEmpty()) {
                         emit(Result.Empty)
@@ -45,6 +46,7 @@ class MapsRepository private constructor(private var apiService1: ApiService1) {
                             summaryHeader = summaryHeader,
                             longInterpretation = longInterpretation,
                             clusterProportion = clusterProportion,
+                            clusterInterpretation = clusterInterpretation,
                             top = filteredPlaces
                         )
                         emit(Result.Success(result))

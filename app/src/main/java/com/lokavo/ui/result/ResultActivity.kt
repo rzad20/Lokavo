@@ -125,6 +125,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                 longInterpretation = res.data.longInterpretation,
                                 summaryHeader = res.data.summaryHeader,
                                 clusterProportion = res.data.clusterProportion,
+                                clusterInterpretation = res.data.clusterInterpretation,
                                 latLng = LatLng(this.latLng.latitude, this.latLng.longitude),
                                 top = res.data.top
                             )

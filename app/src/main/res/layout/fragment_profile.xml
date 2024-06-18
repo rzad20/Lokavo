@@ -25,7 +25,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:ellipsize="end"
         android:gravity="center"
+        android:maxLines="1"
         android:text="@string/detailName"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
@@ -38,7 +40,9 @@
         android:id="@+id/userEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
         android:gravity="center"
+        android:maxLines="1"
         android:text="@string/userEmail"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,13 +53,14 @@
         android:id="@+id/detailProfile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="16dp"
+        android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingVertical="8dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/userEmail">
@@ -63,6 +68,7 @@
         <ImageView
             android:id="@+id/detailProfileIcon"
             android:layout_width="40dp"
+            android:paddingStart="2dp"
             android:layout_height="40dp"
             android:contentDescription="@string/profile_logo"
             android:src="@drawable/ic_person"
@@ -82,12 +88,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
+        android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingVertical="8dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/detailProfile">
@@ -109,20 +115,35 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <LinearLayout
         android:id="@+id/logoutButton"
-        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:padding="16dp"
-        android:text="@string/logout"
-        android:textSize="16sp"
+        android:layout_marginVertical="8dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/changePassword"
-        app:shapeAppearanceOverlay="@style/Shape.Button"
-        app:strokeColor="?attr/colorPrimary" />
+        app:layout_constraintTop_toBottomOf="@id/changePassword">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/change_password_description"
+            android:paddingStart="5dp"
+            android:src="@drawable/ic_logout"
+            app:tint="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="32dp"
+            android:text="@string/logout"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

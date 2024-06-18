@@ -21,7 +21,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:navigationIcon="@drawable/ic_arrow"
             app:navigationIconTint="@color/colorPrimary"
-            app:title="ChatBot"
+            app:title="Chatbot"
             app:titleTextColor="@color/colorPrimary" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -81,6 +81,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                app:shapeAppearanceOverlay="@style/Shape.Button"
                 android:backgroundTint="@color/colorPrimary"
                 android:textColor="@color/white"/>
         </LinearLayout>

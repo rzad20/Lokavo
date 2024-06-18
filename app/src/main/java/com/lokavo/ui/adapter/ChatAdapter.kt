@@ -1,6 +1,7 @@
 package com.lokavo.ui.adapter
 
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -55,9 +56,11 @@ class ChatAdapter(
         if (holder is UserMessageViewHolder) {
             holder.binding.tvUser.text = message.user
             holder.binding.tvUserMessage.text = message.text
-            Glide.with(holder.binding.ivUser.context)
-                .load(message.photo)
-                .into(holder.binding.ivUser)
+            if (message.photo.toString().isNotEmpty()) {
+                Glide.with(holder.binding.ivUser.context)
+                    .load(message.photo)
+                    .into(holder.binding.ivUser)
+            }
         } else if (holder is ChatBotMessageViewHolder) {
             holder.binding.tvBot.text = message.bot
             holder.binding.tvBotMessage.text = message.text

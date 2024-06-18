@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:paddingHorizontal="16dp"
+    android:layout_marginBottom="16dp"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +18,7 @@
             android:id="@+id/ivMessenger"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_person"
+            android:src="@drawable/chatbot_lokavo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

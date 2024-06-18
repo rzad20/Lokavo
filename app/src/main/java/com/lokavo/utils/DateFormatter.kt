@@ -25,15 +25,15 @@ object DateFormatter {
 
         return when {
             diffInSeconds < 60 -> {
-                "$diffInSeconds seconds ago"
+                "$diffInSeconds detik yang lalu"
             }
 
             diffInMinutes < 60 -> {
-                "$diffInMinutes minutes ago"
+                "$diffInMinutes menit yang lalu"
             }
 
             diffInHours < 24 -> {
-                "$diffInHours hours ago"
+                "$diffInHours jam yang lalu"
             }
 
             else -> {

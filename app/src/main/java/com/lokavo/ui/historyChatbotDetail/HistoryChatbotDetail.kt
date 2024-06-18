@@ -55,7 +55,7 @@ class HistoryChatbotDetail : AppCompatActivity() {
                 Message(
                     isUser = false,
                     user = null,
-                    bot = "ChatBot",
+                    bot = "Lokavo Chatbot",
                     text = message.answer ?: "",
                     photo = null
                 )

@@ -75,8 +75,9 @@
 
                 <ImageView
                     android:id="@+id/starIcon"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="end"
                     android:contentDescription="@string/star_icon"
                     app:srcCompat="@drawable/ic_star" />
 
@@ -84,7 +85,6 @@
                     android:id="@+id/placeRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="4dp"
                     android:paddingEnd="0dp"
                     android:text="@string/rating_example"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
@@ -161,15 +161,16 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
+                        android:layout_gravity="end"
                         android:src="@drawable/ic_star"
-                        android:tint="#F9F871"
-                        android:contentDescription="@string/star_icon_desc" />
+                        android:contentDescription="@string/star_icon_desc"
+                        app:tint="#F9F871" />
 
                     <TextView
                         android:id="@+id/rating5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingStart="4dp"
+                        android:paddingStart="2dp"
                         android:paddingEnd="0dp"
                         android:text="@string/revbyrat_example"
                         android:textSize="11sp"
@@ -187,16 +188,17 @@
 
                     <ImageView
                         android:layout_width="16dp"
+                        android:layout_gravity="end"
                         android:layout_height="16dp"
                         android:src="@drawable/ic_star"
-                        android:tint="#F9F871"
-                        android:contentDescription="@string/star_icon_desc" />
+                        android:contentDescription="@string/star_icon_desc"
+                        app:tint="#F9F871" />
 
                     <TextView
                         android:id="@+id/rating4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingStart="4dp"
+                        android:paddingStart="2dp"
                         android:paddingEnd="0dp"
                         android:text="@string/revbyrat_example"
                         android:textSize="11sp"
@@ -215,15 +217,16 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
+                        android:layout_gravity="end"
                         android:src="@drawable/ic_star"
-                        android:tint="#F9F871"
-                        android:contentDescription="@string/star_icon_desc" />
+                        android:contentDescription="@string/star_icon_desc"
+                        app:tint="#F9F871" />
 
                     <TextView
                         android:id="@+id/rating3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingStart="4dp"
+                        android:paddingStart="2dp"
                         android:paddingEnd="0dp"
                         android:text="@string/revbyrat_example"
                         android:textSize="11sp"
@@ -253,16 +256,17 @@
 
                     <ImageView
                         android:layout_width="16dp"
+                        android:layout_gravity="end"
                         android:layout_height="16dp"
                         android:src="@drawable/ic_star"
-                        android:tint="#F9F871"
-                        android:contentDescription="@string/star_icon_desc"/>
+                        android:contentDescription="@string/star_icon_desc"
+                        app:tint="#F9F871" />
 
                     <TextView
                         android:id="@+id/rating2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingStart="4dp"
+                        android:paddingStart="2dp"
                         android:paddingEnd="0dp"
                         android:text="@string/revbyrat_example"
                         android:textSize="11sp"
@@ -281,15 +285,16 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
+                        android:layout_gravity="end"
                         android:src="@drawable/ic_star"
-                        android:tint="#F9F871"
-                        android:contentDescription="@string/star_icon_desc" />
+                        android:contentDescription="@string/star_icon_desc"
+                        app:tint="#F9F871" />
 
                     <TextView
                         android:id="@+id/rating1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingStart="4dp"
+                        android:paddingStart="2dp"
                         android:paddingEnd="0dp"
                         android:text="@string/revbyrat_example"
                         android:textSize="11sp"

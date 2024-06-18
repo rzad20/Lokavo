@@ -25,6 +25,7 @@ import com.lokavo.utils.getAddress
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
 import com.lokavo.utils.showSnackbarOnNoConnection
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -97,24 +98,48 @@ class ChatBotActivity : AppCompatActivity() {
                     photo = photoUrl
                 )
             )
+            chatAdapter.notifyDataSetChanged()
+            binding.rvMessages.scrollToPosition(messages.size - 1)
+
+            currentIndex++
+            if (currentIndex < chatbotMessages.size) {
+                binding.messageChoice.visibility = View.GONE
+            } else {
+                binding.messageChoice.visibility = View.GONE
+                saveChatHistory()
+            }
+
             messages.add(
                 Message(
                     isUser = false,
                     user = null,
-                    bot = "ChatBot",
-                    text = answer ?: "",
+                    bot = "Lokavo Chatbot",
+                    text = "Sedang mengetik...",
                     photo = null
                 )
             )
             chatAdapter.notifyDataSetChanged()
             binding.rvMessages.scrollToPosition(messages.size - 1)
 
-            currentIndex++
-            if (currentIndex < chatbotMessages.size) {
-                binding.btnNext.text = chatbotMessages[currentIndex].question
-            } else {
-                binding.messageChoice.visibility = View.GONE
-                saveChatHistory()            }
+            lifecycleScope.launch {
+                delay(2000)
+                messages.removeAt(messages.size - 1)
+                messages.add(
+                    Message(
+                        isUser = false,
+                        user = null,
+                        bot = "Lokavo Chatbot",
+                        text = answer ?: "",
+                        photo = null
+                    )
+                )
+                chatAdapter.notifyDataSetChanged()
+
+                if (currentIndex < chatbotMessages.size) {
+                    binding.btnNext.text = chatbotMessages[currentIndex].question
+                    binding.messageChoice.visibility = View.VISIBLE
+                }
+            }
         }
     }
 

@@ -1,30 +1,30 @@
 [versions]
-agp = "8.4.0"
+agp = "8.4.2"
 anychartAndroid = "1.1.5"
 circleimageview = "3.1.0"
 datastorePreferences = "1.1.1"
-kotlin = "1.9.0"
-coreKtx = "1.10.1"
+kotlin = "1.9.23"
+coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
-appcompat = "1.6.1"
+appcompat = "1.7.0"
 kotlinxCoroutinesAndroid = "1.7.3"
 kotlinxCoroutinesCore = "1.7.1"
-material = "1.10.0"
-activity = "1.8.0"
+material = "1.12.0"
+activity = "1.9.0"
 constraintlayout = "2.1.4"
 coreSplashscreen = "1.0.1"
-lifecycleLivedataKtx = "2.8.0"
-lifecycleViewmodelKtx = "2.8.0"
+lifecycleLivedataKtx = "2.8.2"
+lifecycleViewmodelKtx = "2.8.2"
 navigationFragmentKtx = "2.7.7"
 navigationUiKtx = "2.7.7"
 googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
 playServicesMaps = "18.2.0"
-places = "3.4.0"
+places = "3.5.0"
 koinAndroid = "3.2.0"
-retrofit = "2.9.0"
-converterGson = "2.9.0"
+retrofit = "2.11.0"
+converterGson = "2.11.0"
 loggingInterceptor = "4.11.0"
 glide = "4.16.0"
 roomRuntime = "2.6.1"
@@ -32,6 +32,9 @@ googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.0.0"
 firebaseStorage = "21.0.0"
 espressoIdlingResource = "3.5.1"
+mockitoCore = "5.11.0"
+coreTesting = "2.2.0"
+kotlinxCoroutinesTest = "1.6.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -67,6 +70,9 @@ glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "gl
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 androidx-espresso-idling-resource = { group = "androidx.test.espresso", name = "espresso-idling-resource", version.ref = "espressoIdlingResource" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -16,12 +16,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Handler
-import android.os.Looper
-import android.util.TypedValue
 import com.google.android.material.snackbar.Snackbar
 import android.view.View
-import android.widget.TextView
 import com.lokavo.R
 
 fun Context.isOnline(): Boolean {
@@ -55,7 +51,6 @@ suspend fun Geocoder.getAddress(
             }
         } else {
             suspendCoroutine { cont ->
-                @Suppress("DEPRECATION")
                 val address = getFromLocation(latitude, longitude, 1)?.firstOrNull()
                 cont.resume(address)
             }
@@ -93,20 +88,4 @@ fun View.showSnackbar(message: String, actionText: String? = null, action: (() -
     snackbar.show()
 }
 
-fun extractRelevantText(input: String): String {
-    val lines = input.lines()
-    val paragraphs = mutableListOf<String>()
-    var skipNextLine = false
 
-    for (line in lines) {
-        if (line.startsWith("##")) {
-            skipNextLine = true
-        } else if (skipNextLine) {
-            skipNextLine = false
-        } else {
-            paragraphs.add(line.trim())
-        }
-    }
-    val joinedParagraphs = paragraphs.joinToString("\n").split("\n\n")
-    return joinedParagraphs.firstOrNull { it.isNotBlank() } ?: "Relevant text not found"
-}

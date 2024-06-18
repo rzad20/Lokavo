@@ -24,7 +24,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private val profileViewModel: ProfileViewModel by viewModel()
     private lateinit var firebaseAuth: FirebaseAuth
     private var uri: Uri? = null
     private var name: String? = null
@@ -44,18 +43,6 @@ class ProfileFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         user = firebaseAuth.currentUser
 
-        profileViewModel.getThemeSetting().observe(viewLifecycleOwner) { isDarkModeActive ->
-            binding.darkModeSwitch.isChecked = isDarkModeActive
-            if (isDarkModeActive) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }
-
-        binding.darkModeSwitch.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            profileViewModel.saveThemeSetting(isChecked)
-        }
         binding.logoutButton.setOnClickListener {
             if (!requireContext().isOnline()) {
                 binding.root.showSnackbarOnNoConnection(requireContext())

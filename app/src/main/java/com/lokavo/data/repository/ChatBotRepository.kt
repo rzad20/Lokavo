@@ -7,6 +7,7 @@ import com.lokavo.data.remote.request.ChatBotRequest
 import com.lokavo.data.remote.response.PlaceDetailsResponse
 import com.lokavo.data.remote.retrofit.ApiService2
 import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 class ChatBotRepository(private var apiService2: ApiService2) {
     fun postChatBot(latitude: Double, longitude: Double, uuid: String) = liveData {
@@ -22,6 +23,8 @@ class ChatBotRepository(private var apiService2: ApiService2) {
             val errorBody = e.response()?.errorBody()?.string()
             val errorResponse = Gson().fromJson(errorBody, PlaceDetailsResponse::class.java)
             emit(errorResponse.message?.let { Result.Error(it) })
+        } catch (e: SocketTimeoutException) {
+            emit(Result.Error("Request timeout"))
         } catch (e: Exception) {
             emit(Result.Error("Terjadi Kesalahan"))
         }
@@ -40,6 +43,8 @@ class ChatBotRepository(private var apiService2: ApiService2) {
             val errorBody = e.response()?.errorBody()?.string()
             val errorResponse = Gson().fromJson(errorBody, PlaceDetailsResponse::class.java)
             emit(errorResponse.message?.let { Result.Error(it) })
+        } catch (e: SocketTimeoutException) {
+            emit(Result.Error("Request timeout"))
         } catch (e: Exception) {
             emit(Result.Error("Terjadi Kesalahan"))
         }

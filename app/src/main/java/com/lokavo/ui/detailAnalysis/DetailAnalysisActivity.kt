@@ -56,6 +56,12 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
         binding.txtSentimentCategory.text = result.summaryHeader
         binding.detailAnalysis.text = result.longInterpretation
 
+        result.clusterInterpretation?.let { clusterInterpretation ->
+            binding.clusterMeaning1.text = clusterInterpretation.a
+            binding.clusterMeaning2.text = clusterInterpretation.b
+            binding.clusterMeaning3.text = clusterInterpretation.c
+
+        }
         recyclerView = binding.rvCompetitor
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = TopCompetitorAdapter(result.top, this)

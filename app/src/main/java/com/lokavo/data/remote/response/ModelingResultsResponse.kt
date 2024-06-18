@@ -29,6 +29,9 @@ data class ModelingResultsResponse(
     @field:SerializedName("message")
     val message: String? = null,
 
+    @field:SerializedName("cluster_interpretation")
+    val clusterInterpretation :ClusterInterpretation? = null,
+
     val latLng: LatLng? = null, // untuk parcelable
 
     val top: List<PoiMapItem?>? = null // untuk top3

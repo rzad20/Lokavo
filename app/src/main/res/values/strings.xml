@@ -38,7 +38,7 @@
     <string name="place_image_description">The Picture of the place</string>
     <string name="clear_all">Hapus Semua</string>
     <string name="belum_ada_lokasi_yang_dianalisa">Belum ada lokasi yang dianalisa.</string>
-    <string name="category_result_title">Lokasi Bisnis anda berada dalam kategori</string>
+    <string name="category_result_title">Lokasi yang anda pilih berada dalam kategori</string>
     <string name="forgot_password">Lupa Password?</string>
     <string name="forgot_password_message">Kami akan mengirimkan email berisi instruksi untuk mereset kata sandi anda.</string>
     <string name="send">Kirim</string>
@@ -80,4 +80,6 @@
     <string name="click_result_button">Lihat Hasil</string>
     <string name="finish">finish</string>
     <string name="save">Simpan</string>
+    <string name="clustering_detail_title">Penjelasan Kelompok</string>
+    <string name="clustering_detail">Penjelasan</string>
 </resources>

@@ -83,7 +83,6 @@ class ChatBotActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun nextQuestion() {
         if (currentIndex < chatbotMessages.size) {
             val question = chatbotMessages[currentIndex].question

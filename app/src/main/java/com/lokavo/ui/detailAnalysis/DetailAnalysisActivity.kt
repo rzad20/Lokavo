@@ -38,7 +38,6 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
     private val detailViewModel: ResultViewModel by viewModel()
     private lateinit var recyclerView: RecyclerView
 
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailAnalysisBinding.inflate(layoutInflater)

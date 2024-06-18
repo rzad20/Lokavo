@@ -105,7 +105,7 @@ class ProfileFragment : Fragment() {
 
     private fun showLogoutConfirmationDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Konfirmasi Logout")
+            .setTitle("Konfirmasi keluar")
             .setMessage("Apakah Anda yakin untuk keluar?")
             .setPositiveButton("Ya") { dialog, _ ->
                 dialog.dismiss()

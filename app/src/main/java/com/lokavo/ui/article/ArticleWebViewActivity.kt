@@ -13,7 +13,6 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 class ArticleWebViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityArticleWebViewBinding
 
-    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityArticleWebViewBinding.inflate(layoutInflater)

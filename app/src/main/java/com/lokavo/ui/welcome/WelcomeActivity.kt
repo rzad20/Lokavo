@@ -37,9 +37,4 @@ class WelcomeActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         navController.navigate(R.id.welcomeFragment)
     }
-
-    private fun isNavigationReady(): Boolean {
-        return firebaseAuth.currentUser != null || onBoardingFinished()
-    }
-
 }

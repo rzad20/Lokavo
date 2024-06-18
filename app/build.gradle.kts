@@ -93,15 +93,17 @@ dependencies {
 
     // Room
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.espresso.idling.resource)
     ksp(libs.androidx.room.compiler)
 
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-        testImplementation ("org.mockito:mockito-core:4.2.0")
-        testImplementation ("androidx.arch.core:core-testing:2.1.0")
-        testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
+    androidTestImplementation(libs.androidx.espresso.intents)
+    androidTestImplementation(libs.androidx.espresso.contrib)
+    testImplementation ("org.mockito:mockito-core:4.2.0")
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
 
 }

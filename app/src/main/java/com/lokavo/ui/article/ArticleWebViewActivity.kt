@@ -1,18 +1,21 @@
 package com.lokavo.ui.article
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.WindowManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import com.lokavo.databinding.ActivityArticleWebViewBinding
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.lokavo.databinding.ActivityArticleWebViewBinding
 
 class ArticleWebViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityArticleWebViewBinding
+    private var allowedUrl: String? = null
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityArticleWebViewBinding.inflate(layoutInflater)
@@ -25,15 +28,20 @@ class ArticleWebViewActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        val url = intent.getStringExtra(EXTRA_URL)
-        if (url != null) {
-            binding.topAppBar.title = url
+        allowedUrl = intent.getStringExtra(EXTRA_URL)
+        if (allowedUrl != null) {
+            binding.topAppBar.title = allowedUrl
         }
 
         binding.webView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: android.graphics.Bitmap?) {
                 super.onPageStarted(view, url, favicon)
                 binding.progress.visibility = LinearProgressIndicator.VISIBLE
+                if (url != allowedUrl) {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(intent)
+                    finish()
+                }
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -42,8 +50,8 @@ class ArticleWebViewActivity : AppCompatActivity() {
             }
         }
         binding.webView.settings.javaScriptEnabled = true
-        if (url != null) {
-            binding.webView.loadUrl(url)
+        allowedUrl?.let {
+            binding.webView.loadUrl(it)
         }
     }
 
@@ -57,7 +65,6 @@ class ArticleWebViewActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }

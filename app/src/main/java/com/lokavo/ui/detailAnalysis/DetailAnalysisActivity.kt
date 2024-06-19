@@ -60,7 +60,11 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
             binding.clusterMeaning2.text = clusterInterpretation.b
             binding.clusterMeaning3.text = clusterInterpretation.c
 
+            binding.clusterMeaning1.visibility = if (clusterInterpretation.a.isNullOrEmpty()) View.GONE else View.VISIBLE
+            binding.clusterMeaning2.visibility = if (clusterInterpretation.b.isNullOrEmpty()) View.GONE else View.VISIBLE
+            binding.clusterMeaning3.visibility = if (clusterInterpretation.c.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
+        binding.clusterTitle.visibility = if (result.clusterInterpretation == null) View.GONE else View.VISIBLE
         recyclerView = binding.rvCompetitor
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = TopCompetitorAdapter(result.top, this)

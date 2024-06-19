@@ -2,7 +2,7 @@ package com.lokavo.ui.result
 
 import android.content.Intent
 import android.os.Bundle
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +29,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -40,6 +41,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
     private val viewModel: ResultViewModel by viewModel()
     private val markers = mutableListOf<Marker>()
     private var result: ModelingResultsResponse = ModelingResultsResponse()
+    private var isClusterInfoVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,97 +87,143 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
             moveWithObjectIntent.putExtra(DetailAnalysisActivity.RESULT, result)
             startActivity(moveWithObjectIntent)
         }
+
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_info -> {
+                    toggleClusterInfoFragment()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        binding.btnCloseClusterInfo.setOnClickListener {
+            binding.clusterInfoFragment.visibility = View.GONE
+            isClusterInfoVisible = false
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.detail_analysis_menu, menu)
+        menu.findItem(R.id.menu_info).isVisible = false
+        return true
+    }
+
+    private fun toggleClusterInfoFragment() {
+        isClusterInfoVisible = if (isClusterInfoVisible) {
+            binding.clusterInfoFragment.visibility = View.GONE
+            false
+        } else {
+            binding.clusterInfoFragment.visibility = View.VISIBLE
+            true
+        }
     }
 
     private fun getModelingResults(latLng: LatLng) {
-            viewModel.getModelingResults(latLng.latitude, latLng.longitude).observe(this) { res ->
-                if (!this.isOnline()) {
-                    binding.root.showSnackbarOnNoConnection(this)
-                    binding.progress.visibility = View.GONE
-                    return@observe
-                }
-                if (res != null) {
-                    when (res) {
-                        is Result.Loading -> {
-                            binding.progress.visibility = View.VISIBLE
-                        }
-
-                        is Result.Error -> {
-                            if (res.error == "Request timeout") {
-                                binding.root.showSnackbar(
-                                    message = "Request timeout",
-                                    actionText = "Coba Lagi",
-                                    action = {
-                                        getModelingResults(this.latLng)
-                                    }
-                                )
-                            } else {
-                                binding.root.showSnackbar(res.error)
-                            }
-                            binding.progress.visibility = View.GONE
-                        }
-
-                        is Result.Empty -> {
-                            binding.root.showSnackbar(getString(R.string.not_found))
-                            binding.progress.visibility = View.GONE
-                        }
-
-                        is Result.Success -> {
-                            result = ModelingResultsResponse(
-                                longInterpretation = res.data.longInterpretation,
-                                summaryHeader = res.data.summaryHeader,
-                                clusterProportion = res.data.clusterProportion,
-                                clusterInterpretation = res.data.clusterInterpretation,
-                                latLng = LatLng(this.latLng.latitude, this.latLng.longitude),
-                                top = res.data.top
+        viewModel.getModelingResults(latLng.latitude, latLng.longitude).observe(this) { res ->
+            if (!this.isOnline()) {
+                binding.root.showSnackbarOnNoConnection(this)
+                binding.progress.visibility = View.GONE
+                return@observe
+            }
+            if (res != null) {
+                when (res) {
+                    is Result.Loading -> {
+                        binding.progress.visibility = View.VISIBLE
+                    }
+                    is Result.Error -> {
+                        if (res.error == "Request timeout") {
+                            binding.root.showSnackbar(
+                                message = "Request timeout",
+                                actionText = "Coba Lagi",
+                                action = {
+                                    getModelingResults(this.latLng)
+                                }
                             )
-                            CoroutineScope(Dispatchers.IO).launch {
-                                val builder = LatLngBounds.builder()
-                                res.data.poiMap?.forEach { place ->
-                                    val placeLatLng = LatLng(
-                                        place?.coordinates?.latitude ?: 0.0,
-                                        place?.coordinates?.longitude ?: 0.0
-                                    )
-                                    withContext(Dispatchers.Main) {
-                                        val marker = googleMap.addMarker(
-                                            MarkerOptions()
-                                                .position(placeLatLng)
-                                                .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_blue))
-                                        )
-                                        if (marker != null) {
-                                            marker.tag = place?.placeId
-                                            markers.add(marker)
-                                        }
-                                    }
-                                    builder.include(placeLatLng)
-                                }
-                                binding.txtSentimentCategory.text = res.data.summaryHeader
-
-                                val bounds = builder.build()
-                                val padding = 50
-                                val cu = CameraUpdateFactory.newLatLngBounds(bounds, padding)
-
+                        } else {
+                            binding.root.showSnackbar(res.error)
+                        }
+                        binding.progress.visibility = View.GONE
+                    }
+                    is Result.Empty -> {
+                        binding.root.showSnackbar(getString(R.string.not_found))
+                        binding.progress.visibility = View.GONE
+                    }
+                    is Result.Success -> {
+                        result = ModelingResultsResponse(
+                            longInterpretation = res.data.longInterpretation,
+                            summaryHeader = res.data.summaryHeader,
+                            clusterProportion = res.data.clusterProportion,
+                            clusterInterpretation = res.data.clusterInterpretation,
+                            latLng = LatLng(this.latLng.latitude, this.latLng.longitude),
+                            top = res.data.top
+                        )
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val builder = LatLngBounds.builder()
+                            res.data.poiMap?.forEach { place ->
+                                val placeLatLng = LatLng(
+                                    place?.coordinates?.latitude ?: 0.0,
+                                    place?.coordinates?.longitude ?: 0.0
+                                )
                                 withContext(Dispatchers.Main) {
-                                    when (result.summaryHeader?.lowercase()) {
-                                        "highly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconhighly)
-                                        "fairly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconfairly)
+                                    val markerIcon = when (place?.cluster) {
+                                        "A" -> R.drawable.pinpoint_1
+                                        "B" -> R.drawable.pinpoint_2
+                                        "C" -> R.drawable.pinpoint_3
+                                        else -> R.drawable.ic_pin_point_blue
                                     }
-                                    googleMap.animateCamera(cu)
-                                    currentMarker?.remove()
-                                    currentMarker = googleMap.addMarker(
-                                        MarkerOptions().position(latLng)
-                                            .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_red))
+                                    val marker = googleMap.addMarker(
+                                        MarkerOptions()
+                                            .position(placeLatLng)
+                                            .icon(this@ResultActivity.bitmapFromVector(markerIcon))
                                     )
-                                    binding.progress.visibility = View.GONE
-                                    binding.cvDetail.visibility = View.GONE
-                                    binding.cvResult.visibility = View.VISIBLE
-                                    binding.btnAnalyzeResult.visibility = View.VISIBLE
+                                    if (marker != null) {
+                                        marker.tag = place?.placeId
+                                        markers.add(marker)
+                                    }
                                 }
+                                builder.include(placeLatLng)
+                            }
+                            binding.txtSentimentCategory.text = res.data.summaryHeader
+
+                            val bounds = builder.build()
+                            val padding = 50
+                            val cu = CameraUpdateFactory.newLatLngBounds(bounds, padding)
+
+                            withContext(Dispatchers.Main) {
+                                when (result.summaryHeader?.lowercase()) {
+                                    "highly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconhighly)
+                                    "fairly competitive" -> binding.iconCompetitive.setImageResource(R.drawable.iconfairly)
+                                }
+                                googleMap.animateCamera(cu)
+                                currentMarker?.remove()
+                                currentMarker = googleMap.addMarker(
+                                    MarkerOptions().position(latLng)
+                                        .icon(this@ResultActivity.bitmapFromVector(R.drawable.ic_pin_point_red))
+                                )
+                                binding.progress.visibility = View.GONE
+                                binding.cvDetail.visibility = View.GONE
+                                binding.cvResult.visibility = View.VISIBLE
+                                binding.btnAnalyzeResult.visibility = View.VISIBLE
+                                binding.topAppBar.menu.findItem(R.id.menu_info).isVisible = true
+                                updateClusterInfo(result)
                             }
                         }
                     }
                 }
             }
+        }
+    }
+
+    private fun updateClusterInfo(result: ModelingResultsResponse) {
+        val hasClusterA = (result.clusterProportion?.a ?: 0) > 0
+        val hasClusterB = (result.clusterProportion?.b ?: 0) > 0
+        val hasClusterC = (result.clusterProportion?.c ?: 0) > 0
+
+        binding.llClusterA.visibility = if (hasClusterA) View.VISIBLE else View.GONE
+        binding.llClusterB.visibility = if (hasClusterB) View.VISIBLE else View.GONE
+        binding.llClusterC.visibility = if (hasClusterC) View.VISIBLE else View.GONE
     }
 
     private fun getDetail(placeId: String) {
@@ -185,7 +233,6 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                 is Result.Loading -> {
                     binding.progressDetail.visibility = View.VISIBLE
                 }
-
                 is Result.Success -> {
                     result.data.let {
                         binding.tvName.text = it.name
@@ -205,21 +252,18 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                         }
                     }
                 }
-
                 is Result.Error -> {
                     binding.progressDetail.visibility = View.GONE
                     binding.clDetail.visibility = View.GONE
                     binding.cvDetail.visibility = View.GONE
                     binding.root.showSnackbar(result.error)
                 }
-
                 is Result.Empty -> {
                     binding.progressDetail.visibility = View.GONE
                     binding.clDetail.visibility = View.GONE
                     binding.cvDetail.visibility = View.GONE
                     binding.root.showSnackbar(getString(R.string.not_found))
                 }
-
                 null -> {}
             }
         }
@@ -245,7 +289,12 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
             if (markers != null) {
                 markers.forEach { marker ->
                     marker.position.let { position ->
-                        val icon = this.bitmapFromVector(R.drawable.ic_pin_point_blue)
+                        val icon = when (marker.tag) {
+                            "A" -> this.bitmapFromVector(R.drawable.pinpoint_1)
+                            "B" -> this.bitmapFromVector(R.drawable.pinpoint_2)
+                            "C" -> this.bitmapFromVector(R.drawable.pinpoint_3)
+                            else -> this.bitmapFromVector(R.drawable.ic_pin_point_blue)
+                        }
                         val newMarker = googleMap.addMarker(
                             MarkerOptions().position(position)
                                 .icon(icon)
@@ -302,7 +351,6 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                 finish()
                 true
             }
-
             else -> false
         }
     }

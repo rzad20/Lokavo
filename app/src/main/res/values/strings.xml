@@ -83,4 +83,8 @@
     <string name="clustering_detail_title">Penjelasan Kelompok</string>
     <string name="clustering_detail">Penjelasan</string>
     <string name="info">info</string>
+    <string name="cluster_info_result">Kelompok Peta</string>
+    <string name="cluster_a">Kelompok A</string>
+    <string name="cluster_b">Kelompok B</string>
+    <string name="cluster_c">Kelompok C</string>
 </resources>

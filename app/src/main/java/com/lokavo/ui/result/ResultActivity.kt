@@ -97,11 +97,6 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                 else -> false
             }
         }
-
-        binding.btnCloseClusterInfo.setOnClickListener {
-            binding.clusterInfoFragment.visibility = View.GONE
-            isClusterInfoVisible = false
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

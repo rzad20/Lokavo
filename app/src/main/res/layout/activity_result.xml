@@ -313,13 +313,13 @@
         android:layout_gravity="end|top">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="10dp"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
@@ -328,19 +328,10 @@
                     android:id="@+id/tvClusterInfoTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Kelompok Peta"
+                    android:text="@string/cluster_info_result"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_gravity="center_vertical" />
-
-                <ImageButton
-                    android:id="@+id/btnCloseClusterInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_close"
-                    android:layout_gravity="end" />
             </LinearLayout>
 
             <LinearLayout
@@ -351,17 +342,18 @@
                 android:paddingVertical="4dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/pinpoint_1" />
 
                 <TextView
+                    android:id="@+id/tvClusterA"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="Kelompok A"
+                    android:text="@string/cluster_a"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -373,17 +365,18 @@
                 android:paddingVertical="4dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/pinpoint_2" />
 
                 <TextView
+                    android:id="@+id/tvClusterB"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="Kelompok B"
+                    android:text="@string/cluster_b"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -395,22 +388,24 @@
                 android:paddingVertical="4dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/pinpoint_3" />
 
                 <TextView
+                    android:id="@+id/tvClusterC"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="Kelompok C"
+                    android:text="@string/cluster_c"
                     android:textSize="12sp" />
             </LinearLayout>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,7 +40,6 @@ class ArticleWebViewActivity : AppCompatActivity() {
                 if (url != allowedUrl) {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                     startActivity(intent)
-                    finish()
                 }
             }
 

@@ -90,6 +90,7 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
         }
     }
 
+
     private fun postChatBot(latitude: Double, longitude: Double, uid: String) {
         viewModel.postChatBot(latitude, longitude, uid).observe(this) { res ->
             when (res) {
@@ -194,13 +195,26 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
     private fun setupPieChart(anyChartView: AnyChartView) {
         val pie: Pie = AnyChart.pie()
 
-        val data: List<DataEntry> = listOf(
-            ValueDataEntry("A", result.clusterProportion?.a),
-            ValueDataEntry("B", result.clusterProportion?.b),
-            ValueDataEntry("C", result.clusterProportion?.c),
-        )
+        val data = mutableListOf<DataEntry>()
+        val colors = mutableListOf<String>()
+
+        result.clusterProportion?.let {
+            if (it.a!! > 0) {
+                data.add(ValueDataEntry("A", it.a))
+                colors.add("#C4A775")
+            }
+            if (it.b!! > 0) {
+                data.add(ValueDataEntry("B", it.b))
+                colors.add("#75C4A7")
+            }
+            if (it.c!! > 0) {
+                data.add(ValueDataEntry("C", it.c))
+                colors.add("#A775C4")
+            }
+        }
 
         pie.data(data)
+        pie.palette(colors.toTypedArray())
 
         anyChartView.setChart(pie)
     }

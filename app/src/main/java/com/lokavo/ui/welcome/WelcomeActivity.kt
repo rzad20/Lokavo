@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.lokavo.R
 import com.lokavo.databinding.ActivityWelcomeBinding
@@ -31,14 +30,14 @@ class WelcomeActivity : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     GlobalScope.launch {
                         withContext(Dispatchers.Main) {
-                            navigateToWelcomeFragment()
+                            setWelcomeFragment()
                         }
                     }
                 } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-                    navigateToWelcomeFragment()
+                    setWelcomeFragment()
                 }
             } else {
-                navigateToWelcomeFragment()
+                setWelcomeFragment()
             }
         }
     }
@@ -48,10 +47,10 @@ class WelcomeActivity : AppCompatActivity() {
         return sharedPref.getBoolean("Finished", false)
     }
 
-    private fun navigateToWelcomeFragment() {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
-        navController.navigate(R.id.welcomeFragment)
+    private fun setWelcomeFragment() {
+        val welcomeFragment = WelcomeFragment()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerView, welcomeFragment)
+            .commit()
     }
 }

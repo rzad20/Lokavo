@@ -49,7 +49,7 @@
     <string name="new_password">Masukkan Password Baru</string>
     <string name="confirm_new_password">Konfirmasi Password Baru</string>
     <string name="konfirmasi_password">Konfirmasi Password</string>
-    <string name="edit_profil">Edit Profil</string>
+    <string name="edit_profil">Detail Profil</string>
     <string name="second_onboarding_title">Dapatkan Wawasan Kompetitor</string>
     <string name="second_onboarding_subtitle">Bandingkan kompetitor terbaik di area bisnismu</string>
     <string name="next_onboarding">Next</string>
@@ -82,4 +82,5 @@
     <string name="save">Simpan</string>
     <string name="clustering_detail_title">Penjelasan Kelompok</string>
     <string name="clustering_detail">Penjelasan</string>
+    <string name="info">info</string>
 </resources>

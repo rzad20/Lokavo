@@ -103,7 +103,7 @@ class MapsFragment : Fragment() {
     }
 
     private val callback = OnMapReadyCallback { map ->
-
+        binding.cardView.visibility = View.VISIBLE
         googleMap = map.apply {
             uiSettings.apply {
                 isZoomControlsEnabled = false

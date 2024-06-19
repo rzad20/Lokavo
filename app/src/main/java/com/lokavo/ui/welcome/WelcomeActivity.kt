@@ -1,6 +1,7 @@
 package com.lokavo.ui.welcome
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -8,6 +9,10 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.lokavo.R
 import com.lokavo.databinding.ActivityWelcomeBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding
@@ -21,8 +26,20 @@ class WelcomeActivity : AppCompatActivity() {
         supportActionBar?.hide()
         firebaseAuth = FirebaseAuth.getInstance()
 
-        if (firebaseAuth.currentUser != null || onBoardingFinished()) {
-            navigateToWelcomeFragment()
+        if (onBoardingFinished()) {
+            if (firebaseAuth.currentUser == null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    GlobalScope.launch {
+                        withContext(Dispatchers.Main) {
+                            navigateToWelcomeFragment()
+                        }
+                    }
+                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                    navigateToWelcomeFragment()
+                }
+            } else {
+                navigateToWelcomeFragment()
+            }
         }
     }
 

@@ -1,13 +1,11 @@
 package com.lokavo.ui.article
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lokavo.R
 import com.lokavo.data.Result
@@ -48,14 +46,17 @@ class ArticleFragment : Fragment() {
                 is Result.Loading -> {
                     binding.progress.visibility = View.VISIBLE
                 }
+
                 is Result.Success -> {
                     binding.progress.visibility = View.GONE
                     setArticlesData(res.data.list)
                 }
+
                 is Result.Error -> {
                     binding.progress.visibility = View.GONE
                     binding.root.showSnackbar(res.error)
                 }
+
                 is Result.Empty -> {
                     binding.progress.visibility = View.GONE
                     binding.root.showSnackbar(getString(R.string.not_found))
@@ -65,7 +66,7 @@ class ArticleFragment : Fragment() {
     }
 
     private fun setArticlesData(newsData: List<ListItem?>?) {
-        val adapter = ArticleAdapter(requireActivity()) { url ->
+        val adapter = ArticleAdapter { url ->
             val intent = Intent(requireContext(), ArticleWebViewActivity::class.java).apply {
                 putExtra(ArticleWebViewActivity.EXTRA_URL, url)
             }

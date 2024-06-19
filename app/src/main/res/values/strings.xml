@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Lokavo</string>
-    <string name="email_error">Format Email Salah</string>
-    <string name="password_error">Password Minimal 6 Karakter</string>
+    <string name="email_error">Format email tidak valid</string>
+    <string name="password_error">Password harus memiliki minimal 6 karakter</string>
     <string name="daftar">Daftar</string>
     <string name="register_desc">Buat akunmu untuk dapat bergabung dengan kami</string>
     <string name="nama">Nama</string>
@@ -27,7 +27,7 @@
     <string name="analyze">Analisa</string>
     <string name="hasil_analisa">Hasil Analisa</string>
     <string name="ulasan">(%d ulasan)</string>
-    <string name="competitor_category">highly competitive</string>
+    <string name="competitor_category">Highly Competitive</string>
     <string name="Analysis_Result">Hasil Analisa\n</string>
     <string name="detail_analisa">Detail Analisa</string>
     <string name="place_name">Nama Tempat</string>
@@ -44,7 +44,7 @@
     <string name="send">Kirim</string>
     <string name="ubah_password">Ubah Password</string>
     <string name="change_password_description">icon ubah password\n</string>
-    <string name="change_password_desc">Kata sandi baru Anda harus memiliki setidaknya 6 karakter</string>
+    <string name="change_password_desc">Kata sandi baru anda harus memiliki setidaknya 6 karakter</string>
     <string name="old_password">Masukkan Password Lama</string>
     <string name="new_password">Masukkan Password Baru</string>
     <string name="confirm_new_password">Konfirmasi Password Baru</string>
@@ -87,4 +87,30 @@
     <string name="cluster_a">Kelompok A</string>
     <string name="cluster_b">Kelompok B</string>
     <string name="cluster_c">Kelompok C</string>
+    <string name="terjadi_kesalahan">Terjadi kesalahan, coba lagi nanti</string>
+    <string name="request_timeout">Request Timeout</string>
+    <string name="password_not_match">Password lama tidak cocok</string>
+    <string name="password_success">Password berhasil diubah</string>
+    <string name="password_failed">Gagal mengubah password</string>
+    <string name="please_fill_all_fields">Silahkan isi semua kolom</string>
+    <string name="password_confirmation_not_match">Password dan konfirmasi password tidak cocok</string>
+    <string name="lokavo_chatbot">Lokavo Chatbot</string>
+    <string name="typing">Sedang mengetik</string>
+    <string name="email_empty">Email tidak boleh kosong</string>
+    <string name="check_email">Silahkan cek email anda untuk verifikasi</string>
+    <string name="ok">OK</string>
+    <string name="riwayat_analisa">Riwayat Analisa</string>
+    <string name="riwayat_chatbot">Riwayat Chatbot</string>
+    <string name="email_not_verified">Email belum diverifikasi</string>
+    <string name="send_again">Kirim Ulang</string>
+    <string name="verification_email_send">Email verifikasi telah dikirim ulang</string>
+    <string name="email_password_not_match">Email atau password tidak cocok</string>
+    <string name="konfirmasi_keluar">Konfirmasi Keluar</string>
+    <string name="leave">Apakah anda yakin untuk keluar?</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="profile_updated">Profil berhasil diubah</string>
+    <string name="registration_success">Pendaftaran berhasil, silakan cek email untuk verifikasi</string>
+    <string name="email_already_exist">Email sudah terdaftar</string>
+    <string name="try_again">Coba lagi</string>
 </resources>

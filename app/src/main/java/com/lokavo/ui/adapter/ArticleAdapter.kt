@@ -2,7 +2,6 @@ package com.lokavo.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,8 +9,8 @@ import com.bumptech.glide.Glide
 import com.lokavo.data.remote.response.ListItem
 import com.lokavo.databinding.ItemArticleBinding
 
-class ArticleAdapter(private val activity: FragmentActivity,
-    private val onItemClick : (String?) -> Unit) : ListAdapter<ListItem, ArticleAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class ArticleAdapter(private val onItemClick: (String?) -> Unit) :
+    ListAdapter<ListItem, ArticleAdapter.MyViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding, onItemClick)
@@ -22,7 +21,10 @@ class ArticleAdapter(private val activity: FragmentActivity,
         holder.bind(news)
     }
 
-    class MyViewHolder(private val binding: ItemArticleBinding, private val onItemClick: (String?) -> Unit) :
+    class MyViewHolder(
+        private val binding: ItemArticleBinding,
+        private val onItemClick: (String?) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(article: ListItem) {
             binding.articleTitle.text = article.headline

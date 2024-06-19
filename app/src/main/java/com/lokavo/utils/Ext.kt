@@ -6,7 +6,6 @@ import android.graphics.Canvas
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -56,7 +55,6 @@ suspend fun Geocoder.getAddress(
             }
         }
     } catch (e: Exception) {
-        Log.e("Geocoder", "Error getting address", e)
         null
     }
 }

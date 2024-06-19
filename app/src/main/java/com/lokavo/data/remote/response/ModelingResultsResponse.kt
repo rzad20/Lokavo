@@ -32,8 +32,8 @@ data class ModelingResultsResponse(
     @field:SerializedName("cluster_interpretation")
     val clusterInterpretation :ClusterInterpretation? = null,
 
-    val latLng: LatLng? = null, // untuk parcelable
+    val latLng: LatLng? = null,
 
-    val top: List<PoiMapItem?>? = null // untuk top3
+    val top: List<PoiMapItem?>? = null
 ) : Parcelable
 

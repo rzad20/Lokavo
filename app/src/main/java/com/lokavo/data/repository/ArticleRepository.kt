@@ -18,7 +18,6 @@ class ArticleRepository private constructor(private var apiService1: ApiService1
         } catch (e: Exception) {
             emit(Result.Error("Terjadi Kesalahan"))
         }
-
     }
 
     companion object {

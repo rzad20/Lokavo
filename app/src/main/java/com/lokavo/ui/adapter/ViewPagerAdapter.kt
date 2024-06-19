@@ -5,16 +5,18 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class ViewPagerAdapter (
+class ViewPagerAdapter(
     list: ArrayList<Fragment>,
-    frm : FragmentManager,
-    lifecycle: Lifecycle ) : FragmentStateAdapter(frm, lifecycle) {
-        private val listFragment : ArrayList<Fragment> = list
+    frm: FragmentManager,
+    lifecycle: Lifecycle
+) : FragmentStateAdapter(frm, lifecycle) {
+    private val listFragment: ArrayList<Fragment> = list
 
-        override fun getItemCount(): Int {
+    override fun getItemCount(): Int {
         return listFragment.size
     }
-        override fun createFragment(position: Int): Fragment {
+
+    override fun createFragment(position: Int): Fragment {
         return listFragment[position]
     }
 }

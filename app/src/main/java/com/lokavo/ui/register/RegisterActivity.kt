@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.lokavo.R
 import com.lokavo.databinding.ActivityRegisterBinding
 import com.lokavo.ui.login.LoginActivity
 import com.lokavo.utils.isOnline
@@ -65,16 +66,16 @@ class RegisterActivity : AppCompatActivity() {
 
                 if (email.isNotEmpty() && pass.isNotEmpty() && confirmPass.isNotEmpty() && name.isNotEmpty()) {
                     if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                        binding.root.showSnackbar("Format email tidak valid")
+                        binding.root.showSnackbar(getString(R.string.email_error))
                     } else if (pass.length < 6) {
-                        binding.root.showSnackbar("Password harus memiliki minimal 6 karakter")
+                        binding.root.showSnackbar(getString(R.string.password_error))
                     } else if (pass == confirmPass) {
                         registerUser(email, pass, name)
                     } else {
-                        binding.root.showSnackbar("Password tidak sama")
+                        binding.root.showSnackbar(getString(R.string.password_not_match))
                     }
                 } else {
-                    binding.root.showSnackbar("Tidak boleh ada bagian yang kosong")
+                    binding.root.showSnackbar(getString(R.string.please_fill_all_fields))
                 }
             }
         }
@@ -96,30 +97,30 @@ class RegisterActivity : AppCompatActivity() {
                                     hideLoading()
                                     if (sendTask.isSuccessful) {
                                         binding.progress.visibility = View.GONE
-                                        Toast.makeText(this, "Pendaftaran berhasil, silakan cek email untuk verifikasi", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this, getString(R.string.registration_success), Toast.LENGTH_SHORT).show()
                                         firebaseAuth.signOut()
                                         val intent = Intent(this, LoginActivity::class.java)
                                         startActivity(intent)
                                         finish()
                                     } else {
                                         binding.progress.visibility = View.GONE
-                                        binding.root.showSnackbar("Terjadi Kesalahan")
+                                        binding.root.showSnackbar(getString(R.string.terjadi_kesalahan))
                                         user.delete()
                                     }
                                 }
                             } else {
                                 hideLoading()
-                                binding.root.showSnackbar("Terjadi Kesalahan")
+                                binding.root.showSnackbar(getString(R.string.terjadi_kesalahan))
                                 user.delete()
                             }
                         }
                 }
             } else if (it.exception is FirebaseAuthUserCollisionException) {
                 hideLoading()
-                binding.root.showSnackbar("Email sudah terdaftar")
+                binding.root.showSnackbar(getString(R.string.email_already_exist))
             } else {
                 hideLoading()
-                binding.root.showSnackbar("Terjadi Kesalahan")
+                binding.root.showSnackbar(getString(R.string.terjadi_kesalahan))
             }
         }
     }

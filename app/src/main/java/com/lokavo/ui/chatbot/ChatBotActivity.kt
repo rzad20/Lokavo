@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.lokavo.R
 import com.lokavo.data.local.entity.ChatBotHistory
 import com.lokavo.data.local.entity.ChatBotHistoryDetail
 import com.lokavo.data.remote.response.ChatBotMessageResponse
@@ -69,7 +70,7 @@ class ChatBotActivity : AppCompatActivity() {
             binding.btnNext.text = chatbotMessages[currentIndex].question
         } else {
             binding.messageChoice.visibility = View.GONE
-            binding.root.showSnackbar("Terjadi Kesalahan")
+            binding.root.showSnackbar(getString(R.string.terjadi_kesalahan))
         }
 
         binding.btnNext.setOnClickListener {
@@ -83,6 +84,7 @@ class ChatBotActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun nextQuestion() {
         if (currentIndex < chatbotMessages.size) {
             val question = chatbotMessages[currentIndex].question
@@ -112,8 +114,8 @@ class ChatBotActivity : AppCompatActivity() {
                 Message(
                     isUser = false,
                     user = null,
-                    bot = "Lokavo Chatbot",
-                    text = "Sedang mengetik...",
+                    bot = getString(R.string.lokavo_chatbot),
+                    text = getString(R.string.typing),
                     photo = null
                 )
             )
@@ -127,7 +129,7 @@ class ChatBotActivity : AppCompatActivity() {
                     Message(
                         isUser = false,
                         user = null,
-                        bot = "Lokavo Chatbot",
+                        bot = getString(R.string.lokavo_chatbot),
                         text = answer ?: "",
                         photo = null
                     )

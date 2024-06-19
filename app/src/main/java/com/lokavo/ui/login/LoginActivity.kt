@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.lokavo.R
 import com.lokavo.databinding.ActivityLoginBinding
 import com.lokavo.ui.MainActivity
 import com.lokavo.ui.forgotPassword.ForgotPasswordActivity
@@ -51,9 +52,9 @@ class LoginActivity : AppCompatActivity() {
 
                 if (email.isNotEmpty() && pass.isNotEmpty()) {
                     if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                        binding.root.showSnackbar("Format email tidak valid")
+                        binding.root.showSnackbar(getString(R.string.email_error))
                     } else if (pass.length < 6) {
-                        binding.root.showSnackbar("Password harus memiliki minimal 6 karakter")
+                        binding.root.showSnackbar(getString(R.string.password_error))
                     } else {
                         showLoading()
                         firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
@@ -67,21 +68,21 @@ class LoginActivity : AppCompatActivity() {
                                     finish()
                                 } else {
                                     binding.root.showSnackbar(
-                                        message = "Email belum diverifikasi",
-                                        actionText = "Kirim Ulang",
+                                        message = getString(R.string.email_not_verified),
+                                        actionText = getString(R.string.send_again),
                                         action = {
                                             firebaseAuth.currentUser?.sendEmailVerification()
                                                 ?.addOnCompleteListener { task ->
                                                     if (task.isSuccessful) {
                                                         Toast.makeText(
                                                             this,
-                                                            "Email verifikasi telah dikirim ulang",
+                                                            getString(R.string.verification_email_send),
                                                             Toast.LENGTH_SHORT
                                                         ).show()
                                                     } else {
                                                         Toast.makeText(
                                                             this,
-                                                            "Terjadi kesalahan, coba lagi nanti",
+                                                            getString(R.string.terjadi_kesalahan),
                                                             Toast.LENGTH_SHORT
                                                         ).show()
                                                     }
@@ -92,15 +93,15 @@ class LoginActivity : AppCompatActivity() {
                             } else {
                                 hideLoading()
                                 if (it.exception is FirebaseAuthInvalidCredentialsException) {
-                                    binding.root.showSnackbar("Email atau password tidak cocok")
+                                    binding.root.showSnackbar(getString(R.string.email_password_not_match))
                                 } else {
-                                    binding.root.showSnackbar("Terjadi kesalahan")
+                                    binding.root.showSnackbar(getString(R.string.terjadi_kesalahan))
                                 }
                             }
                         }
                     }
                 } else {
-                    binding.root.showSnackbar("Tidak boleh ada bagian yang kosong")
+                    binding.root.showSnackbar(getString(R.string.please_fill_all_fields))
                 }
             }
         }

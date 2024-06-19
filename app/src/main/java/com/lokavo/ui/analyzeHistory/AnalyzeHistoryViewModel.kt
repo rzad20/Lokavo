@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import com.lokavo.data.repository.AnalyzeHistoryRepository
 import com.lokavo.data.local.entity.AnalyzeHistory
 
-class AnalyzeHistoryViewModel(private val analyzeHistoryRepository: AnalyzeHistoryRepository) : ViewModel() {
+class AnalyzeHistoryViewModel(
+    private val analyzeHistoryRepository: AnalyzeHistoryRepository
+) : ViewModel() {
     fun delete(analyzeHistory: AnalyzeHistory) {
         analyzeHistoryRepository.delete(analyzeHistory)
     }

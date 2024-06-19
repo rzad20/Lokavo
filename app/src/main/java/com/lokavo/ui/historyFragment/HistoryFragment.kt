@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
+import com.lokavo.R
 import com.lokavo.databinding.FragmentHistoryBinding
 import com.lokavo.ui.adapter.HistoryPagerAdapter
 
@@ -27,7 +28,8 @@ class HistoryFragment : Fragment() {
         val adapter = HistoryPagerAdapter(this)
         binding.viewPager.adapter = adapter
 
-        val tabTitles = arrayOf("Riwayat Analisa", "Riwayat ChatBot")
+        val tabTitles =
+            arrayOf(getString(R.string.riwayat_analisa), getString(R.string.riwayat_chatbot))
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = tabTitles[position]

@@ -24,7 +24,7 @@ class ChatBotRepository(private var apiService2: ApiService2) {
             val errorResponse = Gson().fromJson(errorBody, PlaceDetailsResponse::class.java)
             emit(errorResponse.message?.let { Result.Error(it) })
         } catch (e: SocketTimeoutException) {
-            emit(Result.Error("Request timeout"))
+            emit(Result.Error("Request Timeout"))
         } catch (e: Exception) {
             emit(Result.Error("Terjadi Kesalahan"))
         }
@@ -44,7 +44,7 @@ class ChatBotRepository(private var apiService2: ApiService2) {
             val errorResponse = Gson().fromJson(errorBody, PlaceDetailsResponse::class.java)
             emit(errorResponse.message?.let { Result.Error(it) })
         } catch (e: SocketTimeoutException) {
-            emit(Result.Error("Request timeout"))
+            emit(Result.Error("Request Timeout"))
         } catch (e: Exception) {
             emit(Result.Error("Terjadi Kesalahan"))
         }

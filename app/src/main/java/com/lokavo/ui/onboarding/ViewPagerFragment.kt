@@ -20,14 +20,16 @@ class ViewPagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentViewPagerBinding.inflate(inflater, container, false)
-        val listFragment = arrayListOf<Fragment> (
+        val listFragment = arrayListOf(
             FirstOnboarding(),
             SecondOnboarding(),
             ThirdOnboarding()
         )
-        val adapter = ViewPagerAdapter(listFragment,
+        val adapter = ViewPagerAdapter(
+            listFragment,
             requireActivity().supportFragmentManager,
-            lifecycle)
+            lifecycle
+        )
         binding.viewPager.adapter = adapter
         return binding.root
     }

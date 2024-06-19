@@ -34,7 +34,11 @@ class ArticleWebViewActivity : AppCompatActivity() {
         }
 
         binding.webView.webViewClient = object : WebViewClient() {
-            override fun onPageStarted(view: WebView?, url: String?, favicon: android.graphics.Bitmap?) {
+            override fun onPageStarted(
+                view: WebView?,
+                url: String?,
+                favicon: android.graphics.Bitmap?
+            ) {
                 super.onPageStarted(view, url, favicon)
                 binding.progress.visibility = LinearProgressIndicator.VISIBLE
                 if (url != allowedUrl) {
@@ -64,6 +68,7 @@ class ArticleWebViewActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

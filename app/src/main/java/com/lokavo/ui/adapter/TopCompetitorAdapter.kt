@@ -43,7 +43,12 @@ class TopCompetitorAdapter(
                 if (!it.context.isOnline()) {
                     holder.binding.root.showSnackbarOnNoConnection(holder.itemView.context)
                 } else {
-                    competitor.placeId?.let { it1 -> listener.onItemClick(it1, holder.binding.btnDetail) }
+                    competitor.placeId?.let { it1 ->
+                        listener.onItemClick(
+                            it1,
+                            holder.binding.btnDetail
+                        )
+                    }
                 }
             }
         }

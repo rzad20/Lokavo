@@ -54,39 +54,43 @@ class ChatBotHistoryAdapter(private val chatBotHistoryViewModel: ChatBotHistoryV
                 chatBotHistoryViewModel.delete(chatbotHistory)
             }
 
-            binding.root.setOnClickListener { it ->
-    if (!binding.root.context.isOnline()) {
-        binding.root.showSnackbarOnNoConnection(binding.root.context)
-    } else {
-        val context = it.context
-        val messages = mutableListOf<ChatBotMessageResponse>()
-        CoroutineScope(Dispatchers.IO).launch {
-            val existingHistory = chatbotHistory.userId?.let { it1 ->
-                chatbotHistory.latitude?.let { it2 ->
-                    chatbotHistory.longitude?.let { it3 ->
-                        chatBotHistoryViewModel.findByLatLong(
-                            it1,
-                            it2,
-                            it3
-                        )
+            binding.root.setOnClickListener {
+                if (!binding.root.context.isOnline()) {
+                    binding.root.showSnackbarOnNoConnection(binding.root.context)
+                } else {
+                    val context = it.context
+                    val messages = mutableListOf<ChatBotMessageResponse>()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val existingHistory = chatbotHistory.userId?.let { it1 ->
+                            chatbotHistory.latitude?.let { it2 ->
+                                chatbotHistory.longitude?.let { it3 ->
+                                    chatBotHistoryViewModel.findByLatLong(
+                                        it1,
+                                        it2,
+                                        it3
+                                    )
+                                }
+                            }
+                        }
+                        existingHistory?.details?.forEach { detail ->
+                            val message = ChatBotMessageResponse(
+                                answer = detail.answer,
+                                question = detail.question,
+                            )
+                            messages.add(message)
+                        }
+                        withContext(Dispatchers.Main) {
+                            val intent =
+                                Intent(binding.root.context, HistoryChatbotDetail::class.java)
+                            intent.putParcelableArrayListExtra(
+                                HistoryChatbotDetail.MESSAGES,
+                                ArrayList(messages)
+                            )
+                            context.startActivity(intent)
+                        }
                     }
                 }
             }
-            existingHistory?.details?.forEach { detail->
-                val message = ChatBotMessageResponse(
-                    answer = detail.answer,
-                    question = detail.question,
-                )
-                messages.add(message)
-            }
-            withContext(Dispatchers.Main) {
-                val intent = Intent(binding.root.context, HistoryChatbotDetail::class.java)
-                intent.putParcelableArrayListExtra(HistoryChatbotDetail.MESSAGES, ArrayList(messages))
-                context.startActivity(intent)
-            }
-        }
-    }
-}
         }
     }
 }

@@ -28,7 +28,8 @@ class AnalyzeHistoryAdapter(private val analyzeHistoryViewModel: AnalyzeHistoryV
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
-        val binding = ItemSearchHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemSearchHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HistoryViewHolder(binding)
     }
 

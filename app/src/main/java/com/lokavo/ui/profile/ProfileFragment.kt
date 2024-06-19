@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -19,7 +17,6 @@ import com.lokavo.databinding.FragmentProfileBinding
 import com.lokavo.ui.welcome.WelcomeActivity
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbarOnNoConnection
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
@@ -105,14 +102,14 @@ class ProfileFragment : Fragment() {
 
     private fun showLogoutConfirmationDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Konfirmasi keluar")
-            .setMessage("Apakah Anda yakin untuk keluar?")
-            .setPositiveButton("Ya") { dialog, _ ->
+            .setTitle(getString(R.string.konfirmasi_keluar))
+            .setMessage(getString(R.string.leave))
+            .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
                 dialog.dismiss()
                 firebaseAuth.signOut()
                 proceedToLogout()
             }
-            .setNegativeButton("Tidak") { dialog, _ ->
+            .setNegativeButton(getString(R.string.no)) { dialog, _ ->
                 dialog.dismiss()
             }
             .show()

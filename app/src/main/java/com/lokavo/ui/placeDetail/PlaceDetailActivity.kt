@@ -1,18 +1,11 @@
 package com.lokavo.ui.placeDetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintSet
 import com.bumptech.glide.Glide
 import com.lokavo.R
 import com.lokavo.data.remote.response.DetailsItem
-import com.lokavo.data.remote.response.ModelingResultsResponse
 import com.lokavo.databinding.ActivityPlaceDetailBinding
 import com.lokavo.ui.detailAnalysis.DetailAnalysisActivity
 
@@ -37,7 +30,8 @@ class PlaceDetailActivity : AppCompatActivity() {
             binding.placereview.text = getString(R.string.ulasan, it.reviews)
             Glide.with(this).load(it.featuredImage)
                 .into(binding.placeImage)
-            val popularTimes = it.mostPopularTimes?.joinToString(", ") { timeItem -> timeItem?.timeLabel ?: "" }
+            val popularTimes =
+                it.mostPopularTimes?.joinToString(", ") { timeItem -> timeItem?.timeLabel ?: "" }
             val visitTimesText = if (!popularTimes.isNullOrEmpty()) {
                 getString(R.string.visit_times, popularTimes)
             } else {
@@ -46,11 +40,16 @@ class PlaceDetailActivity : AppCompatActivity() {
             binding.txtPopular.text = visitTimesText
 
             it.reviewsPerRating?.let { reviewsPerRating ->
-                binding.rating5.text = getString(R.string.rating_count, 5, reviewsPerRating.five ?: 0)
-                binding.rating4.text = getString(R.string.rating_count, 4, reviewsPerRating.four ?: 0)
-                binding.rating3.text = getString(R.string.rating_count, 3, reviewsPerRating.three ?: 0)
-                binding.rating2.text = getString(R.string.rating_count, 2, reviewsPerRating.two ?: 0)
-                binding.rating1.text = getString(R.string.rating_count, 1, reviewsPerRating.one ?: 0)
+                binding.rating5.text =
+                    getString(R.string.rating_count, 5, reviewsPerRating.five ?: 0)
+                binding.rating4.text =
+                    getString(R.string.rating_count, 4, reviewsPerRating.four ?: 0)
+                binding.rating3.text =
+                    getString(R.string.rating_count, 3, reviewsPerRating.three ?: 0)
+                binding.rating2.text =
+                    getString(R.string.rating_count, 2, reviewsPerRating.two ?: 0)
+                binding.rating1.text =
+                    getString(R.string.rating_count, 1, reviewsPerRating.one ?: 0)
             }
         }
     }
@@ -65,6 +64,7 @@ class PlaceDetailActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     companion object {
         const val RESULT = "result"
     }

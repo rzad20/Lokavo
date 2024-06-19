@@ -59,7 +59,7 @@ class MapsRepository private constructor(private var apiService1: ApiService1) {
                 val errorResponse = Gson().fromJson(errorBody, ModelingResultsResponse::class.java)
                 emit(errorResponse.message?.let { Result.Error(it) })
             } catch (e: SocketTimeoutException) {
-                emit(Result.Error("Request timeout"))
+                emit(Result.Error("Request Timeout"))
             } catch (e: Exception) {
                 emit(Result.Error("Terjadi Kesalahan"))
             }

@@ -25,7 +25,7 @@ class ThirdOnboarding : Fragment() {
         return binding.root
     }
 
-    private fun finishOnboarding(){
+    private fun finishOnboarding() {
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
         editor.putBoolean("Finished", true)

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.lokavo.R
 import com.lokavo.data.remote.response.ChatBotMessageResponse
 import com.lokavo.databinding.ActivityHistoryChatBotDetailBinding
 import com.lokavo.ui.adapter.ChatAdapter
@@ -30,7 +31,8 @@ class HistoryChatbotDetail : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        chatbotMessages = intent.getParcelableArrayListExtra(ChatBotActivity.MESSAGES) ?: emptyList()
+        chatbotMessages =
+            intent.getParcelableArrayListExtra(ChatBotActivity.MESSAGES) ?: emptyList()
         userName = Firebase.auth.currentUser?.displayName ?: "User"
         photoUrl = Firebase.auth.currentUser?.photoUrl ?: Uri.EMPTY
         populateMessages()
@@ -55,7 +57,7 @@ class HistoryChatbotDetail : AppCompatActivity() {
                 Message(
                     isUser = false,
                     user = null,
-                    bot = "Lokavo Chatbot",
+                    bot = getString(R.string.lokavo_chatbot),
                     text = message.answer ?: "",
                     photo = null
                 )

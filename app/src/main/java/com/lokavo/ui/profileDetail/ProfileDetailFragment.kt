@@ -138,7 +138,7 @@ class ProfileDetailFragment : Fragment() {
                 activity?.runOnUiThread {
                     hideLoading()
                     if (isUpdated) {
-                        binding.root.showSnackbar("Profil berhasil diperbarui")
+                        binding.root.showSnackbar(getString(R.string.profile_updated))
                         binding.topAppBar.menu.findItem(R.id.save).isVisible = false
                     }
                 }
@@ -166,7 +166,7 @@ class ProfileDetailFragment : Fragment() {
             if (task.isSuccessful) {
                 callback(true)
             } else {
-                binding.root.showSnackbar("Terjadi kesalahan")
+                binding.root.showSnackbar(getString(R.string.terjadi_kesalahan))
                 callback(false)
             }
         }
@@ -193,12 +193,12 @@ class ProfileDetailFragment : Fragment() {
                             fileUri = null
                             callback(true)
                         } else {
-                            binding.root.showSnackbar("Terjadi kesalahan")
+                            binding.root.showSnackbar(getString(R.string.terjadi_kesalahan))
                             callback(false)
                         }
                     }
                 } else {
-                    binding.root.showSnackbar("Terjadi kesalahan")
+                    binding.root.showSnackbar(getString(R.string.terjadi_kesalahan))
                     callback(false)
                 }
             }

@@ -66,15 +66,15 @@ class ChangePasswordFragment : Fragment() {
 
         when {
             newPassword.isEmpty() || confirmPassword.isEmpty() || currentPassword.isEmpty() -> {
-                binding.root.showSnackbar("Silahkan isi semua kolom")
+                binding.root.showSnackbar(getString(R.string.please_fill_all_fields))
             }
 
             newPassword.length < 6 -> {
-                binding.root.showSnackbar("Password harus memiliki minimal 6 karakter")
+                binding.root.showSnackbar(getString(R.string.password_error))
             }
 
             newPassword != confirmPassword -> {
-                binding.root.showSnackbar("Password dan konfirmasi password tidak cocok")
+                binding.root.showSnackbar(getString(R.string.password_confirmation_not_match))
             }
 
             else -> {
@@ -89,21 +89,22 @@ class ChangePasswordFragment : Fragment() {
                                 if (updateTask.isSuccessful) {
                                     Toast.makeText(
                                         requireContext(),
-                                        "Password berhasil diubah",
+                                        getString(R.string.password_success),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     activity?.supportFragmentManager?.popBackStack()
                                 } else {
-                                    binding.root.showSnackbar("Gagal mengubah password")
+                                    binding.root.showSnackbar(getString(R.string.password_failed))
                                 }
                             }
                         } else {
                             hideLoading()
                             if (authTask.exception?.message?.contains("incorrect") == true) {
-                                binding.root.showSnackbar("Password lama tidak cocok")
+                                binding.root.showSnackbar(getString(R.string.password_not_match))
                             } else {
-                                binding.root.showSnackbar("Terjadi kesalahan")
-                            }                        }
+                                binding.root.showSnackbar(getString(R.string.terjadi_kesalahan))
+                            }
+                        }
                     }
                 } ?: run {
                     startActivity(Intent(requireContext(), WelcomeActivity::class.java))
@@ -129,6 +130,7 @@ class ChangePasswordFragment : Fragment() {
     }
 
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {

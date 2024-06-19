@@ -128,10 +128,10 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                         binding.progress.visibility = View.VISIBLE
                     }
                     is Result.Error -> {
-                        if (res.error == "Request timeout") {
+                        if (res.error == getString(R.string.request_timeout)) {
                             binding.root.showSnackbar(
-                                message = "Request timeout",
-                                actionText = "Coba Lagi",
+                                message = getString(R.string.request_timeout),
+                                actionText = getString(R.string.try_again),
                                 action = {
                                     getModelingResults(this.latLng)
                                 }

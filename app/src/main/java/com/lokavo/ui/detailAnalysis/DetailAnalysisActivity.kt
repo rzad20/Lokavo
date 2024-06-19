@@ -1,6 +1,5 @@
 package com.lokavo.ui.detailAnalysis
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -60,11 +59,15 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
             binding.clusterMeaning2.text = clusterInterpretation.b
             binding.clusterMeaning3.text = clusterInterpretation.c
 
-            binding.clusterMeaning1.visibility = if (clusterInterpretation.a.isNullOrEmpty()) View.GONE else View.VISIBLE
-            binding.clusterMeaning2.visibility = if (clusterInterpretation.b.isNullOrEmpty()) View.GONE else View.VISIBLE
-            binding.clusterMeaning3.visibility = if (clusterInterpretation.c.isNullOrEmpty()) View.GONE else View.VISIBLE
+            binding.clusterMeaning1.visibility =
+                if (clusterInterpretation.a.isNullOrEmpty()) View.GONE else View.VISIBLE
+            binding.clusterMeaning2.visibility =
+                if (clusterInterpretation.b.isNullOrEmpty()) View.GONE else View.VISIBLE
+            binding.clusterMeaning3.visibility =
+                if (clusterInterpretation.c.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
-        binding.clusterTitle.visibility = if (result.clusterInterpretation == null) View.GONE else View.VISIBLE
+        binding.clusterTitle.visibility =
+            if (result.clusterInterpretation == null) View.GONE else View.VISIBLE
         recyclerView = binding.rvCompetitor
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = TopCompetitorAdapter(result.top, this)
@@ -151,7 +154,9 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
                                             binding.root.showSnackbar(res3.error)
                                         }
 
-                                        else -> {}
+                                        else -> {
+                                            hideLoading()
+                                        }
                                     }
                                 }
                             }
@@ -161,7 +166,9 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
                                 binding.root.showSnackbar(res2.error)
                             }
 
-                            else -> {}
+                            else -> {
+                                hideLoading()
+                            }
                         }
                     }
                 }
@@ -171,12 +178,17 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
                     binding.root.showSnackbar(res1.error)
                 }
 
-                else -> {}
+                else -> {
+                    hideLoading()
+                }
             }
         }
     }
 
-    private fun fetchChatBotMessage(uid: String, index: Int): LiveData<Result<ChatBotMessageResponse>?> {
+    private fun fetchChatBotMessage(
+        uid: String,
+        index: Int
+    ): LiveData<Result<ChatBotMessageResponse>?> {
         return viewModel.getChatBotMessage(uid, index)
     }
 

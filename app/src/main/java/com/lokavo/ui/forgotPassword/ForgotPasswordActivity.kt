@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.lokavo.R
 import com.lokavo.databinding.ActivityForgotPasswordBinding
 import com.lokavo.ui.login.LoginActivity
 import com.lokavo.utils.isOnline
@@ -40,9 +41,9 @@ class ForgotPasswordActivity : AppCompatActivity() {
             } else {
                 val email = binding.edEmail.text.toString()
                 if (email.isEmpty()) {
-                    binding.root.showSnackbar("Email tidak boleh kosong")
+                    binding.root.showSnackbar(getString(R.string.email_empty))
                 } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    binding.root.showSnackbar("Format email tidak valid")
+                    binding.root.showSnackbar(getString(R.string.email_error))
                 } else {
                     showLoading()
                     firebaseAuth.sendPasswordResetEmail(email)
@@ -52,7 +53,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
                         }
                         .addOnFailureListener {
                             hideLoading()
-                            binding.root.showSnackbar("Terjadi kesalahan")
+                            binding.root.showSnackbar(getString(R.string.terjadi_kesalahan))
                         }
                 }
             }
@@ -61,8 +62,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     private fun showConfirmationDialog() {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("Silahkan cek email anda untuk verifikasi")
-            .setPositiveButton("OK") { dialog, _ ->
+        builder.setMessage(getString(R.string.check_email))
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 dialog.dismiss()

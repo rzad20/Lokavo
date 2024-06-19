@@ -3,13 +3,11 @@ package com.lokavo.data.remote.retrofit
 import com.lokavo.data.remote.request.ModelingResultsRequest
 import com.lokavo.data.remote.request.PlaceDetailsRequest
 import com.lokavo.data.remote.response.ArticleResponse
-import com.lokavo.data.remote.response.ChatBotMessageResponse
 import com.lokavo.data.remote.response.ModelingResultsResponse
 import com.lokavo.data.remote.response.PlaceDetailsResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Path
 
 interface ApiService1 {
     @POST("/modelling_results")

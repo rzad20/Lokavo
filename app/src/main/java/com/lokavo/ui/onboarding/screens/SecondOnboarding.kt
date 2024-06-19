@@ -12,8 +12,10 @@ import com.lokavo.databinding.FragmentSecondOnboardingBinding
 class SecondOnboarding : Fragment() {
     private var _binding: FragmentSecondOnboardingBinding? = null
     private val binding get() = _binding!!
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentSecondOnboardingBinding.inflate(inflater, container, false)
         val viewPager = activity?.findViewById<ViewPager2>(R.id.viewPager)
         binding.nextText2.setOnClickListener {

@@ -2,6 +2,7 @@
     <string name="app_name">Lokavo</string>
     <string name="email_error">Format email tidak valid</string>
     <string name="password_error">Password harus memiliki minimal 6 karakter</string>
+    <string name="new_password_error">Password baru harus memiliki minimal 6 karakter</string>
     <string name="daftar">Daftar</string>
     <string name="register_desc">Buat akunmu untuk dapat bergabung dengan kami</string>
     <string name="nama">Nama</string>
@@ -95,8 +96,7 @@
     <string name="please_fill_all_fields">Silahkan isi semua kolom</string>
     <string name="password_confirmation_not_match">Password dan konfirmasi password tidak cocok</string>
     <string name="lokavo_chatbot">Lokavo Chatbot</string>
-    <string name="typing">Sedang mengetik</string>
-    <string name="email_empty">Email tidak boleh kosong</string>
+    <string name="typing">Sedang mengetik...</string>
     <string name="check_email">Silahkan cek email anda untuk verifikasi</string>
     <string name="ok">OK</string>
     <string name="riwayat_analisa">Riwayat Analisa</string>
@@ -104,7 +104,7 @@
     <string name="email_not_verified">Email belum diverifikasi</string>
     <string name="send_again">Kirim Ulang</string>
     <string name="verification_email_send">Email verifikasi telah dikirim ulang</string>
-    <string name="email_password_not_match">Email atau password tidak cocok</string>
+    <string name="email_password_not_match">Email dan password tidak cocok</string>
     <string name="konfirmasi_keluar">Konfirmasi Keluar</string>
     <string name="leave">Apakah anda yakin untuk keluar?</string>
     <string name="yes">Ya</string>

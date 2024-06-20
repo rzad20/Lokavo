@@ -22,6 +22,7 @@ import com.lokavo.data.remote.response.ModelingResultsResponse
 import com.lokavo.databinding.ActivityResultBinding
 import com.lokavo.ui.detailAnalysis.DetailAnalysisActivity
 import com.lokavo.utils.bitmapFromVector
+import com.lokavo.utils.capitalizeWords
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
 import com.lokavo.utils.showSnackbarOnNoConnection
@@ -180,7 +181,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
                                 }
                                 builder.include(placeLatLng)
                             }
-                            binding.txtSentimentCategory.text = res.data.summaryHeader
+                            binding.txtSentimentCategory.text = res.data.summaryHeader?.capitalizeWords()
 
                             val bounds = builder.build()
                             val padding = 50

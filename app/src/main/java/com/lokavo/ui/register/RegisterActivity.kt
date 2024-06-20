@@ -72,7 +72,7 @@ class RegisterActivity : AppCompatActivity() {
                     } else if (pass == confirmPass) {
                         registerUser(email, pass, name)
                     } else {
-                        binding.root.showSnackbar(getString(R.string.password_not_match))
+                        binding.root.showSnackbar(getString(R.string.password_confirmation_not_match))
                     }
                 } else {
                     binding.root.showSnackbar(getString(R.string.please_fill_all_fields))

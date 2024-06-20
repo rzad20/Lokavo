@@ -11,11 +11,10 @@ class ArticleViewModel(private val repository: ArticleRepository) : ViewModel() 
     private val _articles = MutableLiveData<Result<ArticleResponse>>()
     val articles: LiveData<Result<ArticleResponse>> get() = _articles
 
-    private var hasLoaded = false
+    var hasLoaded = false
 
     fun loadArticles() {
         if (!hasLoaded) {
-            hasLoaded = true
             repository.getArticles().observeForever { result ->
                 _articles.value = result
             }

@@ -86,4 +86,4 @@ fun View.showSnackbar(message: String, actionText: String? = null, action: (() -
     snackbar.show()
 }
 
-
+fun String.capitalizeWords(): String = split(" ").joinToString(" ") { it.capitalize() }

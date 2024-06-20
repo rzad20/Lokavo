@@ -41,7 +41,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
             } else {
                 val email = binding.edEmail.text.toString()
                 if (email.isEmpty()) {
-                    binding.root.showSnackbar(getString(R.string.email_empty))
+                    binding.root.showSnackbar(getString(R.string.please_fill_all_fields))
                 } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     binding.root.showSnackbar(getString(R.string.email_error))
                 } else {

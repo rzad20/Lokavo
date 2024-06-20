@@ -208,16 +208,15 @@ class ProfileDetailFragment : Fragment() {
     private fun showLoading() {
         binding.progress.visibility = View.VISIBLE
         binding.topAppBar.menu.findItem(R.id.save).isEnabled = false
-        requireActivity().window.setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        )
+        binding.btnUpload.isEnabled = false
+        binding.edName.isEnabled = false
     }
 
     private fun hideLoading() {
         binding.progress.visibility = View.GONE
         binding.topAppBar.menu.findItem(R.id.save).isEnabled = true
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        binding.btnUpload.isEnabled = true
+        binding.edName.isEnabled = true
     }
 
 

@@ -25,6 +25,7 @@ import com.lokavo.ui.adapter.TopCompetitorAdapter
 import com.lokavo.ui.chatbot.ChatBotActivity
 import com.lokavo.ui.placeDetail.PlaceDetailActivity
 import com.lokavo.ui.result.ResultViewModel
+import com.lokavo.utils.capitalizeWords
 import com.lokavo.utils.isOnline
 import com.lokavo.utils.showSnackbar
 import com.lokavo.utils.showSnackbarOnNoConnection
@@ -51,7 +52,7 @@ class DetailAnalysisActivity : AppCompatActivity(), TopCompetitorAdapter.OnItemC
 
         result = intent.getParcelableExtra(RESULT) ?: ModelingResultsResponse()
 
-        binding.txtSentimentCategory.text = result.summaryHeader
+        binding.txtSentimentCategory.text = result.summaryHeader?.capitalizeWords()
         binding.detailAnalysis.text = result.longInterpretation
 
         result.clusterInterpretation?.let { clusterInterpretation ->

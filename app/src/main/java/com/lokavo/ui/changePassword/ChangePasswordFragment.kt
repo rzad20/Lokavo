@@ -70,7 +70,7 @@ class ChangePasswordFragment : Fragment() {
             }
 
             newPassword.length < 6 -> {
-                binding.root.showSnackbar(getString(R.string.password_error))
+                binding.root.showSnackbar(getString(R.string.new_password_error))
             }
 
             newPassword != confirmPassword -> {

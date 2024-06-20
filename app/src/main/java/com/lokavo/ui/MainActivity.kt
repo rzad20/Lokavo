@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         this.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)

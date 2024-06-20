@@ -12,7 +12,7 @@
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/lokavo_logo</item>
-        <item name="windowSplashScreenAnimationDuration">4-000</item>
+        <item name="windowSplashScreenAnimationDuration">4000</item>
         <item name="postSplashScreenTheme">@style/Theme.Lokavo</item>
     </style>
 

@@ -16,7 +16,6 @@ import com.lokavo.utils.wrapEspressoIdlingResource
 import java.net.SocketTimeoutException
 
 class MapsRepository private constructor(private var apiService1: ApiService1) {
-
     fun getModelingResults(latitude: Double, longitude: Double) = liveData {
         wrapEspressoIdlingResource {
             emit(Result.Loading)

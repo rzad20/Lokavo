@@ -5,7 +5,6 @@ import com.lokavo.data.Result
 import com.lokavo.data.remote.retrofit.ApiService1
 
 class ArticleRepository private constructor(private var apiService1: ApiService1) {
-
     fun getArticles() = liveData {
         emit(Result.Loading)
         try {

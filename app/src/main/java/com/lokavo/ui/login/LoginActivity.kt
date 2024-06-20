@@ -127,6 +127,7 @@ class LoginActivity : AppCompatActivity() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         this.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)

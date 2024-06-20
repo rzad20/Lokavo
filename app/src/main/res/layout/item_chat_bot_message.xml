@@ -18,6 +18,7 @@
             android:id="@+id/ivMessenger"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:contentDescription="@string/chatbot_image_description"
             android:src="@drawable/chatbot_lokavo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

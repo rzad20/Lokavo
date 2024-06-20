@@ -23,8 +23,6 @@
     <string name="userEmail">Email User</string>
     <string name="profile_logo">Profile Logo</string>
     <string name="logout">Keluar</string>
-    <string name="dark_mode">Mode Gelap</string>
-    <string name="dark_mode_description">Dark Mode Icon</string>
     <string name="analyze">Analisa</string>
     <string name="hasil_analisa">Hasil Analisa</string>
     <string name="ulasan">(%d ulasan)</string>
@@ -35,7 +33,6 @@
     <string name="no_internet_connection">Tidak ada koneksi internet</string>
     <string name="not_found">Data tidak ditemukan</string>
     <string name="star_icon"> </string>
-    <string name="place_image"> </string>
     <string name="place_image_description">The Picture of the place</string>
     <string name="clear_all">Hapus Semua</string>
     <string name="belum_ada_lokasi_yang_dianalisa">Belum ada lokasi yang dianalisa.</string>
@@ -113,4 +110,16 @@
     <string name="registration_success">Pendaftaran berhasil, silakan cek email untuk verifikasi</string>
     <string name="email_already_exist">Email sudah terdaftar</string>
     <string name="try_again">Coba lagi</string>
+    <string name="loading_chatbot">loading chatbot</string>
+    <string name="icon_competitive_description">icon hasil analisa lokasi</string>
+    <string name="chatbot_image_description">Gambar Chatbot Lokavo</string>
+    <string name="btn_analyze_result_desc">Tombol untuk menampilkan kembali hasil analisa</string>
+    <string name="btn_close_res_desc">Tombol untuk tutup fragment</string>
+    <string name="iv_detail_desc">Gambar usaha kompetitor</string>
+    <string name="image_star_desc">gambar rating bintang</string>
+    <string name="pinpoint_desc">Gambar pinpoint map</string>
+    <string name="onboarding_picture_desc">gambar onboarding</string>
+    <string name="my_location_desc">pindahkan map ke lokasi saya</string>
+    <string name="btn_upload_desc">Tombol upload gambar profil</string>
+    <string name="welcome_picture_desc">Gambar welcome</string>
 </resources>

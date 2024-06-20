@@ -16,6 +16,7 @@
         android:layout_marginEnd="50dp"
         android:adjustViewBounds="true"
         android:src="@drawable/chatbot_lokavo"
+        android:contentDescription="@string/onboarding_picture_desc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

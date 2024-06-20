@@ -58,6 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/round_background"
+            android:contentDescription="@string/btn_upload_desc"
             android:src="@drawable/ic_add"
             app:layout_constraintEnd_toEndOf="@+id/userImage"
             app:layout_constraintTop_toTopOf="@+id/userImage" />

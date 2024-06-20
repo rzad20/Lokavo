@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.setMain
-import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -73,7 +73,7 @@ class ChatBotRepositoryTest {
     @Test
     fun `getChatBotMessage returns error`() = runBlocking {
         val errorMessage = "Error message"
-        val errorBody = ResponseBody.create(null, "{\"message\":\"$errorMessage\"}")
+        val errorBody = "{\"message\":\"$errorMessage\"}".toResponseBody(null)
         val response = Response.error<ChatBotMessageResponse>(400, errorBody)
 
         `when`(apiService2.getChatBotMessage(anyString(), anyInt())).thenThrow(HttpException(response))

@@ -67,6 +67,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginStart="4dp"
+                        android:contentDescription="@string/star_icon_desc"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_star"/>
 

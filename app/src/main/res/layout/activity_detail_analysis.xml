@@ -92,6 +92,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:contentDescription="@string/icon_competitive_description"
                         android:src="@drawable/iconhighly" />
 
                     <LinearLayout
@@ -242,6 +243,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/chatbot_image_description"
                         android:src="@drawable/chatbot_lokavo" />
 
                     <LinearLayout

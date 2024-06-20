@@ -34,7 +34,7 @@ firebaseStorage = "21.0.0"
 espressoIdlingResource = "3.5.1"
 mockitoCore = "5.11.0"
 coreTesting = "2.2.0"
-kotlinxCoroutinesTest = "1.6.0"
+kotlinxCoroutinesTest = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

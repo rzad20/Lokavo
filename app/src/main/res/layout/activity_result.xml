@@ -56,6 +56,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="@color/white"
+        android:contentDescription="@string/btn_analyze_result_desc"
         android:src="@drawable/ic_pin_point"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/bottom"
@@ -110,6 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
+                    android:contentDescription="@string/btn_close_res_desc"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:minWidth="0dp"
@@ -134,6 +136,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:contentDescription="@string/icon_competitive_description"
                         android:src="@drawable/iconhighly" />
 
                     <LinearLayout
@@ -212,6 +215,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
+                    android:contentDescription="@string/btn_close_res_desc"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:minWidth="0dp"
@@ -225,6 +229,7 @@
                     android:id="@+id/iv_detail"
                     android:layout_width="125dp"
                     android:layout_height="0dp"
+                    android:contentDescription="@string/iv_detail_desc"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -259,6 +264,7 @@
                         android:layout_height="15dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="10dp"
+                        android:contentDescription="@string/image_star_desc"
                         android:src="@drawable/ic_star"
                         app:layout_constraintBottom_toBottomOf="@id/tv_rating"
                         app:layout_constraintStart_toStartOf="parent"
@@ -344,6 +350,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:contentDescription="@string/pinpoint_desc"
                     android:src="@drawable/pinpoint_1" />
 
                 <TextView
@@ -367,6 +374,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:contentDescription="@string/pinpoint_desc"
                     android:src="@drawable/pinpoint_2" />
 
                 <TextView
@@ -390,6 +398,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:contentDescription="@string/pinpoint_desc"
                     android:src="@drawable/pinpoint_3" />
 
                 <TextView

@@ -150,11 +150,7 @@ class ProfileDetailFragment : Fragment() {
         val nameChanged = binding.edName.text.toString() != user?.displayName
         val imageChanged = fileUri != null
 
-        if (nameChanged || imageChanged) {
-            binding.topAppBar.menu.findItem(R.id.save).isVisible = true
-        } else {
-            binding.topAppBar.menu.findItem(R.id.save).isVisible = false
-        }
+        binding.topAppBar.menu.findItem(R.id.save).isVisible = nameChanged || imageChanged
     }
 
     private fun updateName(callback: (Boolean) -> Unit) {
